@@ -1,0 +1,200 @@
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+@font-face {
+  font-family: "brownbear";
+  src: url("../css/font/brownbear/Brownbear.otf");
+}
+.brownbear {
+  font-family: brownbear;
+}
+
+#header {
+  padding: 15px 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 9999;
+  background: #fff;
+  box-shadow: 1px 1px 8px 1px rgba(227, 27, 27, 0.1);
+  transition: all 0.5s linear;
+}
+
+#header .navbar {
+  padding: 0;
+  justify-content: space-between;
+}
+
+#header .navbar-brand {
+  color: #e77225;
+  text-transform: uppercase;
+  font-weight: 600;
+  height: auto;
+  padding: 10px 20px; /* Adjust padding as needed */
+  font-size: 22px;
+  line-height: 1.6;
+}
+
+#header .navbar-collapse {
+  flex-grow: 0;
+}
+
+#header .navbar-collapse .navbar-nav {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+#header .navbar-collapse a:last-child {
+  padding-right: 20px; /* Adjust padding as needed */
+}
+
+#header .navbar-collapse a {
+  color: #0d0404;
+  position: relative;
+}
+
+#header .navbar-collapse a:hover,
+#header .navbar-collapse a.active {
+  background: none;
+  color: #e77225;
+}
+
+#header .navbar-collapse a:hover:before,
+#header .navbar-collapse a.active:before {
+  right: 7px;
+  left: 8px;
+  opacity: 1;
+}
+
+#header .navbar-collapse a:before {
+  content: "";
+  background: #e77225;
+  height: 1px;
+  position: absolute;
+  bottom: 7px;
+  left: -20px;
+  right: 100%;
+  transition: all 0.3s linear;
+  -webkit-transition: all 0.3s linear;
+  opacity: 0;
+}
+
+.navbar-bg-color {
+  background-color: white;
+}
+
+.image-style {
+  width: 4rem;
+  height: 4rem;
+  margin-top: -2rem;
+  margin-bottom: -2rem;
+}
+
+.stays-h1 {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.stays-add-button {
+  text-align: right;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+}
+
+.custom-btn {
+  background-color: #051e3c;
+  color: #fff;
+  border-color: #051e3c;
+  transition: background-color 0.3s ease;
+}
+
+.custom-btn:hover {
+  background-color: #e77225;
+  color: #fff;
+  border-color: #e77225;
+}
+
+.custom-icon {
+  color: #051e3c;
+  transition: background-color 0.3s ease;
+}
+
+.custom-icon:hover {
+  color: #e77225;
+}
+
+.heading-color {
+  color: #e77225;
+}
+
+.checkbox-border {
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  padding: 5px;
+}
+
+body,
+html {
+  height: 100%;
+}
+.bg {
+  background-image: url("../img/login/login.jpeg");
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #000000;
+}
+
+.login-card-align {
+  z-index: 10;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 7rem;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-logo-style {
+  margin-left: 6.5rem;
+  margin-top: -4rem;
+  width: 5rem;
+  height: 5rem;
+}
+
+.forgot-password-logo-style {
+  margin-left: 7.5rem;
+  margin-top: -4rem;
+  width: 5rem;
+  height: 5rem;
+}
+
+.dashboard-custom-card {
+  transition: box-shadow 0.3s ease;
+}
+
+.dashboard-custom-card:hover {
+  box-shadow: 0 10px 20px 10px rgba(0, 0, 0, 0.2);
+}
+
+@media only screen and (max-width: 768px) {
+  .login-card-align {
+    z-index: 10;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
