@@ -10,6 +10,8 @@ import EditStays from "./components/subcomponents/EditStays";
 import Login from "./components/pages/Login";
 import ForgotPassword from "./components/pages/ForgotPassword";
 import Multiple from "./components/subcomponents/Multiple";
+import MDTable from "./components/pages/MDTable";
+import MultipleInputField from "./components/subcomponents/MultipleInputField";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path="/EditStays" element={<EditStays />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/Multiple" element={<Multiple />} />
+        <Route path="/MDTable" element={<MDTable />} />
+        <Route path="/MultipleInputField" element={<MultipleInputField />} />
       </Routes>
     </div>
   );

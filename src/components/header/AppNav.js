@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { Navbar, Container, Nav, Image } from "react-bootstrap";
 
 import "../../css/style.css";
-import logo from "../../img/NB_Logo_Icon.jpg";
+import logo from "../../img/NB_Logo_Cropped.jpg";
 
 const AppNav = () => {
   return (

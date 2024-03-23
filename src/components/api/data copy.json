@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "stayName": "Mountain View Retreat",
+      "stayLocation": "Manali",
+      "accomodationType": "Entire Place",
+      "category": "Mountain Stay"
+    },
+    {
+      "stayName": "Beach Stay",
+      "stayLocation": "Lakshadweep",
+      "accomodationType": "Entire Place",
+      "category": "Beach Stay"
+    }
+  ]
+}

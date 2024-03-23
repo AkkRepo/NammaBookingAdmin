@@ -86,7 +86,7 @@
 }
 
 .image-style {
-  width: 4rem;
+  width: 7rem;
   height: 4rem;
   margin-top: -2rem;
   margin-bottom: -2rem;
@@ -115,6 +115,19 @@
   background-color: #e77225;
   color: #fff;
   border-color: #e77225;
+}
+
+.custom-btn-reverse {
+  background-color: #e77225;
+  color: #fff;
+  border-color: #e77225;
+  transition: background-color 0.3s ease;
+}
+
+.custom-btn-reverse:hover {
+  background-color: #051e3c;
+  color: #fff;
+  border-color: #051e3c;
 }
 
 .custom-icon {

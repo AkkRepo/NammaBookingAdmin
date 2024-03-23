@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "stayName": "Mountain View Retreat",
+      "stayLocation": "Mudigere",
+      "accomodation": "Entire Place",
+      "category": "Mountain Stay"
+    },
+    {
+      "id": 2,
+      "stayName": "Beach View Retreat",
+      "stayLocation": "Manglore",
+      "accomodation": "Entire Place",
+      "category": "Beach Stay"
+    },
+    {
+      "id": 2,
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "accomodation": "Entire Place",
+      "category": "Snow Stay"
+    }
+  ]
+}

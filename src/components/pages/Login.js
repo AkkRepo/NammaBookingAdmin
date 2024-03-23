@@ -1,5 +1,13 @@
 import React from "react";
-import { Card, Container, Button, Form, Image } from "react-bootstrap";
+import {
+  Card,
+  Container,
+  Button,
+  Form,
+  Image,
+  Row,
+  Col,
+} from "react-bootstrap";
 
 //image
 
@@ -29,9 +37,17 @@ function Login() {
                   Forgot password?
                 </p>
               </Link>
-              <Button className="custom-btn" type="submit">
-                Login
-              </Button>
+              <Row>
+                <Col></Col>
+                <Col></Col>
+                <Col>
+                  <Link to="/Dashboard">
+                    <Button className="custom-btn" type="submit">
+                      Login
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>
             </Form>
           </Card.Body>
         </Card>

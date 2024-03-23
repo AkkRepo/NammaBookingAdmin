@@ -8,6 +8,8 @@ import {
   Form,
   FloatingLabel,
   Button,
+  Table,
+  Image,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -36,13 +38,6 @@ function AddStays() {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-
-    // Ensure that total number of images doesn't exceed 3
-    //if (images.length + files.length > 3) {
-    // alert("You can upload maximum 3 images.");
-    // return;
-    //}
-
     // Add newly selected images to the existing images array
     setImages([...images, ...files]);
   };
@@ -94,20 +89,57 @@ function AddStays() {
 
   //terms and condition multiple input end
 
+  //Accomodation multiple inputfield start
+  const [accomodationData, setAccomodationData] = useState([
+    { accomodationName: "", noOfPeople: "", noOfBeds: "" },
+  ]);
+  const accomodationAdd = () => {
+    setAccomodationData([
+      ...accomodationData,
+      { accomodationName: "", noOfPeople: "", noOfBeds: "" },
+    ]);
+    console.log("added");
+  };
+  const accomodationHandleChange = (e, index) => {
+    const { name, value } = e.target;
+    const onChangeVal = [...accomodationData];
+    onChangeVal[index][name] = [value];
+    setAccomodationData(onChangeVal);
+  };
+  const deleteAccomodation = (i) => {
+    const deleteVal = [...accomodationData];
+    deleteVal.splice(i, 1);
+    setAccomodationData(deleteVal);
+
+    console.log("deleted");
+  };
+  //Accomodation multiple inputfield end
+
   return (
     <div>
       <header id="header">
         <AppNav />
       </header>
       <div style={{ paddingBottom: "6rem" }} />
-      <h1 className="brownbear stays-h1 heading-color">Add Stays</h1>
+      <h1 className="brownbear stays-h1 heading-color">Add New Stay</h1>
+
       <Form onSubmit={handleSubmit}>
+        <p
+          style={{
+            fontSize: "13px",
+            //fontWeight: "bold",
+            //textAlign: "right",
+            //marginLeft: "-6rem",
+          }}
+        >
+          (*) marked fields are compulsory
+        </p>
         <Container>
           <Row>
             <Col>
               <FloatingLabel
                 controlId="stayName"
-                label="Stay Name"
+                label="Stay Name*"
                 className="mb-3"
               >
                 <Form.Control
@@ -119,7 +151,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="stayLocation"
-                label="Location"
+                label="Location*"
                 className="mb-3"
               >
                 <Form.Control type="text" placeholder="Please enter Location" />
@@ -128,7 +160,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="formRating"
-                label="Rating"
+                label="Rating*"
                 className="mb-3"
               >
                 <Form.Control
@@ -144,37 +176,117 @@ function AddStays() {
           </Row>
           <Row>
             <Col>
-              <FloatingLabel controlId="accomodation" label="Accomodation">
-                <Form.Select aria-label="Accomodation">
-                  <option>Select one</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </Form.Select>
-              </FloatingLabel>
-            </Col>
-            <Col>
-              <FloatingLabel controlId="accomodation" label="Accomodation">
-                <Form.Select aria-label="Accomodation">
-                  <option>Select one</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </Form.Select>
-              </FloatingLabel>
-            </Col>
-            <Col>
-              <FloatingLabel controlId="roomType" label="Room Type">
-                <Form.Select aria-label="Room Type">
-                  <option>Select one</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </Form.Select>
-              </FloatingLabel>
+              <Form.Group className="mb-3 checkbox-border" controlId="category">
+                <Form.Label>Category*</Form.Label>
+                {["checkbox"].map((type) => (
+                  <div key={`default-${type}`}>
+                    <Row>
+                      <Col>
+                        <Form.Check // prettier-ignore
+                          type={type}
+                          id={`default-${type}`}
+                          label={`One`}
+                        />
+                      </Col>
+                      <Col>
+                        <Form.Check // prettier-ignore
+                          type={type}
+                          id={`default-${type}`}
+                          label={`Two`}
+                        />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <Form.Check // prettier-ignore
+                          type={type}
+                          id={`default-${type}`}
+                          label={`Three`}
+                        />
+                      </Col>
+                      <Col>
+                        <Form.Check // prettier-ignore
+                          type={type}
+                          id={`default-${type}`}
+                          label={`Four`}
+                        />
+                      </Col>
+                    </Row>
+                  </div>
+                ))}
+              </Form.Group>
             </Col>
           </Row>
           <br />
+          <Row>
+            <Col>
+              <h6>
+                Accomodation:{" "}
+                <Button
+                  onClick={accomodationAdd}
+                  className="custom-btn-reverse"
+                >
+                  Add
+                </Button>
+              </h6>
+              {accomodationData.map((val, i) => (
+                <Row>
+                  <Col>
+                    <FloatingLabel
+                      controlId="accomodationName"
+                      label="Accomodation Name*"
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        type="text"
+                        placeholder="Please enter Accomodation"
+                        //value={val.accomodationName}
+                        //onChange={(e) => accomodationHandleChange(e, i)}
+                      />
+                    </FloatingLabel>
+                  </Col>
+                  <Col>
+                    <FloatingLabel controlId="noOfPeople" label="No of People*">
+                      <Form.Select
+                        aria-label="No of People"
+                        //value={val.noOfPeople}
+                        //onChange={(e) => accomodationHandleChange(e, i)}
+                      >
+                        <option>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </Form.Select>
+                    </FloatingLabel>
+                  </Col>
+                  <Col>
+                    <FloatingLabel controlId="noOfBeds" label="No of Beds*">
+                      <Form.Select
+                        aria-label="No of Beds"
+                        //value={val.noOfBeds}
+                        //onChange={(e) => accomodationHandleChange(e, i)}
+                      >
+                        <option>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </Form.Select>
+                    </FloatingLabel>
+                  </Col>
+                  <Col>
+                    <Button
+                      onClick={() => deleteAccomodation(i)}
+                      className="custom-btn-reverse"
+                    >
+                      Delete
+                    </Button>
+                  </Col>
+                </Row>
+              ))}
+            </Col>
+          </Row>
+          <br />
+          {/*
           <Row>
             <Col>
               <FloatingLabel controlId="guests" label="Guests" className="mb-3">
@@ -190,28 +302,14 @@ function AddStays() {
                 <Form.Control type="number" placeholder="No of beds" />
               </FloatingLabel>
             </Col>
-            <Col>
-              <FloatingLabel
-                controlId="uploadImage"
-                label="Upload Image"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageChange}
-                />
-              </FloatingLabel>
-            </Col>
-          </Row>
+          </Row> */}
           <Row>
             <Col>
               <Form.Group
                 className="mb-3 checkbox-border"
                 controlId="amenities"
               >
-                <Form.Label>Amenities</Form.Label>
+                <Form.Label>Amenities*</Form.Label>
                 {["checkbox"].map((type) => (
                   <div key={`default-${type}`}>
                     <Row>
@@ -303,7 +401,7 @@ function AddStays() {
                 className="mb-3 checkbox-border"
                 controlId="activities"
               >
-                <Form.Label>Activities</Form.Label>
+                <Form.Label>Activities*</Form.Label>
                 {["checkbox"].map((type) => (
                   <div key={`default-${type}`}>
                     <Row>
@@ -396,7 +494,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="contactName"
-                label="Contact Name"
+                label="Contact Name*"
                 className="mb-3"
               >
                 <Form.Control
@@ -408,7 +506,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="contactNumber"
-                label="Contact Number"
+                label="Contact Number*"
                 className="mb-3"
               >
                 <Form.Control
@@ -427,7 +525,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="locationLink"
-                label="Location link"
+                label="Location link*"
                 className="mb-3"
               >
                 <Form.Control
@@ -439,7 +537,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="instaLink"
-                label="Instagram"
+                label="Instagram*"
                 className="mb-3"
               >
                 <Form.Control
@@ -451,7 +549,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="fbLink"
-                label="Facebook"
+                label="Facebook*"
                 className="mb-3"
               >
                 <Form.Control
@@ -466,7 +564,7 @@ function AddStays() {
               <div style={{ display: "flex" }}>
                 <FloatingLabel
                   controlId="nearByPlaces"
-                  label="Near by Places"
+                  label="Near by Places*"
                   className="mb-3"
                   style={{ marginRight: "1rem" }}
                 >
@@ -480,13 +578,38 @@ function AddStays() {
                 <Button
                   onClick={addInputData1}
                   style={{ height: "40px" }}
-                  className="custom-btn"
+                  className="custom-btn-reverse"
                 >
                   Add
                 </Button>
               </div>
-
-              {array1 &&
+              <Container style={{ paddingRight: "8rem", marginLeft: "-1rem" }}>
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Near by Places</th>
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {array1 &&
+                      array1.map((item, i) => {
+                        return (
+                          <tr key={i}>
+                            <td> {item.nearByPlaces} </td>
+                            <td>
+                              <FontAwesomeIcon
+                                icon={faX}
+                                onClick={() => deleteData1(i)}
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </Table>
+              </Container>
+              {/*{array1 &&
                 array1.map((item, i) => {
                   return (
                     <div key={i}>
@@ -499,13 +622,13 @@ function AddStays() {
                       </p>
                     </div>
                   );
-                })}
+                })} */}
             </Col>
             <Col>
               <div style={{ display: "flex" }}>
                 <FloatingLabel
                   controlId="termsAndCondition"
-                  label="Terms & Conditions"
+                  label="Terms & Conditions*"
                   className="mb-3"
                   style={{ marginRight: "1rem" }}
                 >
@@ -520,32 +643,80 @@ function AddStays() {
                 <Button
                   onClick={addInputData2}
                   style={{ height: "40px" }}
-                  className="custom-btn"
+                  className="custom-btn-reverse"
                 >
                   Add
                 </Button>
               </div>
-
-              {array2 &&
-                array2.map((item, i) => {
-                  return (
-                    <div key={i}>
-                      <p>
-                        {item.termsAndCondition}{" "}
-                        <FontAwesomeIcon
-                          icon={faX}
-                          onClick={() => deleteData2(i)}
-                        />
-                      </p>
-                    </div>
-                  );
-                })}
+              <Container style={{ paddingRight: "8rem", marginLeft: "-1rem" }}>
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Terms and Conditions</th>
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {array2 &&
+                      array2.map((item, i) => {
+                        return (
+                          <tr key={i}>
+                            <td>{item.termsAndCondition} </td>
+                            <td>
+                              <FontAwesomeIcon
+                                icon={faX}
+                                onClick={() => deleteData2(i)}
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </Table>
+              </Container>
             </Col>
           </Row>
           <Row>
             <Col>
-              <Button type="submit" className="custom-btn">
+              <FloatingLabel
+                controlId="uploadImage"
+                label="Upload Image*"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageChange}
+                />
+              </FloatingLabel>
+            </Col>
+          </Row>
+          {images.map((image, index) => (
+            <Image
+              key={index}
+              src={URL.createObjectURL(image)}
+              alt={`Uploaded image ${index}`}
+              style={{
+                width: "15rem",
+                height: "17rem",
+                margin: "4px",
+              }}
+              rounded
+            />
+          ))}
+          <Row>
+            <Col>
+              <br />
+              <Button
+                type="submit"
+                className="custom-btn"
+                style={{ marginRight: "1rem" }}
+              >
                 Submit
+              </Button>
+              <Button className="custom-btn" type="reset">
+                Clear
               </Button>
             </Col>
           </Row>
