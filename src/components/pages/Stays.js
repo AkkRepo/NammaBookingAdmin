@@ -30,6 +30,30 @@ function Stays() {
   useEffect(() => {
     fetchStay();
   }, [searchQuery]);
+
+  //pagination start
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 5;
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+  const records = stay.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(stay.length / recordsPerPage);
+  const numbers = [...Array(npage + 1).keys()].slice(1);
+  function changeCPage(id) {
+    setCurrentPage(id);
+  }
+  function prePage() {
+    if (currentPage != 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }
+  function nextPage() {
+    if (currentPage != npage) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
+  //pagination end
+
   return (
     <div>
       <header id="header">
@@ -84,7 +108,7 @@ function Stays() {
           </tr>
         </thead>
         <tbody>
-          {stay.map((s, i) => (
+          {records.map((s, i) => (
             <tr>
               <td>
                 <div key={i}>{s.id}</div>
@@ -222,6 +246,48 @@ function Stays() {
           </tr> */}
         </tbody>
       </Table>
+
+      {/* Pagination impementation start */}
+      <nav style={{ marginLeft: "65rem" }}>
+        <ul className="pagination">
+          <li className="page-item">
+            <a
+              href="#"
+              className="page-link"
+              onClick={prePage}
+              //style={{ color: "#051e3c" }}
+            >
+              Prev
+            </a>
+          </li>
+          {numbers.map((n, i) => (
+            <li
+              className={`page-item ${currentPage === n ? "active" : ""}`}
+              key={i}
+            >
+              <a
+                href="#"
+                className="page-link"
+                onClick={() => changeCPage(n)}
+                //style={{ color: "#051e3c" }}
+              >
+                {n}
+              </a>
+            </li>
+          ))}
+          <li className="page-item">
+            <a
+              href="#"
+              className="page-link"
+              onClick={nextPage}
+              //style={{ color: "#051e3c" }}
+            >
+              Next
+            </a>
+          </li>
+        </ul>
+      </nav>
+      {/* Pagination impementation end */}
     </div>
   );
 }

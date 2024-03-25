@@ -1,61 +1,161 @@
-import React, { useState } from "react";
-import { Button, Form, FloatingLabel, Col, Row } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import cloneDeep from "lodash/cloneDeep";
+import throttle from "lodash/throttle";
+import Pagination from "rc-pagination";
+import "../../../node_modules/rc-pagination/assets/index.css";
+//import "rc-pagination/assets/index.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-function Multiple() {
-  let [array2, setArray2] = useState([]);
-  let [inputData2, setInputData2] = useState({ termsAndCondition: "" });
-  function data2(e) {
-    setInputData2({ ...array2, termsAndCondition: e.target.value });
-  }
-  let termsAndCondition = inputData2;
-  function addInputData2() {
-    setArray2([...array2, termsAndCondition]);
-    console.log(inputData2);
-    setInputData2({ termsAndCondition: "" });
-  }
+//pages
+import DeleteStays from "../subcomponents/DeleteStays";
+import AppNav from "../header/AppNav";
 
-  console.log("total array: ", array2);
+import { allData } from "./constants";
 
-  function deleteData2(i) {
-    console.log(i, "this index row wants to be deleted");
-    let total2 = [...array2];
-    total2.splice(i, 1);
-    setArray2(total2);
-  }
+const tableHead = {
+  name: "Campaign Name",
+  parentId: "Campaign Id",
+  campaignType: "Type",
+  status: "Status",
+  channel: "Channel",
+  action: "Actions",
+};
+
+const Multiple = () => {
+  //fetch
+  const [modalShow, setModalShow] = React.useState(false);
+  const [stay, setStay] = useState([]);
+  const fetchStay = () => {
+    fetch(`http://localhost:8000/data`)
+      .then((response) => response.json())
+      .then((data) => setStay(data))
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    fetchStay();
+  });
+
+  const countPerPage = 10;
+  const [value, setValue] = React.useState("");
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [collection, setCollection] = React.useState(
+    cloneDeep(stay.slice(0, countPerPage))
+  );
+  const searchData = React.useRef(
+    throttle((val) => {
+      const query = val.toLowerCase();
+      setCurrentPage(1);
+      const data = cloneDeep(
+        stay
+          .filter((item) => item.name.toLowerCase().indexOf(query) > -1)
+          .slice(0, countPerPage)
+      );
+      setCollection(data);
+    }, 400)
+  );
+
+  React.useEffect(() => {
+    if (!value) {
+      updatePage(1);
+    } else {
+      searchData.current(value);
+    }
+  }, [value]);
+
+  const updatePage = (p) => {
+    setCurrentPage(p);
+    const to = countPerPage * p;
+    const from = to - countPerPage;
+    setCollection(cloneDeep(stay.slice(from, to)));
+  };
+
+  const tableRows = (rowData) => {
+    const { key, index } = rowData;
+    const tableCell = Object.keys(tableHead);
+    const columnData = tableCell.map((keyD, i) => {
+      return <td key={i}>{key[keyD]}</td>;
+    });
+
+    return <tr key={index}>{columnData}</tr>;
+  };
+
+  const tableData = () => {
+    return collection.map((key, index) => tableRows({ key, index }));
+  };
+
+  const headRow = () => {
+    return Object.values(tableHead).map((title, index) => (
+      <td key={index}>{title}</td>
+    ));
+  };
 
   return (
-    <div>
-      <Row>
-        <Col>
-          <FloatingLabel
-            controlId="termsAndCondition"
-            label="termsAndCondition"
-            className="mb-3"
-          >
-            <Form.Control
-              as="textarea"
-              placeholder="Please enter T&C"
-              style={{ height: "100px", width: "30rem" }}
-              value={inputData2.termsAndCondition || ""}
-              onChange={data2}
-            />
-          </FloatingLabel>
-          <Button onClick={addInputData2}>Add</Button>
-          {array2 &&
-            array2.map((item, i) => {
-              return (
-                <div key={i} style={{ display: "flex" }}>
-                  <p>{item.termsAndCondition}</p>
-                  <FontAwesomeIcon icon={faX} onClick={() => deleteData2(i)} />
-                </div>
-              );
-            })}
-        </Col>
-      </Row>
-    </div>
+    <>
+      <div class="search">
+        <input
+          placeholder="Search Campaign"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+      </div>
+      <table>
+        <thead>
+          <tr>{headRow()}</tr>
+        </thead>
+        <tbody className="trhover">
+          {/*{tableData()}*/}
+          {stay.map((s, i) => (
+            <tr>
+              <td>
+                <div key={i}>{s.id}</div>
+              </td>
+              <td>
+                <div key={i}>{s.stayName}</div>
+              </td>
+              <td>
+                <div key={i}>{s.stayLocation}</div>
+              </td>
+              <td>
+                <div key={i}>{s.accomodation}</div>
+              </td>
+              <td>
+                <div key={i}>{s.category}</div>
+              </td>
+              <td>
+                <Link to="/EditStays">
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    size="lg"
+                    className="custom-icon"
+                  />
+                </Link>
+              </td>
+              <td>
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  size="lg"
+                  className="custom-icon"
+                  onClick={() => setModalShow(true)}
+                />
+                <DeleteStays
+                  show={modalShow}
+                  onHide={() => setModalShow(false)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <Pagination
+        pageSize={countPerPage}
+        onChange={updatePage}
+        current={currentPage}
+        total={stay.length}
+      />
+    </>
   );
-}
-
+};
 export default Multiple;

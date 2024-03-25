@@ -9,13 +9,125 @@
     },
     {
       "id": 2,
+      "stayName": "Mountain View Retreat",
+      "stayLocation": "Mudigere",
+      "accomodation": "Entire Place",
+      "category": "Mountain Stay"
+    },
+    {
+      "id": 3,
+      "stayName": "Mountain View Retreat",
+      "stayLocation": "Mudigere",
+      "accomodation": "Entire Place",
+      "category": "Mountain Stay"
+    },
+    {
+      "id": 4,
+      "stayName": "Mountain View Retreat",
+      "stayLocation": "Mudigere",
+      "accomodation": "Entire Place",
+      "category": "Mountain Stay"
+    },
+    {
+      "id": 5,
+      "stayName": "Mountain View Retreat",
+      "stayLocation": "Mudigere",
+      "accomodation": "Entire Place",
+      "category": "Mountain Stay"
+    },
+    {
+      "id": 6,
+      "stayName": "Mountain View Retreat",
+      "stayLocation": "Mudigere",
+      "accomodation": "Entire Place",
+      "category": "Mountain Stay"
+    },
+    {
+      "id": 7,
+      "stayName": "Mountain View Retreat",
+      "stayLocation": "Mudigere",
+      "accomodation": "Entire Place",
+      "category": "Mountain Stay"
+    },
+    {
+      "id": 8,
       "stayName": "Beach View Retreat",
       "stayLocation": "Manglore",
       "accomodation": "Entire Place",
       "category": "Beach Stay"
     },
     {
-      "id": 2,
+      "id": 9,
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "accomodation": "Entire Place",
+      "category": "Snow Stay"
+    },
+    {
+      "id": 10,
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "accomodation": "Entire Place",
+      "category": "Snow Stay"
+    },
+    {
+      "id": 11,
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "accomodation": "Entire Place",
+      "category": "Snow Stay"
+    },
+    {
+      "id": 12,
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "accomodation": "Entire Place",
+      "category": "Snow Stay"
+    },
+    {
+      "id": 13,
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "accomodation": "Entire Place",
+      "category": "Snow Stay"
+    },
+    {
+      "id": 14,
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "accomodation": "Entire Place",
+      "category": "Snow Stay"
+    },
+    {
+      "id": 15,
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "accomodation": "Entire Place",
+      "category": "Snow Stay"
+    },
+    {
+      "id": 16,
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "accomodation": "Entire Place",
+      "category": "Snow Stay"
+    },
+    {
+      "id": 17,
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "accomodation": "Entire Place",
+      "category": "Snow Stay"
+    },
+    {
+      "id": 18,
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "accomodation": "Entire Place",
+      "category": "Snow Stay"
+    },
+    {
+      "id": 19,
       "stayName": "Snow View Retreat",
       "stayLocation": "Manali",
       "accomodation": "Entire Place",
