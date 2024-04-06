@@ -130,6 +130,7 @@ function EditStays() {
             //fontWeight: "bold",
             //textAlign: "right",
             //marginLeft: "-6rem",
+            paddingLeft: "35rem",
           }}
         >
           (*) marked fields are compulsory
@@ -221,7 +222,7 @@ function EditStays() {
           <Row>
             <Col>
               <h6>
-                Accomodation:{" "}
+                Accomodation Type:{" "}
                 <Button
                   onClick={accomodationAdd}
                   className="custom-btn-reverse"

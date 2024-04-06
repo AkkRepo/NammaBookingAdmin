@@ -13,15 +13,15 @@ import AppNav from "../header/AppNav";
 function Stays() {
   const [modalShow, setModalShow] = React.useState(false);
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const handleChange = (e) => {
+  //const [searchQuery, setSearchQuery] = useState("");
+  /*const handleChange = (e) => {
     setSearchQuery(e.target.value);
-  };
+  };*/
 
   //fetch
   const [stay, setStay] = useState([]);
   const fetchStay = () => {
-    fetch(`http://localhost:8000/data?query=${searchQuery}`)
+    fetch(`http://localhost:8000/data`)
       .then((response) => response.json())
       .then((data) => setStay(data))
       .catch((error) => console.log(error));
@@ -29,7 +29,7 @@ function Stays() {
 
   useEffect(() => {
     fetchStay();
-  }, [searchQuery]);
+  });
 
   //pagination start
   const [currentPage, setCurrentPage] = useState(1);
@@ -54,8 +54,12 @@ function Stays() {
   }
   //pagination end
 
+  //search start
+  const [search, setSearch] = useState("");
+  console.log(search);
+
   return (
-    <div>
+    <div style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
       <header id="header">
         <AppNav />
       </header>
@@ -68,10 +72,15 @@ function Stays() {
             <Form.Group
               className="mb-3"
               controlId="formBasicEmail"
-              value={searchQuery}
-              onChange={handleChange}
+              //value={searchQuery}
+              //onChange={handleChange}
+              style={{ width: "15rem" }}
             >
-              <Form.Control type="text" placeholder={searchQuery} />
+              <Form.Control
+                type="text"
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search"
+              />
             </Form.Group>
           </Form>
         </Col>
@@ -85,69 +94,64 @@ function Stays() {
       </Row>
 
       <Table striped hover>
-        <Form>
-          <Form.Group
-            className="mb-3"
-            controlId="formBasicEmail"
-            value={searchQuery}
-            onChange={handleChange}
-          >
-            <Form.Control type="text" placeholder={searchQuery} />
-          </Form.Group>
-          <Button>Search</Button>
-        </Form>
         <thead>
           <tr>
             <th style={{ color: "#051e3c" }}>Sl no</th>
             <th style={{ color: "#051e3c" }}>Stay Name</th>
             <th style={{ color: "#051e3c" }}>Stay Location</th>
-            <th style={{ color: "#051e3c" }}>Accomodation Type</th>
-            <th style={{ color: "#051e3c" }}>Category</th>
+            <th style={{ color: "#051e3c" }}>Contact name</th>
+            <th style={{ color: "#051e3c" }}>Contact number</th>
             <th style={{ color: "#051e3c" }}>Edit</th>
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
         </thead>
         <tbody>
-          {records.map((s, i) => (
-            <tr>
-              <td>
-                <div key={i}>{s.id}</div>
-              </td>
-              <td>
-                <div key={i}>{s.stayName}</div>
-              </td>
-              <td>
-                <div key={i}>{s.stayLocation}</div>
-              </td>
-              <td>
-                <div key={i}>{s.accomodation}</div>
-              </td>
-              <td>
-                <div key={i}>{s.category}</div>
-              </td>
-              <td>
-                <Link to="/EditStays">
+          {records
+            .filter((s) => {
+              return search == ""
+                ? s
+                : s.stayName.toLowerCase().includes(search);
+            })
+            .map((s, i) => (
+              <tr>
+                <td>
+                  <div key={i}>{s.id}</div>
+                </td>
+                <td>
+                  <div key={i}>{s.stayName}</div>
+                </td>
+                <td>
+                  <div key={i}>{s.stayLocation}</div>
+                </td>
+                <td>
+                  <div key={i}>{s.contactName}</div>
+                </td>
+                <td>
+                  <div key={i}>{s.contactNumber}</div>
+                </td>
+                <td>
+                  <Link to="/EditStays">
+                    <FontAwesomeIcon
+                      icon={faPen}
+                      size="lg"
+                      className="custom-icon"
+                    />
+                  </Link>
+                </td>
+                <td>
                   <FontAwesomeIcon
-                    icon={faPen}
+                    icon={faTrash}
                     size="lg"
                     className="custom-icon"
+                    onClick={() => setModalShow(true)}
                   />
-                </Link>
-              </td>
-              <td>
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  size="lg"
-                  className="custom-icon"
-                  onClick={() => setModalShow(true)}
-                />
-                <DeleteStays
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
-                />
-              </td>
-            </tr>
-          ))}
+                  <DeleteStays
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                  />
+                </td>
+              </tr>
+            ))}
           {/*<tr>
             <td>1</td>
             <td>Mountain View Retreat</td>

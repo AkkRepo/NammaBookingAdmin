@@ -4,134 +4,71 @@
       "id": 1,
       "stayName": "Mountain View Retreat",
       "stayLocation": "Mudigere",
-      "accomodation": "Entire Place",
-      "category": "Mountain Stay"
+      "contactName": "Vijay",
+      "contactNumber": "8451623974"
     },
     {
       "id": 2,
-      "stayName": "Mountain View Retreat",
-      "stayLocation": "Mudigere",
-      "accomodation": "Entire Place",
-      "category": "Mountain Stay"
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "contactName": "Ram",
+      "contactNumber": "7859641236"
     },
     {
       "id": 3,
-      "stayName": "Mountain View Retreat",
-      "stayLocation": "Mudigere",
-      "accomodation": "Entire Place",
-      "category": "Mountain Stay"
+      "stayName": "Hill View Retreat",
+      "stayLocation": "Chikkamagaluru",
+      "contactName": "Vandana",
+      "contactNumber": "6589741234"
     },
     {
       "id": 4,
-      "stayName": "Mountain View Retreat",
-      "stayLocation": "Mudigere",
-      "accomodation": "Entire Place",
-      "category": "Mountain Stay"
+      "stayName": "River View Retreat",
+      "stayLocation": "Dandeli",
+      "contactName": "Rupa",
+      "contactNumber": "7485961235"
     },
     {
       "id": 5,
+      "stayName": "French View Retreat",
+      "stayLocation": "Pondicherry",
+      "contactName": "Rupa",
+      "contactNumber": "7485961235"
+    },
+    {
+      "id": 2,
+      "stayName": "Snow View Retreat",
+      "stayLocation": "Manali",
+      "contactName": "Ram",
+      "contactNumber": "7859641236"
+    },
+    {
+      "id": 4,
+      "stayName": "River View Retreat",
+      "stayLocation": "Dandeli",
+      "contactName": "Rupa",
+      "contactNumber": "7485961235"
+    },
+    {
+      "id": 5,
+      "stayName": "French View Retreat",
+      "stayLocation": "Pondicherry",
+      "contactName": "Rupa",
+      "contactNumber": "7485961235"
+    },
+    {
+      "id": 3,
+      "stayName": "Hill View Retreat",
+      "stayLocation": "Chikkamagaluru",
+      "contactName": "Vandana",
+      "contactNumber": "6589741234"
+    },
+    {
+      "id": 1,
       "stayName": "Mountain View Retreat",
       "stayLocation": "Mudigere",
-      "accomodation": "Entire Place",
-      "category": "Mountain Stay"
-    },
-    {
-      "id": 6,
-      "stayName": "Mountain View Retreat",
-      "stayLocation": "Mudigere",
-      "accomodation": "Entire Place",
-      "category": "Mountain Stay"
-    },
-    {
-      "id": 7,
-      "stayName": "Mountain View Retreat",
-      "stayLocation": "Mudigere",
-      "accomodation": "Entire Place",
-      "category": "Mountain Stay"
-    },
-    {
-      "id": 8,
-      "stayName": "Beach View Retreat",
-      "stayLocation": "Manglore",
-      "accomodation": "Entire Place",
-      "category": "Beach Stay"
-    },
-    {
-      "id": 9,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "accomodation": "Entire Place",
-      "category": "Snow Stay"
-    },
-    {
-      "id": 10,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "accomodation": "Entire Place",
-      "category": "Snow Stay"
-    },
-    {
-      "id": 11,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "accomodation": "Entire Place",
-      "category": "Snow Stay"
-    },
-    {
-      "id": 12,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "accomodation": "Entire Place",
-      "category": "Snow Stay"
-    },
-    {
-      "id": 13,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "accomodation": "Entire Place",
-      "category": "Snow Stay"
-    },
-    {
-      "id": 14,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "accomodation": "Entire Place",
-      "category": "Snow Stay"
-    },
-    {
-      "id": 15,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "accomodation": "Entire Place",
-      "category": "Snow Stay"
-    },
-    {
-      "id": 16,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "accomodation": "Entire Place",
-      "category": "Snow Stay"
-    },
-    {
-      "id": 17,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "accomodation": "Entire Place",
-      "category": "Snow Stay"
-    },
-    {
-      "id": 18,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "accomodation": "Entire Place",
-      "category": "Snow Stay"
-    },
-    {
-      "id": 19,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "accomodation": "Entire Place",
-      "category": "Snow Stay"
+      "contactName": "Vijay",
+      "contactNumber": "8451623974"
     }
   ]
 }
