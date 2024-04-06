@@ -1,74 +1,79 @@
-{
-  "data": [
-    {
-      "id": 1,
-      "stayName": "Mountain View Retreat",
-      "stayLocation": "Mudigere",
-      "contactName": "Vijay",
-      "contactNumber": "8451623974"
-    },
-    {
-      "id": 2,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "contactName": "Ram",
-      "contactNumber": "7859641236"
-    },
-    {
-      "id": 3,
-      "stayName": "Hill View Retreat",
-      "stayLocation": "Chikkamagaluru",
-      "contactName": "Vandana",
-      "contactNumber": "6589741234"
-    },
-    {
-      "id": 4,
-      "stayName": "River View Retreat",
-      "stayLocation": "Dandeli",
-      "contactName": "Rupa",
-      "contactNumber": "7485961235"
-    },
-    {
-      "id": 5,
-      "stayName": "French View Retreat",
-      "stayLocation": "Pondicherry",
-      "contactName": "Rupa",
-      "contactNumber": "7485961235"
-    },
-    {
-      "id": 2,
-      "stayName": "Snow View Retreat",
-      "stayLocation": "Manali",
-      "contactName": "Ram",
-      "contactNumber": "7859641236"
-    },
-    {
-      "id": 4,
-      "stayName": "River View Retreat",
-      "stayLocation": "Dandeli",
-      "contactName": "Rupa",
-      "contactNumber": "7485961235"
-    },
-    {
-      "id": 5,
-      "stayName": "French View Retreat",
-      "stayLocation": "Pondicherry",
-      "contactName": "Rupa",
-      "contactNumber": "7485961235"
-    },
-    {
-      "id": 3,
-      "stayName": "Hill View Retreat",
-      "stayLocation": "Chikkamagaluru",
-      "contactName": "Vandana",
-      "contactNumber": "6589741234"
-    },
-    {
-      "id": 1,
-      "stayName": "Mountain View Retreat",
-      "stayLocation": "Mudigere",
-      "contactName": "Vijay",
-      "contactNumber": "8451623974"
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "stayName": "Mountain View Retreat",
+    "stayLocation": "Mudigere",
+    "contactName": "Vijay",
+    "contactNumber": "8451623974"
+  },
+  {
+    "id": 2,
+    "stayName": "Snow View Retreat",
+    "stayLocation": "Manali",
+    "contactName": "Ram",
+    "contactNumber": "7859641236"
+  },
+  {
+    "id": 3,
+    "stayName": "Hill View Retreat",
+    "stayLocation": "Chikkamagaluru",
+    "contactName": "Vandana",
+    "contactNumber": "6589741234"
+  },
+  {
+    "id": 4,
+    "stayName": "River View Retreat",
+    "stayLocation": "Dandeli",
+    "contactName": "Rupa",
+    "contactNumber": "7485961235"
+  },
+  {
+    "id": 5,
+    "stayName": "French View Retreat",
+    "stayLocation": "Pondicherry",
+    "contactName": "Rupa",
+    "contactNumber": "7485961235"
+  },
+  {
+    "id": 2,
+    "stayName": "Snow View Retreat",
+    "stayLocation": "Manali",
+    "contactName": "Ram",
+    "contactNumber": "7859641236"
+  },
+  {
+    "id": 4,
+    "stayName": "River View Retreat",
+    "stayLocation": "Dandeli",
+    "contactName": "Rupa",
+    "contactNumber": "7485961235"
+  },
+  {
+    "id": 5,
+    "stayName": "French View Retreat",
+    "stayLocation": "Pondicherry",
+    "contactName": "Rupa",
+    "contactNumber": "7485961235"
+  },
+  {
+    "id": 3,
+    "stayName": "Hill View Retreat",
+    "stayLocation": "Chikkamagaluru",
+    "contactName": "Vandana",
+    "contactNumber": "6589741234"
+  },
+  {
+    "id": 1,
+    "stayName": "Mountain View Retreat",
+    "stayLocation": "Mudigere",
+    "contactName": "Vijay",
+    "contactNumber": "8451623974"
+  },
+  {
+    "id": 1,
+    "stayName": "Mountain View Retreat",
+    "stayLocation": "Mudigere",
+    "contactName": "Vijay",
+    "contactNumber": "8451623974"
+  }
+]

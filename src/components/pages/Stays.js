@@ -9,6 +9,7 @@ import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 //pages
 import DeleteStays from "../subcomponents/DeleteStays";
 import AppNav from "../header/AppNav";
+import users from "../pages/data.json";
 
 function Stays() {
   const [modalShow, setModalShow] = React.useState(false);
@@ -36,7 +37,7 @@ function Stays() {
   const recordsPerPage = 5;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
-  const records = stay.slice(firstIndex, lastIndex);
+  const records = users.slice(firstIndex, lastIndex);
   const npage = Math.ceil(stay.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
   function changeCPage(id) {
@@ -106,7 +107,53 @@ function Stays() {
           </tr>
         </thead>
         <tbody>
-          {records
+          {records &&
+            records
+              .filter((s) => {
+                return search == ""
+                  ? s
+                  : s.stayName.toLowerCase().includes(search);
+              })
+              .map(
+                ({
+                  i,
+                  id,
+                  stayName,
+                  stayLocation,
+                  contactName,
+                  contactNumber,
+                }) => (
+                  <tr>
+                    <td key={i}>{id}</td>
+                    <td key={i}>{stayName}</td>
+                    <td key={i}>{stayLocation}</td>
+                    <td key={i}>{contactName}</td>
+                    <td key={i}>{contactNumber}</td>
+                    <td>
+                      <Link to="/EditStays">
+                        <FontAwesomeIcon
+                          icon={faPen}
+                          size="lg"
+                          className="custom-icon"
+                        />
+                      </Link>
+                    </td>
+                    <td>
+                      <FontAwesomeIcon
+                        icon={faTrash}
+                        size="lg"
+                        className="custom-icon"
+                        onClick={() => setModalShow(true)}
+                      />
+                      <DeleteStays
+                        show={modalShow}
+                        onHide={() => setModalShow(false)}
+                      />
+                    </td>
+                  </tr>
+                )
+              )}
+          {/*{records
             .filter((s) => {
               return search == ""
                 ? s
@@ -151,103 +198,7 @@ function Stays() {
                   />
                 </td>
               </tr>
-            ))}
-          {/*<tr>
-            <td>1</td>
-            <td>Mountain View Retreat</td>
-            <td>Mysore</td>
-            <td>Entire Place</td>
-            <td>Mountain Stay</td>
-            <td>
-              <Row>
-                <Col>
-                  <Link to="/EditStays">
-                    <FontAwesomeIcon
-                      icon={faPen}
-                      size="lg"
-                      className="custom-icon"
-                    />
-                  </Link>
-                </Col>
-                <Col>
-                  <FontAwesomeIcon
-                    icon={faTrash}
-                    size="lg"
-                    className="custom-icon"
-                    onClick={() => setModalShow(true)}
-                  />
-                  <DeleteStays
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                  />
-                </Col>
-              </Row>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>River View Retreat</td>
-            <td>Sringeri</td>
-            <td>Entire Place</td>
-            <td>River Stay</td>
-            <td>
-              <Row>
-                <Col>
-                  <Link to="/EditStays">
-                    <FontAwesomeIcon
-                      icon={faPen}
-                      size="lg"
-                      className="custom-icon"
-                    />
-                  </Link>
-                </Col>
-                <Col>
-                  <FontAwesomeIcon
-                    icon={faTrash}
-                    size="lg"
-                    className="custom-icon"
-                    onClick={() => setModalShow(true)}
-                  />
-                  <DeleteStays
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                  />
-                </Col>
-              </Row>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Beach View Retreat</td>
-            <td>Mangaluru</td>
-            <td>Entire Place</td>
-            <td>Mangaluru Stay</td>
-            <td>
-              <Row>
-                <Col>
-                  <Link to="/EditStays">
-                    <FontAwesomeIcon
-                      icon={faPen}
-                      size="lg"
-                      className="custom-icon"
-                    />
-                  </Link>
-                </Col>
-                <Col>
-                  <FontAwesomeIcon
-                    icon={faTrash}
-                    size="lg"
-                    className="custom-icon"
-                    onClick={() => setModalShow(true)}
-                  />
-                  <DeleteStays
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                  />
-                </Col>
-              </Row>
-            </td>
-          </tr> */}
+            ))} */}
         </tbody>
       </Table>
 

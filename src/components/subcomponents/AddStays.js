@@ -130,7 +130,7 @@ function AddStays() {
             //fontWeight: "bold",
             //textAlign: "right",
             //marginLeft: "-6rem",
-            paddingLeft: "35rem",
+            paddingLeft: "63rem",
           }}
         >
           (*) marked fields are compulsory
@@ -146,6 +146,7 @@ function AddStays() {
                 <Form.Control
                   type="text"
                   placeholder="Please enter Stay name"
+                  style={{ textTransform: "capitalize" }}
                 />
               </FloatingLabel>
             </Col>
@@ -526,7 +527,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="locationLink"
-                label="Location link*"
+                label="Google map link*"
                 className="mb-3"
               >
                 <Form.Control
@@ -538,7 +539,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="instaLink"
-                label="Instagram*"
+                label="Instagram account link*"
                 className="mb-3"
               >
                 <Form.Control
@@ -550,7 +551,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="fbLink"
-                label="Facebook*"
+                label="Facebook account link*"
                 className="mb-3"
               >
                 <Form.Control
