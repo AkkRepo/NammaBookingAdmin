@@ -1,119 +1,132 @@
 import React, { useState } from "react";
-
-//css
 import {
   Row,
   Col,
-  Container,
   Form,
   FloatingLabel,
-  Button,
   Table,
-  Image,
+  Button,
+  Container,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
 function Multiple() {
-  //near by places myltiple input start
-  let [array1, setArray1] = useState([]);
-  let [inputData1, setInputData1] = useState({
-    accomodationName: "",
+  const [accInputData, setAccInputData] = useState({
+    accomodation: "",
     noOfPeople: "",
     noOfBeds: "",
   });
-  function data1(e) {
-    setInputData1({ ...array1, nearByPlaces: e.target.value });
-  }
-  let { accomodationName, noOfPeople, noOfBeds } = inputData1;
-  function addInputData1() {
-    setArray1([...array1, accomodationName, noOfPeople, noOfBeds]);
-    console.log(inputData1);
-    setInputData1({ accomodationName: "", noOfPeople: "", noOfBeds: "" });
+
+  //function accChangeHandle(e) {
+  //setAccInputData({ accInputData, [e.target.accomodation]: e.target.value });
+  //}
+
+  const [accInputArr, setAccInputArr] = useState([]);
+  let { accomodation, noOfPeople, noOfBeds } = accInputData;
+  function addData() {
+    setAccInputArr([...accInputArr, { accomodation, noOfPeople, noOfBeds }]);
+    console.log(accInputArr);
+    console.log(accInputData);
+    setAccInputData({ accomodation: "", noOfPeople: "", noOfBeds: "" });
   }
 
-  console.log("total array: ", array1);
-
-  function deleteData1(i) {
+  function accDeleteData(i) {
     console.log(i, "this index row wants to be deleted");
-    let total1 = [...array1];
+    let total1 = [...accInputArr];
     total1.splice(i, 1);
-    setArray1(total1);
+    setAccInputArr(total1);
   }
-  //near by places myltiple input end
   return (
     <div>
-      <div style={{ display: "flex" }}>
-        <FloatingLabel
-          controlId="nearByPlaces"
-          label="Near by Places*"
-          className="mb-3"
-          style={{ marginRight: "1rem" }}
-        >
-          <Form.Control
-            type="text"
-            placeholder="Please enter Near By Places"
-            value={inputData1.accomodationName || ""}
-            onChange={data1}
-          />
-        </FloatingLabel>
-        <FloatingLabel
-          controlId="nearByPlaces"
-          label="Near by Places*"
-          className="mb-3"
-          style={{ marginRight: "1rem" }}
-        >
-          <Form.Control
-            type="text"
-            placeholder="Please enter Near By Places"
-            value={inputData1.noOfPeople || ""}
-            onChange={data1}
-          />
-        </FloatingLabel>
-        <FloatingLabel
-          controlId="nearByPlaces"
-          label="Near by Places*"
-          className="mb-3"
-          style={{ marginRight: "1rem" }}
-        >
-          <Form.Control
-            type="text"
-            placeholder="Please enter Near By Places"
-            value={inputData1.noOfBeds || ""}
-            onChange={data1}
-          />
-        </FloatingLabel>
-        <Button
-          onClick={addInputData1}
-          style={{ height: "40px" }}
-          className="custom-btn-reverse"
-        >
-          Add
-        </Button>
-      </div>
-      <Container style={{ paddingRight: "8rem", marginLeft: "-1rem" }}>
+      <Row>
+        <Col>
+          <FloatingLabel
+            controlId="accomodation"
+            label="Accomodation"
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              placeholder="Accomodation"
+              value={accInputData.accomodation}
+              onChange={(e) => {
+                setAccInputData({
+                  ...accInputData,
+                  accomodation: e.target.value,
+                });
+              }}
+            />
+          </FloatingLabel>
+        </Col>
+        <Col>
+          <FloatingLabel controlId="noOfPeople" label="Number of People">
+            <Form.Select
+              aria-label="Number of People"
+              value={accInputData.noOfPeople}
+              onChange={(e) => {
+                setAccInputData({
+                  ...accInputData,
+                  noOfPeople: e.target.value,
+                });
+              }}
+            >
+              <option>Select menu</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </Form.Select>
+          </FloatingLabel>
+        </Col>
+        <Col>
+          <FloatingLabel controlId="noOfBeds" label="Number of Beds">
+            <Form.Select
+              aria-label="Number of Beds"
+              value={accInputData.noOfBeds}
+              onChange={(e) => {
+                setAccInputData({
+                  ...accInputData,
+                  noOfBeds: e.target.value,
+                });
+              }}
+            >
+              <option>Select menu</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </Form.Select>
+          </FloatingLabel>
+        </Col>
+        <Col>
+          <Button onClick={addData}>Add</Button>
+        </Col>
+      </Row>
+      <Container>
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Near by Places</th>
+              <th>Accomodation</th>
+              <th>No. of People</th>
+              <th>No. of Beds</th>
               <th>Remove</th>
             </tr>
           </thead>
           <tbody>
-            {array1 &&
-              array1.map((item, i) => {
-                return (
-                  <tr key={i}>
-                    <td> {item.noOfBeds} </td>
-                    <td>
-                      <FontAwesomeIcon
-                        icon={faX}
-                        onClick={() => deleteData1(i)}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
+            {accInputArr.map((info, i) => {
+              return (
+                <tr>
+                  <td>{info.accomodation}</td>
+                  <td>{info.noOfPeople}</td>
+                  <td>{info.noOfBeds}</td>
+                  <td>
+                    <FontAwesomeIcon
+                      icon={faX}
+                      onClick={() => accDeleteData(i)}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </Container>

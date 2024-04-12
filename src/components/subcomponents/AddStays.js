@@ -42,7 +42,7 @@ function AddStays() {
     setImages([...images, ...files]);
   };
 
-  //near by places myltiple input start
+  //near by places multiple input start
   let [array1, setArray1] = useState([]);
   let [inputData1, setInputData1] = useState({ nearByPlaces: "" });
   function data1(e) {
@@ -89,31 +89,33 @@ function AddStays() {
 
   //terms and condition multiple input end
 
-  //Accomodation multiple inputfield start
-  const [accomodationData, setAccomodationData] = useState([
-    { accomodationName: "", noOfPeople: "", noOfBeds: "" },
-  ]);
-  const accomodationAdd = () => {
-    setAccomodationData([
-      ...accomodationData,
-      { accomodationName: "", noOfPeople: "", noOfBeds: "" },
-    ]);
-    console.log("added");
-  };
-  const accomodationHandleChange = (e, index) => {
-    const { name, value } = e.target;
-    const onChangeVal = [...accomodationData];
-    onChangeVal[index][name] = [value];
-    setAccomodationData(onChangeVal);
-  };
-  const deleteAccomodation = (i) => {
-    const deleteVal = [...accomodationData];
-    deleteVal.splice(i, 1);
-    setAccomodationData(deleteVal);
+  //Accomodation multiple input start
+  const [accInputData, setAccInputData] = useState({
+    accomodation: "",
+    noOfPeople: "",
+    noOfBeds: "",
+  });
 
-    console.log("deleted");
-  };
-  //Accomodation multiple inputfield end
+  //function accChangeHandle(e) {
+  //setAccInputData({ accInputData, [e.target.accomodation]: e.target.value });
+  //}
+
+  const [accInputArr, setAccInputArr] = useState([]);
+  let { accomodation, noOfPeople, noOfBeds } = accInputData;
+  function addData() {
+    setAccInputArr([...accInputArr, { accomodation, noOfPeople, noOfBeds }]);
+    console.log(accInputArr);
+    console.log(accInputData);
+    setAccInputData({ accomodation: "", noOfPeople: "", noOfBeds: "" });
+  }
+
+  function accDeleteData(i) {
+    console.log(i, "this index row wants to be deleted");
+    let total1 = [...accInputArr];
+    total1.splice(i, 1);
+    setAccInputArr(total1);
+  }
+  //Accomodation multiple input end
 
   return (
     <div>
@@ -222,70 +224,99 @@ function AddStays() {
           <br />
           <Row>
             <Col>
-              <h6>
-                Accomodation Type:{" "}
-                <Button
-                  onClick={accomodationAdd}
-                  className="custom-btn-reverse"
-                >
-                  Add
-                </Button>
-              </h6>
-              {accomodationData.map((val, i) => (
-                <Row>
-                  <Col>
-                    <FloatingLabel
-                      controlId="accomodationName"
-                      label="Accomodation Name*"
-                      className="mb-3"
-                    >
-                      <Form.Control
-                        type="text"
-                        placeholder="Please enter Accomodation"
-                        //value={val.accomodationName}
-                        //onChange={(e) => accomodationHandleChange(e, i)}
-                      />
-                    </FloatingLabel>
-                  </Col>
-                  <Col>
-                    <FloatingLabel controlId="noOfPeople" label="No of People*">
-                      <Form.Select
-                        aria-label="No of People"
-                        //value={val.noOfPeople}
-                        //onChange={(e) => accomodationHandleChange(e, i)}
-                      >
-                        <option>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </Form.Select>
-                    </FloatingLabel>
-                  </Col>
-                  <Col>
-                    <FloatingLabel controlId="noOfBeds" label="No of Beds*">
-                      <Form.Select
-                        aria-label="No of Beds"
-                        //value={val.noOfBeds}
-                        //onChange={(e) => accomodationHandleChange(e, i)}
-                      >
-                        <option>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </Form.Select>
-                    </FloatingLabel>
-                  </Col>
-                  <Col>
-                    <Button
-                      onClick={() => deleteAccomodation(i)}
-                      className="custom-btn-reverse"
-                    >
-                      Delete
-                    </Button>
-                  </Col>
-                </Row>
-              ))}
+              <h6 style={{ paddingTop: "1rem" }}>Accomodation Type:</h6>
             </Col>
+            <Col>
+              <FloatingLabel
+                controlId="accomodation"
+                label="Accomodation"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="text"
+                  placeholder="Accomodation"
+                  value={accInputData.accomodation}
+                  onChange={(e) => {
+                    setAccInputData({
+                      ...accInputData,
+                      accomodation: e.target.value,
+                    });
+                  }}
+                />
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel controlId="noOfPeople" label="Number of People">
+                <Form.Select
+                  aria-label="Number of People"
+                  value={accInputData.noOfPeople}
+                  onChange={(e) => {
+                    setAccInputData({
+                      ...accInputData,
+                      noOfPeople: e.target.value,
+                    });
+                  }}
+                >
+                  <option>Select menu</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </Form.Select>
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel controlId="noOfBeds" label="Number of Beds">
+                <Form.Select
+                  aria-label="Number of Beds"
+                  value={accInputData.noOfBeds}
+                  onChange={(e) => {
+                    setAccInputData({
+                      ...accInputData,
+                      noOfBeds: e.target.value,
+                    });
+                  }}
+                >
+                  <option>Select menu</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </Form.Select>
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <Button onClick={addData} className="custom-btn-reverse">
+                Add
+              </Button>
+            </Col>
+            <Container>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Accomodation</th>
+                    <th>No. of People</th>
+                    <th>No. of Beds</th>
+                    <th>Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {accInputArr.map((info, i) => {
+                    return (
+                      <tr>
+                        <td>{info.accomodation}</td>
+                        <td>{info.noOfPeople}</td>
+                        <td>{info.noOfBeds}</td>
+                        <td>
+                          <FontAwesomeIcon
+                            icon={faX}
+                            onClick={() => accDeleteData(i)}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </Container>
           </Row>
           <br />
           {/*
