@@ -158,13 +158,17 @@ function AddStays() {
                 label="Location*"
                 className="mb-3"
               >
-                <Form.Control type="text" placeholder="Please enter Location" />
+                <Form.Control
+                  type="text"
+                  placeholder="Please enter Location"
+                  style={{ textTransform: "capitalize" }}
+                />
               </FloatingLabel>
             </Col>
             <Col>
               <FloatingLabel
                 controlId="formRating"
-                label="Rating*"
+                label="Rating"
                 className="mb-3"
               >
                 <Form.Control
@@ -235,6 +239,7 @@ function AddStays() {
                 <Form.Control
                   type="text"
                   placeholder="Accomodation"
+                  style={{ textTransform: "capitalize" }}
                   value={accInputData.accomodation}
                   onChange={(e) => {
                     setAccInputData({
@@ -533,6 +538,7 @@ function AddStays() {
                 <Form.Control
                   type="text"
                   placeholder="Please enter contact name"
+                  style={{ textTransform: "capitalize" }}
                 />
               </FloatingLabel>
             </Col>
@@ -549,7 +555,11 @@ function AddStays() {
               </FloatingLabel>
             </Col>
             <Col>
-              <FloatingLabel controlId="price" label="Price" className="mb-3">
+              <FloatingLabel
+                controlId="price"
+                label="Price starts from"
+                className="mb-3"
+              >
                 <Form.Control type="text" placeholder="Please enter Price" />
               </FloatingLabel>
             </Col>
@@ -558,7 +568,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="locationLink"
-                label="Google map link*"
+                label="Google map link"
                 className="mb-3"
               >
                 <Form.Control
@@ -570,7 +580,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="instaLink"
-                label="Instagram account link*"
+                label="Instagram account link"
                 className="mb-3"
               >
                 <Form.Control
@@ -582,7 +592,7 @@ function AddStays() {
             <Col>
               <FloatingLabel
                 controlId="fbLink"
-                label="Facebook account link*"
+                label="Facebook account link"
                 className="mb-3"
               >
                 <Form.Control
@@ -604,6 +614,7 @@ function AddStays() {
                   <Form.Control
                     type="text"
                     placeholder="Please enter Near By Places"
+                    style={{ textTransform: "capitalize" }}
                     value={inputData1.nearByPlaces || ""}
                     onChange={data1}
                   />
