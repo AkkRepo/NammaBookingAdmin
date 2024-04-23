@@ -3,8 +3,8 @@ import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api";
 import { point } from "leaflet";
 
 const containerStyle = {
-  width: "800px",
-  height: "400px",
+  width: "1200px",
+  height: "330px",
 };
 
 const center = {
@@ -31,7 +31,7 @@ const points = [
   },
 ];
 
-function Multiple() {
+function Location() {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyAZkAILfnYmR39KVJ_y1U1uh7WBWEgN6-A",
@@ -58,7 +58,10 @@ function Multiple() {
       zoom={10}
       onLoad={onLoad}
       onUnmount={onUnmount}
-      options={{ streetViewControl: false, mapTypeControl: false }}
+      options={{
+        streetViewControl: false,
+        mapTypeControl: false,
+      }}
     >
       {points.map((p, i) => (
         <MarkerF position={p}></MarkerF>
@@ -71,4 +74,4 @@ function Multiple() {
   );
 }
 
-export default React.memo(Multiple);
+export default React.memo(Location);

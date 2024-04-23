@@ -197,6 +197,11 @@ html {
   box-shadow: 0 10px 20px 10px rgba(0, 0, 0, 0.2);
 }
 
+.leaflet-container {
+  height: 600px;
+  width: 100%;
+}
+
 @media only screen and (max-width: 768px) {
   .login-card-align {
     z-index: 10;
