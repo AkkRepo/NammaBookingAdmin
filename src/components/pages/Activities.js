@@ -7,12 +7,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 //pages
-import DeleteStays from "../subcomponents/DeleteStays";
 import AppNav from "../header/AppNav";
-import stayData from "../pages/stayData.json";
+import amenitiesData from "./amenitiesData.json";
+import AddActivities from "../subcomponents/AddActivities";
+import EditActivities from "../subcomponents/EditActivities";
+import DeleteActivities from "../subcomponents/DeleteActivities";
 
-function Stays() {
-  const [modalShow, setModalShow] = React.useState(false);
+function Activities() {
+  const [deleteModalShow, setDeleteModalShow] = React.useState(false);
+  const [addModalShow, setAddModalShow] = React.useState(false);
+  const [editModalShow, setEditModalShow] = React.useState(false);
 
   //const [searchQuery, setSearchQuery] = useState("");
   /*const handleChange = (e) => {
@@ -37,7 +41,7 @@ function Stays() {
   const recordsPerPage = 5;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
-  const records = stayData.slice(firstIndex, lastIndex);
+  const records = amenitiesData.slice(firstIndex, lastIndex);
   const npage = Math.ceil(stay.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
   function changeCPage(id) {
@@ -65,7 +69,7 @@ function Stays() {
         <AppNav />
       </header>
       <div style={{ paddingBottom: "6rem" }} />
-      <h1 className="brownbear stays-h1 heading-color"> Namma Stays</h1>
+      <h1 className="brownbear stays-h1 heading-color"> Activities</h1>
 
       <Row>
         <Col>
@@ -86,11 +90,18 @@ function Stays() {
           </Form>
         </Col>
         <Col>
-          <Link to="/AddStays">
-            <div className="stays-add-button">
-              <Button className="custom-btn">Add Stays</Button>
-            </div>
-          </Link>
+          <div className="stays-add-button">
+            <Button
+              className="custom-btn"
+              onClick={() => setAddModalShow(true)}
+            >
+              Add Activities
+            </Button>
+            <AddActivities
+              show={addModalShow}
+              onHide={() => setAddModalShow(false)}
+            />
+          </div>
         </Col>
       </Row>
 
@@ -98,10 +109,7 @@ function Stays() {
         <thead>
           <tr>
             <th style={{ color: "#051e3c" }}>Sl no</th>
-            <th style={{ color: "#051e3c" }}>Stay Name</th>
-            <th style={{ color: "#051e3c" }}>Stay Location</th>
-            <th style={{ color: "#051e3c" }}>Contact name</th>
-            <th style={{ color: "#051e3c" }}>Contact number</th>
+            <th style={{ color: "#051e3c" }}>Activities</th>
             <th style={{ color: "#051e3c" }}>Edit</th>
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
@@ -112,47 +120,38 @@ function Stays() {
               .filter((s) => {
                 return search == ""
                   ? s
-                  : s.stayName.toLowerCase().includes(search);
+                  : s.amenities.toLowerCase().includes(search);
               })
-              .map(
-                ({
-                  i,
-                  id,
-                  stayName,
-                  stayLocation,
-                  contactName,
-                  contactNumber,
-                }) => (
-                  <tr>
-                    <td key={i}>{id}</td>
-                    <td key={i}>{stayName}</td>
-                    <td key={i}>{stayLocation}</td>
-                    <td key={i}>{contactName}</td>
-                    <td key={i}>{contactNumber}</td>
-                    <td>
-                      <Link to="/EditStays">
-                        <FontAwesomeIcon
-                          icon={faPen}
-                          size="lg"
-                          className="custom-icon"
-                        />
-                      </Link>
-                    </td>
-                    <td>
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        size="lg"
-                        className="custom-icon"
-                        onClick={() => setModalShow(true)}
-                      />
-                      <DeleteStays
-                        show={modalShow}
-                        onHide={() => setModalShow(false)}
-                      />
-                    </td>
-                  </tr>
-                )
-              )}
+              .map(({ i, id, amenities }) => (
+                <tr>
+                  <td key={i}>{id}</td>
+                  <td key={i}>{amenities}</td>
+                  <td>
+                    <FontAwesomeIcon
+                      icon={faPen}
+                      size="lg"
+                      className="custom-icon"
+                      onClick={() => setEditModalShow(true)}
+                    />
+                    <EditActivities
+                      show={editModalShow}
+                      onHide={() => setEditModalShow(false)}
+                    />
+                  </td>
+                  <td>
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      size="lg"
+                      className="custom-icon"
+                      onClick={() => setDeleteModalShow(true)}
+                    />
+                    <DeleteActivities
+                      show={deleteModalShow}
+                      onHide={() => setDeleteModalShow(false)}
+                    />
+                  </td>
+                </tr>
+              ))}
           {/*{records
             .filter((s) => {
               return search == ""
@@ -190,11 +189,11 @@ function Stays() {
                     icon={faTrash}
                     size="lg"
                     className="custom-icon"
-                    onClick={() => setModalShow(true)}
+                    onClick={() => setDeleteModalShow(true)}
                   />
-                  <DeleteStays
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
+                  <DeleteActivities
+                    show={deleteModalShow}
+                    onHide={() => setDeleteModalShow(false)}
                   />
                 </td>
               </tr>
@@ -247,4 +246,4 @@ function Stays() {
   );
 }
 
-export default Stays;
+export default Activities;

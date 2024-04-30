@@ -12,6 +12,14 @@ import ForgotPassword from "./components/pages/ForgotPassword";
 import Multiple from "./components/subcomponents/Multiple";
 import MDTable from "./components/pages/MDTable";
 import MultipleInputField from "./components/subcomponents/MultipleInputField";
+import Amenities from "./components/pages/Amenities";
+import AddAmenities from "./components/subcomponents/AddAmenities";
+import EditAmenities from "./components/subcomponents/EditAmenities";
+import DeleteAmenities from "./components/subcomponents/DeleteAmenities";
+import Activities from "./components/pages/Activities";
+import AddActivities from "./components/subcomponents/AddActivities";
+import EditActivities from "./components/subcomponents/EditActivities";
+import DeleteActivities from "./components/subcomponents/DeleteActivities";
 
 function App() {
   return (
@@ -27,6 +35,14 @@ function App() {
         <Route path="/Multiple" element={<Multiple />} />
         <Route path="/MDTable" element={<MDTable />} />
         <Route path="/MultipleInputField" element={<MultipleInputField />} />
+        <Route path="/Amenities" element={<Amenities />} />
+        <Route path="/AddAmenities" element={<AddAmenities />} />
+        <Route path="/EditAmenities" element={<EditAmenities />} />
+        <Route path="/Activities" element={<Activities />} />
+        <Route path="/AddActivities" element={<AddActivities />} />
+        <Route path="/EditActivities" element={<EditActivities />} />
+        <Route path="/DeleteAmenities" element={<DeleteAmenities />} />
+        <Route path="/DeleteActivities" element={<DeleteActivities />} />
       </Routes>
     </div>
   );

@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "amenities": "WiFi"
+  },
+  {
+    "id": 2,
+    "amenities": "WiFi"
+  },
+  {
+    "id": 3,
+    "amenities": "WiFi"
+  },
+  {
+    "id": 4,
+    "amenities": "Mobile"
+  }
+]
