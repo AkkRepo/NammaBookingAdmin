@@ -1,10 +1,12 @@
 import { config } from "@fortawesome/fontawesome-svg-core";
 import axios, { AxiosRequestConfig } from "axios";
+import { AuthService } from "../services/Auth";
 
-const DEFAULT_TIMEOUT = 60 * 1000 * 3;
+const DEFAULT_TIMEOUT = 60 * 1000;
 
 const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL,
+  // baseURL: process.env.REACT_APP_API_BASE_URL,
+  baseURL: "http://test.ekathvainnovations.com:9097",
   timeout: DEFAULT_TIMEOUT,
   headers: {
     "Content-Type": "application/json",
@@ -24,12 +26,16 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => {
     return { ...response.data, status: response.status };
+  },
+  (error) => {
+    if (error.response.data.error.code === 403) {
+      AuthService.logout();
+      window.location.href = window.location.origin + "/login";
+      return { ...error.response };
+    } else {
+      Promise.reject(error);
+    }
   }
-  //(error) => {
-  /// if( error.response.data.error.code === 403){
-  //UserSer
-  // }
-  // }
 );
 
 class NetworkManager {
@@ -42,11 +48,11 @@ class NetworkManager {
     return NetworkManager.MyInstance;
   }
 
-  apiClient = axios;
+  apiClient = apiClient;
 
   appRequest = async (options) => {
     return this.apiClient(options);
   };
 }
 
-export default NetworkManager;
+export { NetworkManager };

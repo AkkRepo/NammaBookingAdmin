@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   Container,
@@ -12,9 +12,27 @@ import {
 //image
 
 import logo from "../../img/NB_Logo_Icon.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthService } from "../../services/Auth";
 
 function Login() {
+  const navigate = useNavigate();
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+  const onLogin = async () => {
+    try {
+      const res = await AuthService.login(user.email, user.password);
+      if (res.status === 200) {
+        AuthService.setUser(res.data);
+        navigate("/dashboard");
+      } else {
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
   return (
     <div className="bg ">
       <Container className="login-card-align">
@@ -26,13 +44,25 @@ function Login() {
             <Form>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  value={user.email}
+                  onChange={(e) => setUser({ ...user, email: e.target.value })}
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  value={user.password}
+                  onChange={(e) =>
+                    setUser({ ...user, password: e.target.value })
+                  }
+                />
               </Form.Group>
-              <Link to="/ForgotPassword" style={{ textDecoration: "none" }}>
+              <Link to="/forgotPassword" style={{ textDecoration: "none" }}>
                 <p style={{ fontSize: "12px", color: "grey" }}>
                   Forgot password?
                 </p>
@@ -41,8 +71,12 @@ function Login() {
                 <Col></Col>
                 <Col></Col>
                 <Col>
-                  <Link to="/Dashboard">
-                    <Button className="custom-btn" type="submit">
+                  <Link to="/dashboard">
+                    <Button
+                      className="custom-btn"
+                      type="button"
+                      onClick={onLogin}
+                    >
                       Login
                     </Button>
                   </Link>

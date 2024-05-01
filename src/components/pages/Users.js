@@ -176,7 +176,7 @@ function Users() {
                   <div key={i}>{s.contactNumber}</div>
                 </td>
                 <td>
-                  <Link to="/EditStays">
+                  <Link to="/dashboard/editStays">
                     <FontAwesomeIcon
                       icon={faPen}
                       size="lg"

@@ -73,7 +73,7 @@
   background: #e77225;
   height: 1px;
   position: absolute;
-  bottom: 7px;
+  bottom: 0px;
   left: -20px;
   right: 100%;
   transition: all 0.3s linear;

@@ -86,7 +86,7 @@ function Stays() {
           </Form>
         </Col>
         <Col>
-          <Link to="/AddStays">
+          <Link to="/dashboard/addStays">
             <div className="stays-add-button">
               <Button className="custom-btn">Add Stays</Button>
             </div>
@@ -130,7 +130,7 @@ function Stays() {
                     <td key={i}>{contactName}</td>
                     <td key={i}>{contactNumber}</td>
                     <td>
-                      <Link to="/EditStays">
+                      <Link to="/dashboard/editStays">
                         <FontAwesomeIcon
                           icon={faPen}
                           size="lg"
@@ -177,7 +177,7 @@ function Stays() {
                   <div key={i}>{s.contactNumber}</div>
                 </td>
                 <td>
-                  <Link to="/EditStays">
+                  <Link to="/dashboard/editStays">
                     <FontAwesomeIcon
                       icon={faPen}
                       size="lg"

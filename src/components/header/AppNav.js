@@ -1,11 +1,24 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Navbar, Container, Nav, Image, NavDropdown } from "react-bootstrap";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import {
+  Navbar,
+  Container,
+  Nav,
+  Image,
+  NavDropdown,
+  Button,
+} from "react-bootstrap";
 
 import "../../css/style.css";
 import logo from "../../img/NB_Logo_Cropped.jpg";
+import { AuthService } from "../../services/Auth";
 
 const AppNav = () => {
+  const navigate = useNavigate();
+  const logout = () => {
+    AuthService.logout();
+    navigate("/login");
+  };
   return (
     <Navbar expand="lg">
       <Container>
@@ -16,47 +29,51 @@ const AppNav = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <NavLink
-              to="/Dashboard"
+              to="/dashboard"
               className="nav-link"
               activeClassName="active"
             >
               Dashboard
             </NavLink>
-            <NavLink to="/Stays" className="nav-link" activeClassName="active">
+            <NavLink
+              to="/dashboard/stays"
+              className="nav-link"
+              activeClassName="active"
+            >
               Stays
             </NavLink>
             <NavDropdown title="Master data">
               <Link
-                to="/Amenities"
+                to="/dashboard/amenities"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}
               >
                 Amenities
               </Link>
               <div style={{ padding: "5px" }} />
               <Link
-                to="/Activities"
+                to="/dashboard/activities"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}
               >
                 Activities
               </Link>
               <div style={{ padding: "5px" }} />
               <Link
-                to="/Users"
+                to="/dashboard/users"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}
               >
                 Users
               </Link>
-              {/*<NavDropdown.Item to="/Amenities">Amenities</NavDropdown.Item>
-              <NavDropdown.Item to="/Amenities">Activities</NavDropdown.Item>
-              <NavDropdown.Item to="/Stays">Users</NavDropdown.Item> */}
+              {/*<NavDropdown.Item to="/dashboard/amenities">Amenities</NavDropdown.Item>
+              <NavDropdown.Item to="/dashboard/amenities">Activities</NavDropdown.Item>
+              <NavDropdown.Item to="/dashboard/stays">Users</NavDropdown.Item> */}
             </NavDropdown>
-            <NavLink
-              to="/Dashboard"
+            <Button
               className="nav-link"
               activeClassName="active"
+              onClick={logout}
             >
               Logout
-            </NavLink>
+            </Button>
           </Nav>
         </Navbar.Collapse>
       </Container>
