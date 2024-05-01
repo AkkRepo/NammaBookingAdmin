@@ -50,6 +50,13 @@ const AppNav = () => {
               <NavDropdown.Item to="/Amenities">Activities</NavDropdown.Item>
               <NavDropdown.Item to="/Stays">Users</NavDropdown.Item> */}
             </NavDropdown>
+            <NavLink
+              to="/Dashboard"
+              className="nav-link"
+              activeClassName="active"
+            >
+              Logout
+            </NavLink>
           </Nav>
         </Navbar.Collapse>
       </Container>
