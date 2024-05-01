@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { Row, Col, Form, FloatingLabel } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 
-function EditAmenities(props) {
+function DeleteUsers(props) {
   return (
     <>
       <Modal
@@ -17,26 +17,18 @@ function EditAmenities(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Edit Amenities
+            Delete User
           </Modal.Title>
         </Modal.Header>
-        <div style={{ padding: "1rem" }}>
-          {" "}
-          <FloatingLabel
-            controlId="updateAmenities"
-            label="Edit Amenities"
-            className="mb-3"
-          >
-            <Form.Control type="text" placeholder="Edit Amenities" />
-          </FloatingLabel>
-        </div>
-
+        <Modal.Body>
+          <p>Are you sure, do you want to delete?</p>
+        </Modal.Body>
         <Modal.Footer>
           <Row>
             <Col>
               <Button onClick={props.onHide} className="custom-btn">
                 {" "}
-                Update{" "}
+                Delete{" "}
               </Button>
             </Col>
             <Col>
@@ -52,4 +44,4 @@ function EditAmenities(props) {
   );
 }
 
-export default EditAmenities;
+export default DeleteUsers;

@@ -23,7 +23,7 @@ function EditActivities(props) {
         <div style={{ padding: "1rem" }}>
           {" "}
           <FloatingLabel
-            controlId="editActivities"
+            controlId="updateActivities"
             label="Edit Activities"
             className="mb-3"
           >
@@ -42,7 +42,7 @@ function EditActivities(props) {
             <Col>
               <Button onClick={props.onHide} className="custom-btn">
                 {" "}
-                No{" "}
+                Cancel{" "}
               </Button>
             </Col>
           </Row>

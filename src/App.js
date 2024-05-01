@@ -20,6 +20,10 @@ import Activities from "./components/pages/Activities";
 import AddActivities from "./components/subcomponents/AddActivities";
 import EditActivities from "./components/subcomponents/EditActivities";
 import DeleteActivities from "./components/subcomponents/DeleteActivities";
+import Users from "./components/pages/Users";
+import AddUsers from "./components/subcomponents/AddUsers";
+import EditUsers from "./components/subcomponents/EditUsers";
+import DeleteUsers from "./components/subcomponents/DeleteUsers";
 
 function App() {
   return (
@@ -43,6 +47,10 @@ function App() {
         <Route path="/EditActivities" element={<EditActivities />} />
         <Route path="/DeleteAmenities" element={<DeleteAmenities />} />
         <Route path="/DeleteActivities" element={<DeleteActivities />} />
+        <Route path="/Users" element={<Users />} />
+        <Route path="/AddUsers" element={<AddUsers />} />
+        <Route path="/EditUsers" element={<EditUsers />} />
+        <Route path="/DeleteUsers" element={<DeleteUsers />} />
       </Routes>
     </div>
   );

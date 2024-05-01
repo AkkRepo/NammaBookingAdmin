@@ -42,7 +42,7 @@ function AddActivities(props) {
             <Col>
               <Button onClick={props.onHide} className="custom-btn">
                 {" "}
-                No{" "}
+                Cancel{" "}
               </Button>
             </Col>
           </Row>

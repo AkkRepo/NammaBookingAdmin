@@ -41,7 +41,7 @@ const AppNav = () => {
               </Link>
               <div style={{ padding: "5px" }} />
               <Link
-                to="/Amenities"
+                to="/Users"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}
               >
                 Users
