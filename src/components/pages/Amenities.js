@@ -12,6 +12,7 @@ import amenitiesData from "./amenitiesData.json";
 import AddAmenities from "../subcomponents/AddAmenities";
 import EditAmenities from "../subcomponents/EditAmenities";
 import DeleteAmenities from "../subcomponents/DeleteAmenities";
+import { AmenitiesService } from "../../services/Amenities";
 
 function Amenities() {
   const [deleteModalShow, setDeleteModalShow] = React.useState(false);
@@ -24,25 +25,42 @@ function Amenities() {
   };*/
 
   //fetch
-  const [stay, setStay] = useState([]);
-  const fetchStay = () => {
-    fetch(`http://localhost:8000/data`)
-      .then((response) => response.json())
-      .then((data) => setStay(data))
-      .catch((error) => console.log(error));
+  //const [stay, setStay] = useState([]);
+  //const fetchStay = () => {
+  // fetch(`http://localhost:8000/data`)
+  //   .then((response) => response.json())
+  //   .then((data) => setStay(data))
+  //   .catch((error) => console.log(error));
+  //};
+
+  //useEffect(() => {
+  //   fetchStay();
+  // });
+
+  const [amenities, setAmenities] = useState([]);
+  const getAmenities = async () => {
+    try {
+      const res = await AmenitiesService.getAllAmenities();
+      if (res.data?.length > 0) {
+        setAmenities(res.data);
+      } else {
+        setAmenities([]);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   useEffect(() => {
-    fetchStay();
-  });
-
+    getAmenities();
+  }, []);
   //pagination start
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
-  const records = amenitiesData.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(stay.length / recordsPerPage);
+  const records = amenities.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(amenities.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
   function changeCPage(id) {
     setCurrentPage(id);
@@ -115,43 +133,36 @@ function Amenities() {
           </tr>
         </thead>
         <tbody>
-          {records &&
-            records
-              .filter((s) => {
-                return search == ""
-                  ? s
-                  : s.amenities.toLowerCase().includes(search);
-              })
-              .map(({ i, id, amenities }) => (
-                <tr>
-                  <td key={i}>{id}</td>
-                  <td key={i}>{amenities}</td>
-                  <td>
-                    <FontAwesomeIcon
-                      icon={faPen}
-                      size="lg"
-                      className="custom-icon"
-                      onClick={() => setEditModalShow(true)}
-                    />
-                    <EditAmenities
-                      show={editModalShow}
-                      onHide={() => setEditModalShow(false)}
-                    />
-                  </td>
-                  <td>
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      size="lg"
-                      className="custom-icon"
-                      onClick={() => setDeleteModalShow(true)}
-                    />
-                    <DeleteAmenities
-                      show={deleteModalShow}
-                      onHide={() => setDeleteModalShow(false)}
-                    />
-                  </td>
-                </tr>
-              ))}
+          {amenities.map((i, index) => (
+            <tr key={i.id}>
+              <td>{index + 1}</td>
+              <td>{i.amenity}</td>{" "}
+              <td>
+                <FontAwesomeIcon
+                  icon={faPen}
+                  size="lg"
+                  className="custom-icon"
+                  onClick={() => setEditModalShow(true)}
+                />
+                <EditAmenities
+                  show={editModalShow}
+                  onHide={() => setEditModalShow(false)}
+                />
+              </td>
+              <td>
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  size="lg"
+                  className="custom-icon"
+                  onClick={() => setDeleteModalShow(true)}
+                />
+                <DeleteAmenities
+                  show={deleteModalShow}
+                  onHide={() => setDeleteModalShow(false)}
+                />
+              </td>
+            </tr>
+          ))}
           {/*{records
             .filter((s) => {
               return search == ""

@@ -4,7 +4,15 @@ export class AmenitiesService {
   static getAllAmenities = () => {
     return NetworkManager.getInstance().appRequest({
       method: "get",
-      url: ApiEndPoints.amenities,
+      url: ApiEndPoints.amenities + "/getAll",
+    });
+  };
+  static addAmenities = (amenity) => {
+    console.log(amenity);
+    return NetworkManager.getInstance().appRequest({
+      method: "post",
+      url: ApiEndPoints.amenities + "/add",
+      data: { ...amenity },
     });
   };
 }
