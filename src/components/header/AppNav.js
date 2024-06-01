@@ -44,17 +44,17 @@ const AppNav = () => {
             </NavLink>
             <NavDropdown title="Master data">
               <Link
-                to="/dashboard/amenities"
+                to="/dashboard/categories"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}
               >
-                Amenities
+                Categories
               </Link>
               <div style={{ padding: "5px" }} />
               <Link
-                to="/dashboard/activities"
+                to="/dashboard/locations"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}
               >
-                Activities
+                Locations
               </Link>
               <div style={{ padding: "5px" }} />
               <Link

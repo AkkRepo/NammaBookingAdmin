@@ -28,13 +28,13 @@ apiClient.interceptors.response.use(
     return { ...response.data, status: response.status };
   },
   (error) => {
-    if (error.response.data.error.code === 403) {
-      AuthService.logout();
-      window.location.href = window.location.origin + "/login";
-      return { ...error.response };
-    } else {
-      Promise.reject(error);
-    }
+    // if (error.response.data.error.code === 403) {
+    //   AuthService.logout();
+    //   window.location.href = window.location.origin + "/login";
+    //   return { ...error.response };
+    // } else {
+    //   Promise.reject(error);
+    // }
   }
 );
 
@@ -51,7 +51,7 @@ class NetworkManager {
   apiClient = apiClient;
 
   appRequest = async (options) => {
-    return this.apiClient(options);
+    return apiClient(options);
   };
 }
 

@@ -14,7 +14,12 @@ import MultipleInputField from "./components/subcomponents/MultipleInputField";
 import Amenities from "./components/pages/Amenities";
 import Activities from "./components/pages/Activities";
 import Users from "./components/pages/Users";
+import Categories from "./components/pages/Categories";
+import Locations from "./components/pages/Locations";
+import EditUsersCopy from "./components/subcomponents/EditUsersCopy";
+
 import { AuthService } from "./services/Auth";
+import TestingFile from "./components/subcomponents/TestingFile";
 const DashboardLayout = () => {
   if (AuthService.isLoggedin()) {
     return <Outlet />;
@@ -42,6 +47,10 @@ function App() {
           <Route path="/dashboard/amenities" element={<Amenities />} />
           <Route path="/dashboard/activities" element={<Activities />} />
           <Route path="/dashboard/users" element={<Users />} />
+          <Route path="/dashboard/categories" element={<Categories />} />
+          <Route path="/dashboard/locations" element={<Locations />} />
+          <Route path="/dashboard/EditUsersCopy" element={<EditUsersCopy />} />
+          <Route path="/dashboard/TestingFile" element={<TestingFile />} />
         </Route>
       </Routes>
     </div>

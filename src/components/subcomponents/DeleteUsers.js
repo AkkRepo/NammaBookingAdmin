@@ -5,41 +5,34 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Row, Col } from "react-bootstrap";
+import { UsersService } from "../../services/Users";
 
 function DeleteUsers(props) {
+  const deleteUsers = async (id) => {
+    try {
+      const val = window.confirm("Do you want to delete?");
+      if (val) {
+        const res = await UsersService.deleteUsers(id);
+        if (res.status === 200) {
+          alert("User delete");
+        } else {
+          alert("Error while else");
+        }
+      }
+    } catch (error) {
+      alert("Error while catch");
+    }
+  };
   return (
     <>
-      <Modal
-        {...props}
+      <FontAwesomeIcon
+        icon={faTrash}
         size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Delete User
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>Are you sure, do you want to delete?</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Row>
-            <Col>
-              <Button onClick={props.onHide} className="custom-btn">
-                {" "}
-                Delete{" "}
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={props.onHide} className="custom-btn">
-                {" "}
-                Cancel{" "}
-              </Button>
-            </Col>
-          </Row>
-        </Modal.Footer>
-      </Modal>
+        className="custom-icon"
+        onClick={(e) => {
+          deleteUsers();
+        }}
+      />
     </>
   );
 }

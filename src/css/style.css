@@ -202,6 +202,17 @@ html {
   width: 100%;
 }
 
+.add-stay-group-border {
+  border: 1.5px solid #051e3c;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.required-field-meassage {
+  font-size: 12px;
+  color: red;
+}
+
 @media only screen and (max-width: 768px) {
   .login-card-align {
     z-index: 10;

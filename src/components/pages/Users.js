@@ -12,57 +12,45 @@ import amenitiesData from "./amenitiesData.json";
 import AddUsers from "../subcomponents/AddUsers";
 import EditUsers from "../subcomponents/EditUsers";
 import DeleteUsers from "../subcomponents/DeleteUsers";
+import { UsersService } from "../../services/Users";
+import EditUsersCopy from "../subcomponents/EditUsersCopy";
+import MultipleInputField from "../subcomponents/MultipleInputField";
 
-function Users() {
-  const [deleteModalShow, setDeleteModalShow] = React.useState(false);
+function Users(props) {
   const [addModalShow, setAddModalShow] = React.useState(false);
-  const [editModalShow, setEditModalShow] = React.useState(false);
+  const [editModalShow, setEditModalShow] = React.useState(props.id);
 
-  //const [searchQuery, setSearchQuery] = useState("");
-  /*const handleChange = (e) => {
-    setSearchQuery(e.target.value);
-  };*/
-
-  //fetch
-  const [stay, setStay] = useState([]);
-  const fetchStay = () => {
-    fetch(`http://localhost:8000/data`)
-      .then((response) => response.json())
-      .then((data) => setStay(data))
-      .catch((error) => console.log(error));
+  const [user, setUser] = useState([]);
+  const getUser = async () => {
+    try {
+      const res = await UsersService.getAllUsers();
+      if (res.data.records?.length > 0) {
+        setUser(res.data.records);
+      } else {
+        setUser([]);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
   };
-
+  const deleteUsers = async (id) => {
+    try {
+      const val = window.confirm("Do you want to delete?");
+      if (val) {
+        const res = await UsersService.deleteUsers(id);
+        if (res.status === 200) {
+          alert("User delete");
+        } else {
+          alert("Error while else");
+        }
+      }
+    } catch (error) {
+      alert("Error while catch");
+    }
+  };
   useEffect(() => {
-    fetchStay();
-  });
-
-  //pagination start
-  const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 5;
-  const lastIndex = currentPage * recordsPerPage;
-  const firstIndex = lastIndex - recordsPerPage;
-  const records = amenitiesData.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(stay.length / recordsPerPage);
-  const numbers = [...Array(npage + 1).keys()].slice(1);
-  function changeCPage(id) {
-    setCurrentPage(id);
-  }
-  function prePage() {
-    if (currentPage != 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  }
-  function nextPage() {
-    if (currentPage != npage) {
-      setCurrentPage(currentPage + 1);
-    }
-  }
-  //pagination end
-
-  //search start
-  const [search, setSearch] = useState("");
-  console.log(search);
-
+    getUser();
+  }, []);
   return (
     <div style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
       <header id="header">
@@ -83,7 +71,7 @@ function Users() {
             >
               <Form.Control
                 type="text"
-                onChange={(e) => setSearch(e.target.value)}
+                //onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search"
               />
             </Form.Group>
@@ -115,43 +103,56 @@ function Users() {
           </tr>
         </thead>
         <tbody>
-          {records &&
-            records
-              .filter((s) => {
-                return search == ""
-                  ? s
-                  : s.amenities.toLowerCase().includes(search);
-              })
-              .map(({ i, id, amenities }) => (
-                <tr>
-                  <td key={i}>{id}</td>
-                  <td key={i}>{amenities}</td>
-                  <td>
-                    <FontAwesomeIcon
-                      icon={faPen}
-                      size="lg"
-                      className="custom-icon"
-                      onClick={() => setEditModalShow(true)}
-                    />
-                    <EditUsers
-                      show={editModalShow}
-                      onHide={() => setEditModalShow(false)}
-                    />
-                  </td>
-                  <td>
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      size="lg"
-                      className="custom-icon"
-                      onClick={() => setDeleteModalShow(true)}
-                    />
-                    <DeleteUsers
-                      show={deleteModalShow}
-                      onHide={() => setDeleteModalShow(false)}
-                    />
-                  </td>
-                </tr>
-              ))}
+          {user.map((i, index) => (
+            <tr key={i.id}>
+              <td>{index + 1}</td>
+              <td>{i.name}</td>
+              <td>
+                {/*<EditUsersCopy
+                //name={i.name}
+                // email={i.email}
+                // password={i.password}
+                // id={i.id}
+                />
+                
+              <FontAwesomeIcon
+                icon={faPen}
+                size="lg"
+                className="custom-icon"
+                onClick={() => setEditModalShow(true)}
+              />
+              <EditUsers
+                show={editModalShow}
+                onHide={() => setEditModalShow(false)}
+                id={props.id}
+              /> 
+            
+            <FontAwesomeIcon
+                  icon={faPen}
+                  size="lg"
+                  className="custom-icon"
+                  onClick={() => setEditModalShow(true)}
+                />*/}
+
+                <EditUsers />
+              </td>
+              <td>
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  size="lg"
+                  className="custom-icon"
+                  onClick={(e) => {
+                    deleteUsers(i.id);
+                  }}
+                />
+                {/*<DeleteUsers
+                  onClick={(e) => {
+                    deleteUsers(i.id);
+                  }}
+                />*/}
+              </td>
+            </tr>
+          ))}
           {/*{records
             .filter((s) => {
               return search == ""
@@ -201,7 +202,7 @@ function Users() {
         </tbody>
       </Table>
 
-      {/* Pagination impementation start */}
+      {/* Pagination impementation start 
       <nav style={{ marginLeft: "65rem" }}>
         <ul className="pagination">
           <li className="page-item">
@@ -240,7 +241,7 @@ function Users() {
             </a>
           </li>
         </ul>
-      </nav>
+      </nav>*/}
       {/* Pagination impementation end */}
     </div>
   );

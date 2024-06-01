@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 //css
 import {
@@ -10,20 +10,39 @@ import {
   Button,
   Table,
   Image,
+  Dropdown,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 //page
 import AppNav from "../header/AppNav";
+import { CategoriesService } from "../../services/Categories";
+import { LocationsService } from "../../services/Locations";
+import { Capitalize } from "../../core/utils";
+import { useNavigate } from "react-router-dom";
+import { StaysService } from "../../services/Stays";
 
 function AddStays() {
-  const [rating, setRating] = useState(0); // Initialize rating state
+  const [newRoom, setRooms] = useState("");
+  const [newRoomType, setNewRoomType] = useState("");
+  const [newBed, setBed] = useState("");
+  //Rating single decimal implementation start
 
-  // Function to handle rating change
+  const [rating, setRating] = useState("");
+  const [error, setError] = useState("");
+
   const handleRatingChange = (e) => {
-    const value = parseFloat(e.target.value); // Parse the input value to float
-    setRating(value);
+    const value = e.target.value;
+    const regex = /^\d*\.?\d{0,1}$/; // Allows numbers with up to one decimal place
+
+    if (regex.test(value) || value === "") {
+      setRating(value);
+      setError("");
+    } else {
+      setError("Please enter a valid rating with one decimal place.");
+    }
   };
+  //Rating single decimal implementation end
 
   // Function to handle form submission
   const handleSubmit = (e) => {
@@ -34,88 +53,587 @@ function AddStays() {
     setRating(0);
   };
 
+  //Image upload
   const [images, setImages] = useState([]);
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    // Add newly selected images to the existing images array
-    setImages([...images, ...files]);
+  const handleImageUpload = (event) => {
+    const files = event.target.files;
+    const promises = Array.from(files).map((file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    });
+
+    Promise.all(promises).then((base64Images) => {
+      console.log(base64Images); // Display the base64 images in the console
+      setImages(base64Images);
+    });
   };
 
+  const handleImageBase64 = (e) => {
+    //const file = e.target.files[0];
+    const file = Array.from(e.target.files);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImages({ ...stays, images: reader.result.split(",")[1] });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  //Amenities multiple input start
+  const [amenitiesArray, setAmenitiestArray] = useState([]);
+  const [amenitiesInputData, setAmenitiesInputData] = useState({
+    amenities: "",
+  });
+
+  // Function to handle input change
+  const amenitiesInputChange = (e) => {
+    setAmenitiesInputData({
+      ...amenitiesInputData,
+      amenities: e.target.value,
+    });
+  };
+
+  // Function to add input data
+  const addAmenitiesInputData = () => {
+    if (amenitiesInputData.amenities.trim() !== "") {
+      setAmenitiestArray([...amenitiesArray, amenitiesInputData]);
+      setAmenitiesInputData({ amenities: "" });
+    } else {
+      // Notify user that the input field should not be empty
+      alert("Amenities should not be empty");
+    }
+  };
+
+  // Function to delete data
+  const deleteAmenitiesData = (index) => {
+    const updatedArray = amenitiesArray.filter((item, i) => i !== index);
+    setAmenitiestArray(updatedArray);
+  };
+  //Amenities myltiple input end
+
+  //Activities multiple input start
+  const [activitiesArray, setActivitiestArray] = useState([]);
+  const [activitiesInputData, setActivitiesInputData] = useState({
+    activities: "",
+  });
+
+  // Function to handle input change
+  const activitiesInputChange = (e) => {
+    setActivitiesInputData({
+      ...activitiesInputData,
+      activities: e.target.value,
+    });
+  };
+
+  // Function to add input data
+  const addActivitiesInputData = () => {
+    if (activitiesInputData.activities.trim() !== "") {
+      setActivitiestArray([...activitiesArray, activitiesInputData]);
+      setActivitiesInputData({ activities: "" });
+    } else {
+      // Notify user that the input field should not be empty
+      alert("Activities should not be empty");
+    }
+  };
+
+  // Function to delete data
+  const deleteActivitiesData = (index) => {
+    const updatedArray = activitiesArray.filter((item, i) => i !== index);
+    setActivitiestArray(updatedArray);
+  };
+  //Activities myltiple input end
+
+  //Facilities multiple input start
+  const [facilitiesArray, setFacilitiestArray] = useState([]);
+  const [facilitiesInputData, setFacilitiesInputData] = useState({
+    facilities: "",
+  });
+
+  // Function to handle input change
+  const facilitiesInputChange = (e) => {
+    setFacilitiesInputData({
+      ...facilitiesInputData,
+      facilities: e.target.value,
+    });
+  };
+
+  // Function to add input data
+  const addFacilitiesInputData = () => {
+    if (facilitiesInputData.facilities.trim() !== "") {
+      setFacilitiestArray([...facilitiesArray, facilitiesInputData]);
+      setFacilitiesInputData({ facilities: "" });
+    } else {
+      // Notify user that the input field should not be empty
+      alert("Facilities should not be empty");
+    }
+  };
+
+  // Function to delete data
+  const deleteFacilitiesData = (index) => {
+    const updatedArray = facilitiesArray.filter((item, i) => i !== index);
+    setFacilitiestArray(updatedArray);
+  };
+  //Facilities myltiple input end
+
   //near by places multiple input start
-  let [array1, setArray1] = useState([]);
-  let [inputData1, setInputData1] = useState({ nearByPlaces: "" });
-  function data1(e) {
-    setInputData1({ ...array1, nearByPlaces: e.target.value });
-  }
-  let nearByPlaces = inputData1;
-  function addInputData1() {
-    setArray1([...array1, nearByPlaces]);
-    console.log(inputData1);
-    setInputData1({ nearByPlaces: "" });
-  }
+  const [nearByPlacesArray, setNearByPlacestArray] = useState([]);
+  const [nearByPlacesInputData, setNearByPlacesInputData] = useState({
+    nearByPlaces: "",
+  });
 
-  console.log("total array: ", array1);
+  // Function to handle input change
+  const nearByPlacesInputChange = (e) => {
+    setNearByPlacesInputData({
+      ...nearByPlacesInputData,
+      nearByPlaces: e.target.value,
+    });
+  };
 
-  function deleteData1(i) {
-    console.log(i, "this index row wants to be deleted");
-    let total1 = [...array1];
-    total1.splice(i, 1);
-    setArray1(total1);
-  }
+  // Function to add input data
+  const addNearByPlacesInputData = () => {
+    if (nearByPlacesInputData.nearByPlaces.trim() !== "") {
+      setNearByPlacestArray([...nearByPlacesArray, nearByPlacesInputData]);
+      setNearByPlacesInputData({ nearByPlaces: "" });
+    } else {
+      // Notify user that the input field should not be empty
+      alert("Near by Places should not be empty");
+    }
+  };
+
+  // Function to delete data
+  const deleteNearByPlacesData = (index) => {
+    const updatedArray = nearByPlacesArray.filter((item, i) => i !== index);
+    setNearByPlacestArray(updatedArray);
+  };
   //near by places myltiple input end
 
   //terms and condition multiple input start
-  let [array2, setArray2] = useState([]);
-  let [inputData2, setInputData2] = useState({ termsAndCondition: "" });
+  let [termsAndConditionArray, setTermsAndConditionArray] = useState([]);
+  let [termsAndConditionInputData, setTermsAndConditionInputData] = useState({
+    termsAndCondition: "",
+  });
   function data2(e) {
-    setInputData2({ ...array2, termsAndCondition: e.target.value });
+    setTermsAndConditionInputData({
+      ...termsAndConditionArray,
+      termsAndCondition: e.target.value,
+    });
   }
-  let termsAndCondition = inputData2;
-  function addInputData2() {
-    setArray2([...array2, termsAndCondition]);
-    console.log(inputData2);
-    setInputData2({ termsAndCondition: "" });
+  let termsAndCondition = termsAndConditionInputData;
+  function addTermsAndConditionInputData() {
+    // Check if the input field is not empty
+    if (termsAndConditionInputData.termsAndCondition.trim() !== "") {
+      setTermsAndConditionArray([...termsAndConditionArray, termsAndCondition]);
+      console.log(termsAndConditionInputData);
+      setTermsAndConditionInputData({ termsAndCondition: "" });
+    } else {
+      // Display an alert or handle the empty input case in some other way
+      alert("Please enter Terms & Conditions");
+    }
   }
 
-  console.log("total array: ", array2);
-
-  function deleteData2(i) {
+  function deleteTermsAndConditionInputData(i) {
     console.log(i, "this index row wants to be deleted");
-    let total2 = [...array2];
+    let total2 = [...termsAndConditionArray];
     total2.splice(i, 1);
-    setArray2(total2);
+    setTermsAndConditionArray(total2);
   }
-
   //terms and condition multiple input end
 
-  //Accomodation multiple input start
-  const [accInputData, setAccInputData] = useState({
-    accomodation: "",
-    noOfPeople: "",
-    noOfBeds: "",
+  //Pricing multiple input start
+  const addNewRoom = () => {
+    // Check if newRoom and newRoomType are not empty
+    if (newRoom && newRoomType) {
+      let roomsList = pricingInputData.noOfRooms;
+      let roomTypesList = pricingInputData.roomType;
+
+      roomsList.push(newRoom);
+      roomTypesList.push(newRoomType);
+
+      setPricingInputData({
+        ...pricingInputData,
+        noOfRooms: roomsList,
+        roomType: roomTypesList,
+      });
+
+      // Clear the inputs after adding the room
+      setRooms("");
+      setNewRoomType("");
+
+      console.log(pricingInputData);
+    } else {
+      // Handle the case where newRoom or newRoomType is empty
+      alert("No room data provided. Please enter the room details.");
+      // You can also set an error state and display it in your UI
+      // setError("No room data provided. Please enter the room details.");
+    }
+  };
+
+  const addNewBed = () => {
+    if (newBed) {
+      let list = pricingInputData.noOfBeds;
+      list.push(newBed);
+      setPricingInputData({
+        ...pricingInputData,
+        noOfBeds: list,
+      });
+      setBed("");
+      console.log(pricingInputData);
+    } else {
+      alert("No bed data provided. Please enter the room details.");
+    }
+  };
+  const [pricingInputData, setPricingInputData] = useState({
+    roomsName: "",
+    price: "",
+    packageIncludes: "",
+    //roomDetails: [
+    //{
+    // noOfRooms: undefined,
+    // roomType: "",
+    //},
+    //],
+    noOfRooms: [],
+    roomType: [],
+    noOfGuests: "",
   });
 
-  //function accChangeHandle(e) {
-  //setAccInputData({ accInputData, [e.target.accomodation]: e.target.value });
-  //}
-
-  const [accInputArr, setAccInputArr] = useState([]);
-  let { accomodation, noOfPeople, noOfBeds } = accInputData;
+  const [pricingInputArr, setPricingInputArr] = useState([]);
+  let {
+    roomsName,
+    price,
+    packageIncludes,
+    //roomDetails,
+    noOfRooms,
+    roomType,
+    noOfGuests,
+  } = pricingInputData;
   function addData() {
-    setAccInputArr([...accInputArr, { accomodation, noOfPeople, noOfBeds }]);
-    console.log(accInputArr);
-    console.log(accInputData);
-    setAccInputData({ accomodation: "", noOfPeople: "", noOfBeds: "" });
-  }
+    // Check if any of the fields are empty
+    if (
+      !roomsName ||
+      !price ||
+      !packageIncludes ||
+      //roomDetails ||
+      !(noOfRooms.length > 0) ||
+      !roomType ||
+      !noOfGuests
+    ) {
+      alert("All fields are required");
+      return;
+    }
 
-  function accDeleteData(i) {
-    console.log(i, "this index row wants to be deleted");
-    let total1 = [...accInputArr];
-    total1.splice(i, 1);
-    setAccInputArr(total1);
+    // Add data to the array
+    setPricingInputArr([
+      ...pricingInputArr,
+      {
+        roomsName,
+        price,
+        packageIncludes,
+        noOfRooms,
+        roomType,
+        //roomDetails,
+        noOfGuests,
+      },
+    ]);
+
+    // Reset input fields
+    setPricingInputData({
+      roomsName: "",
+      price: "",
+      packageIncludes: "",
+      //roomDetails: [],
+      noOfRooms: [],
+      roomType: [],
+      noOfGuests: "",
+    });
   }
-  //Accomodation multiple input end
+  function pricingDeleteData(i) {
+    console.log(i, "this index row wants to be deleted");
+    let total1 = [...pricingInputArr];
+    total1.splice(i, 1);
+    setPricingInputArr(total1);
+  }
+  //Pricing multiple input end
+
+  //Categories start
+  const [categoriesDropdown, setCategoriesDropdown] = useState([]);
+  const getCategoriesDropdown = async () => {
+    try {
+      const res = await CategoriesService.getAllCategories();
+      if (res.data?.length > 0) {
+        setCategoriesDropdown(res.data);
+      } else {
+        setCategoriesDropdown([]);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getCategoriesDropdown();
+  }, []);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const handleCheckboxChange = (option) => {
+    if (selectedOptions.includes(option)) {
+      setSelectedOptions(selectedOptions.filter((item) => item !== option));
+    } else {
+      setSelectedOptions([...selectedOptions, option]);
+    }
+  };
+  //Categories end
+
+  //location start
+  const [locations, setLocations] = useState([]);
+  const getLocations = async () => {
+    try {
+      const res = await LocationsService.getAllLocations();
+      if (res.data?.length > 0) {
+        setLocations(res.data);
+      } else {
+        setLocations([]);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getLocations();
+  }, []);
+  //location end
+
+  //post operation
+  const navigate = useNavigate();
+  const [stays, setStays] = useState({
+    name: "",
+    locationId: undefined,
+    rating: undefined,
+    priceStartsFrom: "",
+    about: "",
+    accommodationType: "",
+    accommodation: "",
+    noOfRooms: "",
+    noOfBeds: "",
+    contactPersonName: "",
+    contactPersonNumber: "",
+    googleMapLink: "",
+    instagramLink: "",
+    facebookLink: "",
+    address: "",
+    stayCategoriesDetails: [],
+    accommodationTypesDetails: [],
+    stayAmenitiesDetails: [],
+    stayActivitiesDetails: [],
+    otherFacilityDetails: [],
+    nearByPlacesDetails: [],
+    stayTAndCDetails: [],
+    images: [""],
+  });
+
+  const [addError, setAddError] = useState({
+    name: "",
+    locationId: "",
+    rating: "",
+    priceStartsFrom: "",
+    select: "",
+    about: "",
+    accommodationType: "",
+    accommodation: "",
+    noOfRooms: "",
+    noOfBeds: "",
+    stayCategoriesDetails: "",
+    accommodationTypesDetails: "",
+    stayAmenitiesDetails: "",
+    stayTAndCDetails: "",
+    contactPersonName: "",
+    contactPersonNumber: "",
+    googleMapLink: "",
+    address: "",
+    images: "",
+  });
+  const validation = () => {
+    let tempError = {
+      name: "",
+      locationId: "",
+      rating: "",
+      priceStartsFrom: "",
+      select: "",
+      about: "",
+      accommodationType: "",
+      accommodation: "",
+      noOfRooms: "",
+      noOfBeds: "",
+      stayCategoriesDetails: "",
+      accommodationTypesDetails: "",
+      stayAmenitiesDetails: "",
+      stayTAndCDetails: "",
+      contactPersonName: "",
+      contactPersonNumber: "",
+      googleMapLink: "",
+      address: "",
+      images: "",
+    };
+    let valid = true;
+    if (!stays.name) {
+      tempError.name = "Name is required";
+      valid = false;
+    }
+    if (!stays.locationId) {
+      tempError.locationId = "Location is required";
+      valid = false;
+    }
+    if (!stays.rating || stays.rating <= 0) {
+      tempError.rating = "Rating is required";
+      valid = false;
+    }
+    if (!stays.priceStartsFrom) {
+      tempError.priceStartsFrom = "Price Starts From is required";
+      valid = false;
+    }
+    if (!stays.select) {
+      tempError.select = "Select is required";
+      valid = false;
+    }
+    if (!stays.about) {
+      tempError.about = "About stay is required";
+      valid = false;
+    }
+
+    if (!stays.accommodationType) {
+      tempError.accommodationType = "Accommodation Type is required";
+      valid = false;
+    }
+    if (!stays.accommodation) {
+      tempError.accommodation = "Accommodation is required";
+      valid = false;
+    }
+    if (!stays.noOfRooms) {
+      tempError.noOfRooms = "Number of rooms is required";
+      valid = false;
+    }
+    if (!stays.noOfBeds) {
+      tempError.noOfBeds = "Number of Beds is required";
+      valid = false;
+    }
+
+    if (!stays.contactPersonName) {
+      tempError.contactPersonName = "Contact name is required";
+      valid = false;
+    }
+    if (!stays.contactPersonNumber) {
+      tempError.contactPersonNumber = "Contact number is required";
+      valid = false;
+    }
+    if (!stays.googleMapLink) {
+      tempError.googleMapLink = "Location is required";
+      valid = false;
+    }
+    if (!stays.address) {
+      tempError.address = "Address is required";
+      valid = false;
+    }
+    if (selectedOptions.length === 0) {
+      tempError.stayCategoriesDetails = "Categories is required";
+      valid = false;
+    }
+    if (amenitiesArray.length === 0) {
+      tempError.stayAmenitiesDetails = "Amenity is required";
+      valid = false;
+    }
+    if (termsAndConditionArray.length === 0) {
+      tempError.stayTAndCDetails = "Terms and Condition is required";
+      valid = false;
+    }
+    if (pricingInputArr.length === 0) {
+      tempError.accommodationTypesDetails = "Accomodation Type is required";
+      valid = false;
+    }
+    if (!stays.images) {
+      tempError.images = "images is required";
+      valid = false;
+    }
+
+    setAddError(tempError);
+    return valid;
+  };
+  const submitStays = () => {
+    if (validation() || true) {
+      addStays();
+    }
+  };
+  const addStays = async () => {
+    try {
+      const res = await StaysService.addStays({
+        ...stays,
+        name: stays.name,
+        locationId: Number(stays.locationId),
+        rating: Number(rating),
+        about: stays.about,
+        accommodationType: stays.accommodationType,
+        accommodation: stays.accommodation,
+        noOfRooms: stays.noOfRooms,
+        noOfBeds: stays.noOfBeds,
+        contactPersonName: stays.contactPersonName,
+        contactPersonNumber: stays.contactPersonNumber,
+        googleMapLink: stays.googleMapLink,
+        instagramLink: stays.instagramLink,
+        facebookLink: stays.facebookLink,
+        priceStartsFrom: stays.priceStartsFrom + " " + stays.select,
+        stayCategoriesDetails: selectedOptions.map((x) => ({
+          categoryId: x.id,
+        })),
+        accommodationTypesDetails: pricingInputArr.map((x) => ({
+          roomName: x.roomsName,
+          price: x.price,
+          includedPackages: x.packageIncludes,
+          noOfGuests: x.noOfGuests,
+          //roomDetails: x.roomDetails,
+          roomDetails: [
+            {
+              noOfRooms: 1,
+              roomType: "a",
+            },
+          ],
+        })),
+        stayAmenitiesDetails: amenitiesArray.map((x) => ({
+          amenity: x.amenities,
+        })),
+        stayActivitiesDetails: activitiesArray.map((x) => ({
+          activity: x.activities,
+        })),
+        otherFacilityDetails: facilitiesArray.map((x) => ({
+          facility: x.facilities,
+        })),
+        nearByPlacesDetails: nearByPlacesArray.map((x) => ({
+          placeName: x.nearByPlaces,
+        })),
+        stayTAndCDetails: termsAndConditionArray.map((x) => ({
+          tandc: x.termsAndCondition,
+        })),
+        images: images,
+        //images: ["images"],
+      });
+      if (res.status === 200) {
+        alert("Stays Added");
+        navigate("/dashboard/addStays");
+      } else {
+        alert("Else error");
+      }
+    } catch (error) {
+      alert("Catch error");
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -138,617 +656,1029 @@ function AddStays() {
           (*) marked fields are compulsory
         </p>
         <Container>
-          <Row>
-            <Col>
-              <FloatingLabel
-                controlId="stayName"
-                label="Stay Name*"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Please enter Stay name"
-                  style={{ textTransform: "capitalize" }}
-                />
-              </FloatingLabel>
-            </Col>
-            <Col>
-              <FloatingLabel
-                controlId="stayLocation"
-                label="Location*"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Please enter Location"
-                  style={{ textTransform: "capitalize" }}
-                />
-              </FloatingLabel>
-            </Col>
-            <Col>
-              <FloatingLabel
-                controlId="formRating"
-                label="Rating"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="number"
-                  step="0.1" // Allow decimal steps with one digit after the decimal point
-                  min="0" // Set minimum value
-                  max="5" // Set maximum value
-                  value={rating}
-                  onChange={handleRatingChange}
-                />
-              </FloatingLabel>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Form.Group className="mb-3 checkbox-border" controlId="category">
-                <Form.Label>Category*</Form.Label>
-                {["checkbox"].map((type) => (
-                  <div key={`default-${type}`}>
-                    <Row>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`One`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Two`}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Three`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Four`}
-                        />
-                      </Col>
-                    </Row>
-                  </div>
-                ))}
-              </Form.Group>
-            </Col>
-          </Row>
-          <br />
-          <Row>
-            <Col>
-              <h6 style={{ paddingTop: "1rem" }}>Accomodation Type:</h6>
-            </Col>
-            <Col>
-              <FloatingLabel
-                controlId="accomodation"
-                label="Accomodation"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Accomodation"
-                  style={{ textTransform: "capitalize" }}
-                  value={accInputData.accomodation}
-                  onChange={(e) => {
-                    setAccInputData({
-                      ...accInputData,
-                      accomodation: e.target.value,
-                    });
-                  }}
-                />
-              </FloatingLabel>
-            </Col>
-            <Col>
-              <FloatingLabel controlId="noOfPeople" label="Number of People">
-                <Form.Select
-                  aria-label="Number of People"
-                  value={accInputData.noOfPeople}
-                  onChange={(e) => {
-                    setAccInputData({
-                      ...accInputData,
-                      noOfPeople: e.target.value,
-                    });
-                  }}
-                >
-                  <option>Select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </Form.Select>
-              </FloatingLabel>
-            </Col>
-            <Col>
-              <FloatingLabel controlId="noOfBeds" label="Number of Beds">
-                <Form.Select
-                  aria-label="Number of Beds"
-                  value={accInputData.noOfBeds}
-                  onChange={(e) => {
-                    setAccInputData({
-                      ...accInputData,
-                      noOfBeds: e.target.value,
-                    });
-                  }}
-                >
-                  <option>Select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </Form.Select>
-              </FloatingLabel>
-            </Col>
-            <Col>
-              <Button onClick={addData} className="custom-btn-reverse">
-                Add
-              </Button>
-            </Col>
-            <Container>
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>Accomodation</th>
-                    <th>No. of People</th>
-                    <th>No. of Beds</th>
-                    <th>Remove</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {accInputArr.map((info, i) => {
-                    return (
-                      <tr>
-                        <td>{info.accomodation}</td>
-                        <td>{info.noOfPeople}</td>
-                        <td>{info.noOfBeds}</td>
-                        <td>
-                          <FontAwesomeIcon
-                            icon={faX}
-                            onClick={() => accDeleteData(i)}
-                          />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
-            </Container>
-          </Row>
-          <br />
-          {/*
-          <Row>
-            <Col>
-              <FloatingLabel controlId="guests" label="Guests" className="mb-3">
-                <Form.Control type="number" placeholder="Guests" />
-              </FloatingLabel>
-            </Col>
-            <Col>
-              <FloatingLabel
-                controlId="noOfBeds"
-                label="No of beds"
-                className="mb-3"
-              >
-                <Form.Control type="number" placeholder="No of beds" />
-              </FloatingLabel>
-            </Col>
-          </Row> */}
-          <Row>
-            <Col>
-              <Form.Group
-                className="mb-3 checkbox-border"
-                controlId="amenities"
-              >
-                <Form.Label>Amenities*</Form.Label>
-                {["checkbox"].map((type) => (
-                  <div key={`default-${type}`}>
-                    <Row>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`WiFi`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Scenic Views`}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Campfire`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Outdoor Dining`}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Parking`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Pet-Friendly`}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Room Service`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Garden`}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Daily Housekeeping`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Swimming Pool`}
-                        />
-                      </Col>
-                    </Row>
-                  </div>
-                ))}
-              </Form.Group>
-            </Col>
-            <Col>
-              <Form.Group
-                className="mb-3 checkbox-border"
-                controlId="activities"
-              >
-                <Form.Label>Activities*</Form.Label>
-                {["checkbox"].map((type) => (
-                  <div key={`default-${type}`}>
-                    <Row>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Hiking Trails`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Guided Tours`}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Fishing`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Swimming`}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Photography`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Cycling`}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Sightseeing`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Cultural Experiences`}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Beach Volleyball`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check // prettier-ignore
-                          type={type}
-                          id={`default-${type}`}
-                          label={`Cooking Classes`}
-                        />
-                      </Col>
-                    </Row>
-                  </div>
-                ))}
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col>
-              <FloatingLabel
-                controlId="contactName"
-                label="Contact Name*"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Please enter contact name"
-                  style={{ textTransform: "capitalize" }}
-                />
-              </FloatingLabel>
-            </Col>
-            <Col>
-              <FloatingLabel
-                controlId="contactNumber"
-                label="Contact Number*"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Please enter contact number"
-                />
-              </FloatingLabel>
-            </Col>
-            <Col>
-              <FloatingLabel
-                controlId="price"
-                label="Price starts from"
-                className="mb-3"
-              >
-                <Form.Control type="text" placeholder="Please enter Price" />
-              </FloatingLabel>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <FloatingLabel
-                controlId="locationLink"
-                label="Google map link"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Please enter Location link "
-                />
-              </FloatingLabel>
-            </Col>
-            <Col>
-              <FloatingLabel
-                controlId="instaLink"
-                label="Instagram account link"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Please enter Instagram page link"
-                />
-              </FloatingLabel>
-            </Col>
-            <Col>
-              <FloatingLabel
-                controlId="fbLink"
-                label="Facebook account link"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Please enter Facebook link"
-                />
-              </FloatingLabel>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <div style={{ display: "flex" }}>
+          <Container className="add-stay-group-border">
+            <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
+              Stay's Basic Details
+            </h4>
+            <Row>
+              <Col>
                 <FloatingLabel
-                  controlId="nearByPlaces"
-                  label="Near by Places*"
+                  controlId="stayName"
+                  label="Stay Name*"
                   className="mb-3"
-                  style={{ marginRight: "1rem" }}
                 >
                   <Form.Control
                     type="text"
-                    placeholder="Please enter Near By Places"
+                    placeholder="Please enter Stay name"
                     style={{ textTransform: "capitalize" }}
-                    value={inputData1.nearByPlaces || ""}
-                    onChange={data1}
+                    value={stays.name}
+                    onChange={(e) =>
+                      setStays({ ...stays, name: e.target.value })
+                    }
+                    isInvalid={!!addError.name}
+                  />
+                  <p className="required-field-meassage">{addError.name}</p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel controlId="location" label="Location*">
+                  <Form.Select
+                    aria-label="Location"
+                    value={stays.locationId}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        locationId: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.locationId}
+                  >
+                    <option>Select</option>
+                    {locations.map((i) => (
+                      <option key={i.id} value={i.id}>
+                        {i.location}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  <p className="required-field-meassage">
+                    {addError.locationId}
+                  </p>
+                </FloatingLabel>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <FloatingLabel
+                  controlId="rating"
+                  label="Rating"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Rating"
+                    value={rating}
+                    onChange={handleRatingChange}
+                    isInvalid={!!error || !!addError.rating}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {error ? error : addError.rating}
+                  </Form.Control.Feedback>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                {/*<FloatingLabel
+                  controlId="floatingSelect"
+                  label="Works with selects"
+                >
+                  <Form.Select aria-label="Floating label select example">
+                    <Form>
+                      {categoriesDropdown.map((i, index) => (
+                        <option>
+                          <Form.Check
+                            key={i.id}
+                            type="checkbox"
+                            id={i.id}
+                            label={i.category}
+                            checked={selectedOptions.includes(i)}
+                            onChange={() => handleCheckboxChange(i)}
+                          />
+                        </option>
+                      ))}
+                    </Form>
+                  </Form.Select>
+                </FloatingLabel> */}
+                <Dropdown>
+                  <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                    Categories
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {categoriesDropdown.map((i, index) => (
+                      <Form.Check
+                        key={i.id}
+                        type="checkbox"
+                        id={i.id}
+                        label={i.category}
+                        checked={selectedOptions.includes(i)}
+                        onChange={() => handleCheckboxChange(i)}
+                      />
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                <p className="required-field-meassage">
+                  {addError.stayCategoriesDetails}
+                </p>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <FloatingLabel
+                  controlId="priceStartsFrom"
+                  label="Price starts from"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Please enter Price"
+                    value={stays.priceStartsFrom}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        priceStartsFrom: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.priceStartsFrom}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.priceStartsFrom}
+                  </p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel controlId="select" label="Select">
+                  <Form.Select
+                    aria-label="Select"
+                    value={stays.select}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        select: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.select}
+                  >
+                    <option>Select</option>
+                    <option value="Price / Per Person">
+                      Price / Per Person
+                    </option>
+                    <option value="Price / Per Room">Price / Per Room</option>
+                  </Form.Select>
+                  <p className="required-field-meassage">{addError.select}</p>
+                </FloatingLabel>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <FloatingLabel controlId="aboutStay" label="About Stay">
+                  <Form.Control
+                    as="textarea"
+                    placeholder="Leave a comment here"
+                    style={{ height: "100px" }}
+                    value={stays.about}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        about: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.about}
+                  />
+                  <p className="required-field-meassage">{addError.about}</p>
+                </FloatingLabel>
+              </Col>
+            </Row>
+          </Container>
+          <br />
+
+          <Container className="add-stay-group-border">
+            <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
+              Accomodation Details
+            </h4>
+            <Row>
+              <Col>
+                <FloatingLabel
+                  controlId="accomodationType"
+                  label="Accomodation Type*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Accomodation Tyoe"
+                    style={{ textTransform: "capitalize" }}
+                    value={stays.accommodationType}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        accommodationType: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.accommodationType}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.accommodationType}
+                  </p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="accomodation"
+                  label="Accomodation*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Accomodation"
+                    style={{ textTransform: "capitalize" }}
+                    value={stays.accommodation}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        accommodation: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.accommodation}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.accommodation}
+                  </p>
+                </FloatingLabel>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <FloatingLabel
+                  controlId="rooms"
+                  label="Rooms*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Rooms"
+                    style={{ textTransform: "capitalize" }}
+                    value={stays.noOfRooms}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        noOfRooms: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.noOfRooms}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.noOfRooms}
+                  </p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel controlId="beds" label="Beds*" className="mb-3">
+                  <Form.Control
+                    type="text"
+                    placeholder="Beds"
+                    style={{ textTransform: "capitalize" }}
+                    value={stays.noOfBeds}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        noOfBeds: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.noOfBeds}
+                  />
+                  <p className="required-field-meassage">{addError.noOfBeds}</p>
+                </FloatingLabel>
+              </Col>
+            </Row>
+          </Container>
+          <br />
+          <Container className="add-stay-group-border">
+            <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
+              Accomodation Types
+              <p className="required-field-meassage">
+                {addError.accommodationTypesDetails}
+              </p>
+            </h4>
+            <Row>
+              <Col>
+                <FloatingLabel
+                  controlId="roomsName"
+                  label="Room Name"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Name"
+                    style={{ textTransform: "capitalize" }}
+                    value={pricingInputData.roomsName}
+                    onChange={(e) => {
+                      setPricingInputData({
+                        ...pricingInputData,
+                        roomsName: Capitalize(e.target.value),
+                      });
+                    }}
                   />
                 </FloatingLabel>
-                <Button
-                  onClick={addInputData1}
-                  style={{ height: "40px" }}
-                  className="custom-btn-reverse"
-                >
-                  Add
-                </Button>
-              </div>
-              <Container style={{ paddingRight: "8rem", marginLeft: "-1rem" }}>
-                <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Near by Places</th>
-                      <th>Remove</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {array1 &&
-                      array1.map((item, i) => {
-                        return (
-                          <tr key={i}>
-                            <td> {item.nearByPlaces} </td>
+              </Col>
+              <Col>
+                <FloatingLabel controlId="price" label="Price" className="mb-3">
+                  <Form.Control
+                    type="number"
+                    placeholder="Price"
+                    style={{ textTransform: "capitalize" }}
+                    value={pricingInputData.price}
+                    onChange={(e) => {
+                      setPricingInputData({
+                        ...pricingInputData,
+                        price: e.target.value,
+                      });
+                    }}
+                  />
+                </FloatingLabel>
+              </Col>
+              <Row>
+                <Col>
+                  <FloatingLabel
+                    controlId="packageIncludes"
+                    label="Package Includes"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Name"
+                      style={{ textTransform: "capitalize" }}
+                      value={pricingInputData.packageIncludes}
+                      onChange={(e) => {
+                        setPricingInputData({
+                          ...pricingInputData,
+                          packageIncludes: e.target.value,
+                        });
+                      }}
+                    />
+                  </FloatingLabel>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <FloatingLabel
+                    controlId="noOfRooms"
+                    label="Total no. of Rooms"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="number"
+                      placeholder="No. of Rooms"
+                      style={{ textTransform: "capitalize" }}
+                      value={newRoom}
+                      onChange={(e) => {
+                        setRooms(e.target.value);
+                      }}
+                    />
+                  </FloatingLabel>
+
+                  <Button onClick={addNewRoom} className="custom-btn">
+                    Add room
+                  </Button>
+                  <Container
+                    style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
+                  >
+                    <Table striped bordered hover>
+                      <thead>
+                        <tr>
+                          <th>Rooms</th>
+                          <th>Room type</th>
+                          <th>Remove</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {pricingInputData?.noOfRooms?.map((item, index) => (
+                          <tr key={index}>
+                            <td>{item}</td>
+                            <td>{item}</td>
                             <td>
                               <FontAwesomeIcon
                                 icon={faX}
-                                onClick={() => deleteData1(i)}
+                                onClick={() => {
+                                  let list = pricingInputData.noOfRooms;
+                                  list.splice(index, 1);
+                                  setPricingInputData({
+                                    ...pricingInputData,
+                                    noOfRooms: list,
+                                  });
+                                  console.log(pricingInputData);
+                                }}
                               />
                             </td>
                           </tr>
-                        );
-                      })}
+                        ))}
+                      </tbody>
+                    </Table>
+                  </Container>
+                </Col>
+                <Col>
+                  <FloatingLabel
+                    controlId="roomType"
+                    label="Room Type"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Room type"
+                      style={{ textTransform: "capitalize" }}
+                      value={newRoomType}
+                      onChange={(e) => {
+                        setNewRoomType(e.target.value);
+                      }}
+                    />
+                  </FloatingLabel>
+                  {/*
+
+                  
+                  <FloatingLabel
+                    controlId="roomType"
+                    label="Room Type"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Room Type"
+                      style={{ textTransform: "capitalize" }}
+                      value={pricingInputData.roomType}
+                      onChange={(e) => {
+                        setPricingInputData({
+                          ...pricingInputData,
+                          roomType: Capitalize(e.target.value),
+                        });
+                      }}
+                    />
+                  </FloatingLabel>
+                  
+                  
+                  <FloatingLabel
+                    controlId="roomType"
+                    label="Room Type"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Room Type"
+                      style={{ textTransform: "capitalize" }}
+                      value={pricingInputData.roomType}
+                      onChange={(e) => {
+                        setPricingInputData({
+                          ...pricingInputData,
+                          roomType: Capitalize(e.target.value),
+                        });
+                      }}
+                    />
+                  </FloatingLabel> */}
+                  {/*
+                  <FloatingLabel
+                    controlId="noOfBeds"
+                    label="Total no. of Beds"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="number"
+                      placeholder="Total no. of Beds"
+                      style={{ textTransform: "capitalize" }}
+                      value={newBed}
+                      onChange={(e) => {
+                        setBed(e.target.value);
+                      }}
+                    />
+                    <br />
+                    <Button onClick={addNewBed} className="custom-btn">
+                      Add Bed
+                    </Button>
+                  </FloatingLabel>
+                  <Container
+                    style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
+                  >
+                    <Table striped bordered hover>
+                      <thead>
+                        <tr>
+                          <th>Beds</th>
+                          <th>Remove</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {pricingInputData?.noOfBeds?.map((item, index) => (
+                          <tr key={index}>
+                            <td>{item}</td>
+                            <td>
+                              <FontAwesomeIcon
+                                icon={faX}
+                                onClick={() => {
+                                  let list = pricingInputData.noOfBeds;
+                                  list.splice(index, 1);
+                                  setPricingInputData({
+                                    ...pricingInputData,
+                                    noOfBeds: list,
+                                  });
+                                  console.log(pricingInputData);
+                                }}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </Container> */}
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <FloatingLabel
+                    controlId="noOfGuests"
+                    label="No. of Guests"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="number"
+                      placeholder="No. of Guests"
+                      style={{ textTransform: "capitalize" }}
+                      value={pricingInputData.noOfGuests}
+                      onChange={(e) => {
+                        setPricingInputData({
+                          ...pricingInputData,
+                          noOfGuests: e.target.value,
+                        });
+                      }}
+                    />
+                  </FloatingLabel>
+                </Col>
+                <Col>
+                  <Button onClick={addData} className="custom-btn-reverse">
+                    Add Accomodation Types
+                  </Button>
+                </Col>
+              </Row>
+              <Container style={{ paddingLeft: "10px", paddingRight: "10px" }}>
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>Package Includes</th>
+                      <th>Number of Rooms</th>
+                      <th>Room Type</th>
+                      <th>Number of Guests</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pricingInputArr.map((info, i) => {
+                      return (
+                        <tr>
+                          <td>{info.roomsName}</td>
+                          <td>{info.price}</td>
+                          <td>{info.packageIncludes}</td>
+                          <td>{info.noOfRooms.join(",")}</td>
+                          <td>{info.roomType.join(",")}</td>
+                          <td>{info.noOfGuests}</td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faX}
+                              onClick={() => pricingDeleteData(i)}
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </Table>
               </Container>
-              {/*{array1 &&
-                array1.map((item, i) => {
-                  return (
-                    <div key={i}>
-                      <p>
-                        {item.nearByPlaces}{" "}
-                        <FontAwesomeIcon
-                          icon={faX}
-                          onClick={() => deleteData1(i)}
-                        />
-                      </p>
-                    </div>
-                  );
-                })} */}
-            </Col>
-            <Col>
-              <div style={{ display: "flex" }}>
+            </Row>
+          </Container>
+          <br />
+
+          <Container className="add-stay-group-border">
+            <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>Others</h4>
+            <Row>
+              <Col>
+                <div style={{ display: "flex" }}>
+                  <FloatingLabel
+                    controlId="amenities"
+                    label="Amenities*"
+                    className="mb-3"
+                    style={{ marginRight: "1rem" }}
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Please enter Amenities"
+                      style={{ textTransform: "capitalize" }}
+                      value={amenitiesInputData.amenities}
+                      onChange={amenitiesInputChange}
+                    />
+                  </FloatingLabel>
+                  <Button
+                    onClick={addAmenitiesInputData}
+                    style={{ height: "40px" }}
+                    className="custom-btn-reverse"
+                  >
+                    Add
+                  </Button>
+                </div>
+                <Container
+                  style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
+                >
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Amenities</th>
+                        <th>Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {amenitiesArray.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.amenities}</td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faX}
+                              onClick={() => deleteAmenitiesData(index)}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                  <p className="required-field-meassage">
+                    {addError.stayAmenitiesDetails}
+                  </p>
+                </Container>
+              </Col>
+              <Col>
+                <div style={{ display: "flex" }}>
+                  <FloatingLabel
+                    controlId="activities"
+                    label="Activities*"
+                    className="mb-3"
+                    style={{ marginRight: "1rem" }}
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Please enter Activities"
+                      style={{ textTransform: "capitalize" }}
+                      value={activitiesInputData.activities}
+                      onChange={activitiesInputChange}
+                    />
+                  </FloatingLabel>
+                  <Button
+                    onClick={addActivitiesInputData}
+                    style={{ height: "40px" }}
+                    className="custom-btn-reverse"
+                  >
+                    Add
+                  </Button>
+                </div>
+                <Container
+                  style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
+                >
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Activities</th>
+                        <th>Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {activitiesArray.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.activities}</td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faX}
+                              onClick={() => deleteActivitiesData(index)}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </Container>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div style={{ display: "flex" }}>
+                  <FloatingLabel
+                    controlId="facilities"
+                    label="Facilities*"
+                    className="mb-3"
+                    style={{ marginRight: "1rem" }}
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Please enter Facilities"
+                      style={{ textTransform: "capitalize" }}
+                      value={facilitiesInputData.facilities}
+                      onChange={facilitiesInputChange}
+                    />
+                  </FloatingLabel>
+                  <Button
+                    onClick={addFacilitiesInputData}
+                    style={{ height: "40px" }}
+                    className="custom-btn-reverse"
+                  >
+                    Add
+                  </Button>
+                </div>
+                <Container
+                  style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
+                >
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Facilities</th>
+                        <th>Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {facilitiesArray.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.facilities}</td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faX}
+                              onClick={() => deleteFacilitiesData(index)}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </Container>
+              </Col>
+              <Col>
+                <div style={{ display: "flex" }}>
+                  <FloatingLabel
+                    controlId="nearByPlaces"
+                    label="Near by Places*"
+                    className="mb-3"
+                    style={{ marginRight: "1rem" }}
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Please enter Near By Places"
+                      style={{ textTransform: "capitalize" }}
+                      value={nearByPlacesInputData.nearByPlaces}
+                      onChange={nearByPlacesInputChange}
+                    />
+                  </FloatingLabel>
+                  <Button
+                    onClick={addNearByPlacesInputData}
+                    style={{ height: "40px" }}
+                    className="custom-btn-reverse"
+                  >
+                    Add
+                  </Button>
+                </div>
+                <Container
+                  style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
+                >
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Near by Places</th>
+                        <th>Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {nearByPlacesArray.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.nearByPlaces}</td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faX}
+                              onClick={() => deleteNearByPlacesData(index)}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </Container>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div style={{ display: "flex" }}>
+                  <FloatingLabel
+                    controlId="termsAndCondition"
+                    label="Terms & Conditions*"
+                    className="mb-3"
+                    style={{ marginRight: "1rem" }}
+                  >
+                    <Form.Control
+                      as="textarea"
+                      placeholder="Please enter T&C"
+                      style={{ height: "100px", width: "30rem" }}
+                      value={termsAndConditionInputData.termsAndCondition || ""}
+                      onChange={data2}
+                    />
+                    <p className="required-field-meassage">
+                      {addError.stayTAndCDetails}
+                    </p>
+                  </FloatingLabel>
+                  <Button
+                    onClick={addTermsAndConditionInputData}
+                    style={{ height: "40px" }}
+                    className="custom-btn-reverse"
+                  >
+                    Add
+                  </Button>
+                </div>
+                <Container
+                  style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
+                >
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Terms and Conditions</th>
+                        <th>Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {termsAndConditionArray &&
+                        termsAndConditionArray.map((item, i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{item.termsAndCondition} </td>
+                              <td>
+                                <FontAwesomeIcon
+                                  icon={faX}
+                                  onClick={() =>
+                                    deleteTermsAndConditionInputData(i)
+                                  }
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </Table>
+                </Container>
+              </Col>
+            </Row>
+          </Container>
+          <br />
+
+          <Container className="add-stay-group-border">
+            <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
+              Stay Contact Details
+            </h4>
+            <Row>
+              <Col>
                 <FloatingLabel
-                  controlId="termsAndCondition"
-                  label="Terms & Conditions*"
+                  controlId="contactName"
+                  label="Contact Name*"
                   className="mb-3"
-                  style={{ marginRight: "1rem" }}
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Please enter contact name"
+                    style={{ textTransform: "capitalize" }}
+                    value={stays.contactPersonName}
+                    onChange={(e) =>
+                      setStays({ ...stays, contactPersonName: e.target.value })
+                    }
+                    isInvalid={!!addError.contactPersonName}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.contactPersonName}
+                  </p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="contactNumber"
+                  label="Contact Number*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Please enter contact number"
+                    value={stays.contactPersonNumber}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        contactPersonNumber: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.contactPersonNumber}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.contactPersonNumber}
+                  </p>
+                </FloatingLabel>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <FloatingLabel
+                  controlId="GoogleLocationLink"
+                  label="Google Location link"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Please enter Google Location link"
+                    value={stays.googleMapLink}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        googleMapLink: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.googleMapLink}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.googleMapLink}
+                  </p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="instaLink"
+                  label="Instagram account link"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Please enter Instagram page link"
+                    value={stays.instagramLink}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        instagramLink: e.target.value,
+                      })
+                    }
+                  />
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="fbLink"
+                  label="Facebook account link"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Please enter Facebook link"
+                    value={stays.facebookLink}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        facebookLink: e.target.value,
+                      })
+                    }
+                  />
+                </FloatingLabel>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <FloatingLabel
+                  controlId="aboutStay"
+                  label="Address of the stay"
                 >
                   <Form.Control
                     as="textarea"
-                    placeholder="Please enter T&C"
-                    style={{ height: "100px", width: "30rem" }}
-                    value={inputData2.termsAndCondition || ""}
-                    onChange={data2}
+                    placeholder="Leave a comment here"
+                    style={{ height: "100px" }}
+                    value={stays.address}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        address: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.address}
                   />
+                  <p className="required-field-meassage">{addError.address}</p>
                 </FloatingLabel>
-                <Button
-                  onClick={addInputData2}
-                  style={{ height: "40px" }}
-                  className="custom-btn-reverse"
+              </Col>
+            </Row>
+          </Container>
+          <br />
+
+          <Container className="add-stay-group-border">
+            <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
+              Stay Images
+            </h4>
+            <Row>
+              <Col>
+                <FloatingLabel
+                  controlId="uploadImage"
+                  label="Upload Image*"
+                  className="mb-3"
                 >
-                  Add
-                </Button>
-              </div>
-              <Container style={{ paddingRight: "8rem", marginLeft: "-1rem" }}>
-                <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Terms and Conditions</th>
-                      <th>Remove</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {array2 &&
-                      array2.map((item, i) => {
-                        return (
-                          <tr key={i}>
-                            <td>{item.termsAndCondition} </td>
-                            <td>
-                              <FontAwesomeIcon
-                                icon={faX}
-                                onClick={() => deleteData2(i)}
-                              />
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </Table>
-              </Container>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <FloatingLabel
-                controlId="uploadImage"
-                label="Upload Image*"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageChange}
-                />
-              </FloatingLabel>
-            </Col>
-          </Row>
-          {images.map((image, index) => (
-            <Image
-              key={index}
-              src={URL.createObjectURL(image)}
-              alt={`Uploaded image ${index}`}
-              style={{
-                width: "15rem",
-                height: "17rem",
-                margin: "4px",
-              }}
-              rounded
-            />
-          ))}
+                  <Form.Control
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageUpload}
+                  />
+                  <p className="required-field-meassage">{addError.images}</p>
+                </FloatingLabel>
+              </Col>
+            </Row>
+            <Row>
+              {images.map((image, index) => (
+                <Col key={index} xs={12} md={6} lg={4}>
+                  <Image src={image} fluid />
+                </Col>
+              ))}
+            </Row>
+          </Container>
           <Row>
             <Col>
               <br />
@@ -756,6 +1686,7 @@ function AddStays() {
                 type="submit"
                 className="custom-btn"
                 style={{ marginRight: "1rem" }}
+                onClick={submitStays}
               >
                 Submit
               </Button>
