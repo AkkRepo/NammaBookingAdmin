@@ -1,431 +1,181 @@
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { Modal, Button, Form, FloatingLabel, Col, Row } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
 
-//css
-import {
-  Row,
-  Col,
-  Container,
-  Form,
-  FloatingLabel,
-  Button,
-  Table,
-  Image,
-  Dropdown,
-} from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
-//page
-import AppNav from "../header/AppNav";
-import { Capitalize } from "../../core/utils";
-import { useNavigate } from "react-router-dom";
-import { StaysService } from "../../services/Stays";
+import { UsersService } from "../../services/Users";
 
 function TestingFile() {
-  const [newRoom, setRooms] = useState("");
-  const [newRoomType, setNewRoomType] = useState("");
-  //Pricing multiple input start
-  const addNewRoom = () => {
-    // Check if newRoom is not empty
-    if (newRoom) {
-      let list = pricingInputData.roomDetails;
-      list.push(newRoom);
-      setPricingInputData({
-        ...pricingInputData,
-        roomDetails: list,
-      });
-      setRooms(""); // Assuming setRooms is used to clear the newRoom input
-      console.log(pricingInputData);
-    } else {
-      // Handle the case where newRoom is empty
-      alert("No room data provided. Please enter the room details.");
-      // You can also set an error state and display it in your UI
-      // setError("No room data provided. Please enter the room details.");
-    }
-  };
+  const [show, setShow] = useState(false);
 
-  const [pricingInputData, setPricingInputData] = useState({
-    roomsName: "",
-    price: "",
-    packageIncludes: "",
-    roomDetails: [
-      {
-        noOfRooms: undefined,
-        roomType: "",
-      },
-    ],
-    //noOfRooms: [],
-    //roomType: [],
-    noOfGuests: "",
-  });
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(getUsersDetails());
 
-  const [pricingInputArr, setPricingInputArr] = useState([]);
-  let {
-    roomsName,
-    price,
-    packageIncludes,
-    roomDetails,
-    //noOfRooms,
-    //roomType,
-    noOfGuests,
-  } = pricingInputData;
-  function addData() {
-    // Check if any of the fields are empty
-    if (
-      !roomsName ||
-      !price ||
-      !packageIncludes ||
-      !roomDetails ||
-      //!(noOfRooms.length > 0) ||
-      //!roomType ||
-      !noOfGuests
-    ) {
-      alert("All fields are required");
-      return;
-    }
-
-    // Add data to the array
-    setPricingInputArr([
-      ...pricingInputArr,
-      {
-        roomsName,
-        price,
-        packageIncludes,
-        //noOfRooms,
-        //roomType,
-        roomDetails,
-        noOfGuests,
-      },
-    ]);
-
-    // Reset input fields
-    setPricingInputData({
-      roomsName: "",
-      price: "",
-      packageIncludes: "",
-      roomDetails: [
-        {
-          noOfRooms: undefined,
-          roomType: "",
-        },
-      ],
-      //noOfRooms: [],
-      //roomType: [],
-      noOfGuests: "",
-    });
-  }
-  function pricingDeleteData(i) {
-    console.log(i, "this index row wants to be deleted");
-    let total1 = [...pricingInputArr];
-    total1.splice(i, 1);
-    setPricingInputArr(total1);
-  }
-  //Pricing multiple input end
-
-  //post operation
+  const { id } = useParams();
   const navigate = useNavigate();
-  const [stays, setStays] = useState({
-    accommodationTypesDetails: [],
+  const [user, setUser] = useState({
+    id: undefined,
+    name: "",
+    email: "",
+    password: "",
+    roleId: 1,
+  });
+  const [error, setError] = useState({
+    name: "",
+    email: "",
+    password: "",
   });
 
-  const [addError, setAddError] = useState({
-    accommodationTypesDetails: "",
-  });
   const validation = () => {
     let tempError = {
-      accommodationTypesDetails: "",
+      name: "",
+      email: "",
+      password: "",
     };
     let valid = true;
-    if (pricingInputArr.length === 0) {
-      tempError.accommodationTypesDetails = "Accomodation Type is required";
+    if (!user.name) {
+      tempError.name = "Name is required";
       valid = false;
     }
-
-    setAddError(tempError);
+    if (!user.password) {
+      tempError.password = "Password is required";
+      valid = false;
+    }
+    if (!user.email) {
+      tempError.email = "Email is required";
+      valid = false;
+    }
+    setError(tempError);
     return valid;
   };
-  const submitStays = () => {
-    if (validation() || true) {
-      addStays();
+
+  const register = async () => {
+    if (validation()) {
+      try {
+        const res = await UsersService.updateUsers(user);
+        if (res.status === 200) {
+          alert("User Updated");
+          navigate("/dashboard/users/" + id);
+        } else {
+          alert("Error: " + res.status);
+        }
+      } catch (error) {
+        console.error("Register error:", error);
+        alert("Catch error: " + error.message);
+      }
     }
   };
-  const addStays = async () => {
+
+  const getUsersDetails = async () => {
     try {
-      const res = await StaysService.addStays({
-        ...stays,
-        accommodationTypesDetails: pricingInputArr.map((x) => ({
-          roomName: x.roomsName,
-          price: x.price,
-          includedPackages: x.packageIncludes,
-          noOfGuests: x.noOfGuests,
-          roomDetails: x.roomDetails,
-          //roomDetails: [
-          // {
-          //  noOfRooms: 1,
-          //  roomType: "a",
-          // },
-          //],
-        })),
-      });
+      const res = await UsersService.getUsersById(Number(id)); // Correct the method name if needed
       if (res.status === 200) {
-        alert("Stays Added");
-        navigate("/dashboard/addStays");
+        const d = res.data;
+        setUser({
+          id: d.id,
+          name: d.name,
+          email: d.email,
+          password: d.password,
+        });
       } else {
-        alert("Else error");
+        alert("getUsersDetails error: " + res.status);
       }
     } catch (error) {
-      alert("Catch error");
-      console.log(error);
+      console.error("getUsersDetails error:", error);
+      alert("getUsersDetails catch error: " + error.message);
     }
   };
 
+  {
+    /*useEffect(() => {
+    getUsersDetails();
+  }, []);
+ */
+  }
   return (
-    <div>
-      <header id="header">
-        <AppNav />
-      </header>
-      <div style={{ paddingBottom: "6rem" }} />
-      <h1 className="brownbear stays-h1 heading-color">Add New Stay</h1>
+    <>
+      <Button variant="primary" onClick={handleShow}>
+        Launch demo modal
+      </Button>
 
-      <Form>
-        <p
-          style={{
-            fontSize: "13px",
-            //fontWeight: "bold",
-            //textAlign: "right",
-            //marginLeft: "-6rem",
-            paddingLeft: "63rem",
-          }}
-        >
-          (*) marked fields are compulsory
-        </p>
-        <Container>
-          <br />
-          <Container className="add-stay-group-border">
-            <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
-              Accomodation Types
-              <p className="required-field-meassage">
-                {addError.accommodationTypesDetails}
-              </p>
-            </h4>
-            <Row>
-              <Col>
-                <FloatingLabel
-                  controlId="roomsName"
-                  label="Room Name"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Name"
-                    style={{ textTransform: "capitalize" }}
-                    value={pricingInputData.roomsName}
-                    onChange={(e) => {
-                      setPricingInputData({
-                        ...pricingInputData,
-                        roomsName: Capitalize(e.target.value),
-                      });
-                    }}
-                  />
-                </FloatingLabel>
-              </Col>
-              <Col>
-                <FloatingLabel controlId="price" label="Price" className="mb-3">
-                  <Form.Control
-                    type="number"
-                    placeholder="Price"
-                    style={{ textTransform: "capitalize" }}
-                    value={pricingInputData.price}
-                    onChange={(e) => {
-                      setPricingInputData({
-                        ...pricingInputData,
-                        price: e.target.value,
-                      });
-                    }}
-                  />
-                </FloatingLabel>
-              </Col>
+      <div>
+        <Modal show={show} onHide={handleClose} style={{ paddingTop: "12rem" }}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div style={{ padding: "1rem" }}>
               <Row>
                 <Col>
                   <FloatingLabel
-                    controlId="packageIncludes"
-                    label="Package Includes"
+                    controlId="updateName"
+                    label="Name"
                     className="mb-3"
                   >
                     <Form.Control
                       type="text"
                       placeholder="Name"
-                      style={{ textTransform: "capitalize" }}
-                      value={pricingInputData.packageIncludes}
-                      onChange={(e) => {
-                        setPricingInputData({
-                          ...pricingInputData,
-                          packageIncludes: e.target.value,
-                        });
-                      }}
+                      value={user.name}
+                      onChange={(e) =>
+                        setUser({ ...user, name: e.target.value })
+                      }
+                      isInvalid={!!error.name}
                     />
+                    <p>{error.name}</p>
                   </FloatingLabel>
                 </Col>
               </Row>
+
               <Row>
                 <Col>
                   <FloatingLabel
-                    controlId="noOfRooms"
-                    label="Total no. of Rooms"
+                    controlId="updateEmailId"
+                    label="Email Id"
                     className="mb-3"
                   >
                     <Form.Control
-                      type="number"
-                      placeholder="No. of Rooms"
-                      style={{ textTransform: "capitalize" }}
-                      value={newRoom}
-                      onChange={(e) => {
-                        setRooms(e.target.value);
-                      }}
+                      type="email"
+                      placeholder="Email Id"
+                      value={user.email}
+                      onChange={(e) =>
+                        setUser({ ...user, email: e.target.value })
+                      }
+                      isInvalid={!!error.email}
                     />
+                    <p>{error.email}</p>
                   </FloatingLabel>
-
-                  <Button onClick={addNewRoom} className="custom-btn">
-                    Add room
-                  </Button>
-                  <Container
-                    style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
-                  >
-                    <Table striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Rooms</th>
-                          <th>Room type</th>
-                          <th>Remove</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {pricingInputData?.roomDetails?.map((item, index) => (
-                          <tr key={index}>
-                            <td>{item.noOfRooms}</td>
-                            <td>{item.roomType}</td>
-                            <td>
-                              <FontAwesomeIcon
-                                icon={faX}
-                                onClick={() => {
-                                  let list = pricingInputData.roomDetails;
-                                  list.splice(index, 1);
-                                  setPricingInputData({
-                                    ...pricingInputData,
-                                    roomDetails: list,
-                                  });
-                                  console.log(pricingInputData);
-                                }}
-                              />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </Table>
-                  </Container>
                 </Col>
                 <Col>
                   <FloatingLabel
-                    controlId="roomType"
-                    label="Room Type"
+                    controlId="updatePassword"
+                    label="Password"
                     className="mb-3"
                   >
                     <Form.Control
                       type="text"
-                      placeholder="Room type"
-                      style={{ textTransform: "capitalize" }}
-                      value={newRoom}
-                      onChange={(e) => {
-                        setRooms(e.target.value);
-                      }}
+                      placeholder="Password"
+                      value={user.password}
+                      onChange={(e) =>
+                        setUser({ ...user, password: e.target.value })
+                      }
+                      isInvalid={!!error.password}
                     />
+                    <p>{error.password}</p>
                   </FloatingLabel>
                 </Col>
               </Row>
-              <Row>
-                <Col>
-                  <FloatingLabel
-                    controlId="noOfGuests"
-                    label="No. of Guests"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      type="number"
-                      placeholder="No. of Guests"
-                      style={{ textTransform: "capitalize" }}
-                      value={pricingInputData.noOfGuests}
-                      onChange={(e) => {
-                        setPricingInputData({
-                          ...pricingInputData,
-                          noOfGuests: e.target.value,
-                        });
-                      }}
-                    />
-                  </FloatingLabel>
-                </Col>
-                <Col>
-                  <Button onClick={addData} className="custom-btn-reverse">
-                    Add Accomodation Types
-                  </Button>
-                </Col>
-              </Row>
-              <Container style={{ paddingLeft: "10px", paddingRight: "10px" }}>
-                <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Price</th>
-                      <th>Package Includes</th>
-                      <th>Number of Rooms</th>
-                      <th>Room Type</th>
-                      <th>Number of Guests</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {pricingInputArr.map((info, i) => {
-                      return (
-                        <tr>
-                          <td>{info.roomsName}</td>
-                          <td>{info.price}</td>
-                          <td>{info.packageIncludes}</td>
-                          <td>{info.noOfRooms.join(",")}</td>
-                          <td>{info.roomType.join(",")}</td>
-                          <td>{info.noOfGuests}</td>
-                          <td>
-                            <FontAwesomeIcon
-                              icon={faX}
-                              onClick={() => pricingDeleteData(i)}
-                            />
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </Table>
-              </Container>
-            </Row>
-          </Container>
-          <br />
-
-          <Row>
-            <Col>
-              <br />
-              <Button
-                type="submit"
-                className="custom-btn"
-                style={{ marginRight: "1rem" }}
-                onClick={submitStays}
-              >
-                Submit
-              </Button>
-              <Button className="custom-btn" type="reset">
-                Clear
-              </Button>
-            </Col>
-          </Row>
-        </Container>
-        <br />
-      </Form>
-    </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={register}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    </>
   );
 }
 

@@ -66,18 +66,18 @@ function EditUsersModal(props) {
         const res = await UsersService.updateUsers(user);
         if (res.status === 200) {
           alert("User Updated");
-          navigate("/dashboard/users");
+          navigate("/dashboard/users/" + id);
         } else {
-          alert("Error while uplading");
+          alert("Else Error");
         }
       } catch (error) {
-        alert("Error while uplading");
+        alert("Catch");
       }
     }
   };
   const getUserDetails = async () => {
     try {
-      const res = await UsersService.geUsersById(id);
+      const res = await UsersService.geUsersById(Number(id));
       if (res.status === 200) {
         const d = res.data;
         setUser({
@@ -94,6 +94,9 @@ function EditUsersModal(props) {
     }
   };
 
+  {
+    /* */
+  }
   useEffect(() => {
     getUserDetails();
   }, []);
@@ -110,64 +113,12 @@ function EditUsersModal(props) {
           Modal heading
         </Modal.Title>
       </Modal.Header>
-      <div style={{ padding: "1rem" }}>
-        <Row>
-          <Col>
-            <FloatingLabel controlId="updateName" label="Name" className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder="Name"
-                value={user.name}
-                onChange={(e) => setUser({ ...user, name: e.target.value })}
-                isInvalid={!!error.name}
-              />
-              <p>{error.name}</p>
-            </FloatingLabel>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <FloatingLabel
-              controlId="updateEmailId"
-              label="Email Id"
-              className="mb-3"
-            >
-              <Form.Control
-                type="email"
-                placeholder="Email Id"
-                value={user.email}
-                onChange={(e) => setUser({ ...user, email: e.target.value })}
-                isInvalid={!!error.email}
-              />
-              <p>{error.email}</p>
-            </FloatingLabel>
-          </Col>
-          <Col>
-            <FloatingLabel
-              controlId="updatePassword"
-              label="Password"
-              className="mb-3"
-            >
-              <Form.Control
-                type="text"
-                placeholder="Password"
-                value={user.password}
-                onChange={(e) => setUser({ ...user, password: e.target.value })}
-                isInvalid={!!error.password}
-              />
-              <p>{error.password}</p>
-            </FloatingLabel>
-          </Col>
-        </Row>
-      </div>
 
       <Modal.Footer>
         <Row>
           <Col>
             <Button onClick={update} className="custom-btn">
-              {" "}
-              Update{" "}
+              Update
             </Button>
           </Col>
           <Col>

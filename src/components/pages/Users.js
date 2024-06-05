@@ -15,6 +15,7 @@ import DeleteUsers from "../subcomponents/DeleteUsers";
 import { UsersService } from "../../services/Users";
 import EditUsersCopy from "../subcomponents/EditUsersCopy";
 import MultipleInputField from "../subcomponents/MultipleInputField";
+import TestingFile from "../subcomponents/TestingFile";
 
 function Users(props) {
   const [addModalShow, setAddModalShow] = React.useState(false);
@@ -132,9 +133,9 @@ function Users(props) {
                   size="lg"
                   className="custom-icon"
                   onClick={() => setEditModalShow(true)}
-                />*/}
-
-                <EditUsers />
+                />
+              <EditUsers />*/}
+                <TestingFile />
               </td>
               <td>
                 <FontAwesomeIcon

@@ -23,9 +23,8 @@ import { useNavigate } from "react-router-dom";
 import { StaysService } from "../../services/Stays";
 
 function AddStays() {
-  const [newRoom, setRooms] = useState("");
-  const [newRoomType, setNewRoomType] = useState("");
-  const [newBed, setBed] = useState("");
+  //const [newRoomType, setNewRoomType] = useState("");
+  //const [newBed, setBed] = useState("");
   //Rating single decimal implementation start
 
   const [rating, setRating] = useState("");
@@ -62,7 +61,11 @@ function AddStays() {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
-          resolve(reader.result);
+          // Slice the base64 string to a specified length
+          const base64String = reader.result;
+          const slicedBase64String = base64String.slice(27); // Example length
+          resolve(slicedBase64String);
+          resolve(base64String);
         };
         reader.onerror = reject;
         reader.readAsDataURL(file);
@@ -248,7 +251,10 @@ function AddStays() {
   //terms and condition multiple input end
 
   //Pricing multiple input start
-  const addNewRoom = () => {
+
+  {
+    /*
+  const addNewRoom_1 = () => {
     // Check if newRoom and newRoomType are not empty
     if (newRoom && newRoomType) {
       let roomsList = pricingInputData.noOfRooms;
@@ -274,8 +280,40 @@ function AddStays() {
       // You can also set an error state and display it in your UI
       // setError("No room data provided. Please enter the room details.");
     }
+  }; */
+  }
+
+  const [newRoom, setRooms] = useState({
+    noofRooms: "",
+    roomType: "",
+  });
+  const addNewRoom = () => {
+    if (newRoom.noofRooms && newRoom.roomType) {
+      let list = pricingInputData.roomDetails;
+      list.push(newRoom);
+      setPricingInputData({
+        ...pricingInputData,
+        roomDetails: list,
+      });
+      setRooms({ noofRooms: "", roomType: "" });
+      console.log(pricingInputData);
+    } else {
+      alert("No bed data provided. Please enter the room details.");
+    }
+  };
+  const deleteNewRoom = (ind) => {
+    let list = pricingInputData.roomDetails;
+    list.splice(ind, 1);
+    setPricingInputData({
+      ...pricingInputData,
+      roomDetails: list,
+    });
+
+    console.log(pricingInputData);
   };
 
+  {
+    /*
   const addNewBed = () => {
     if (newBed) {
       let list = pricingInputData.noOfBeds;
@@ -289,19 +327,15 @@ function AddStays() {
     } else {
       alert("No bed data provided. Please enter the room details.");
     }
-  };
+  }; */
+  }
   const [pricingInputData, setPricingInputData] = useState({
     roomsName: "",
     price: "",
     packageIncludes: "",
-    //roomDetails: [
-    //{
-    // noOfRooms: undefined,
-    // roomType: "",
-    //},
-    //],
-    noOfRooms: [],
-    roomType: [],
+    roomDetails: [],
+    //noOfRooms: [],
+    //roomType: [],
     noOfGuests: "",
   });
 
@@ -310,9 +344,9 @@ function AddStays() {
     roomsName,
     price,
     packageIncludes,
-    //roomDetails,
-    noOfRooms,
-    roomType,
+    roomDetails,
+    //noOfRooms,
+    //roomType,
     noOfGuests,
   } = pricingInputData;
   function addData() {
@@ -321,9 +355,9 @@ function AddStays() {
       !roomsName ||
       !price ||
       !packageIncludes ||
-      //roomDetails ||
-      !(noOfRooms.length > 0) ||
-      !roomType ||
+      !roomDetails ||
+      //!(noOfRooms.length > 0) ||
+      //!roomType ||
       !noOfGuests
     ) {
       alert("All fields are required");
@@ -337,9 +371,9 @@ function AddStays() {
         roomsName,
         price,
         packageIncludes,
-        noOfRooms,
-        roomType,
-        //roomDetails,
+        //noOfRooms,
+        //roomType,
+        roomDetails,
         noOfGuests,
       },
     ]);
@@ -349,9 +383,9 @@ function AddStays() {
       roomsName: "",
       price: "",
       packageIncludes: "",
-      //roomDetails: [],
-      noOfRooms: [],
-      roomType: [],
+      roomDetails: [],
+      //noOfRooms: [],
+      //roomType: [],
       noOfGuests: "",
     });
   }
@@ -597,13 +631,16 @@ function AddStays() {
           price: x.price,
           includedPackages: x.packageIncludes,
           noOfGuests: x.noOfGuests,
-          //roomDetails: x.roomDetails,
-          roomDetails: [
-            {
-              noOfRooms: 1,
-              roomType: "a",
-            },
-          ],
+          roomDetails: x.roomDetails.map((x) => ({
+            noOfRooms: Number(x.noofRooms),
+            roomType: x.roomType,
+          })),
+          //roomDetails: [
+          // {
+          //  noOfRooms: 1,
+          /// roomType: "room Type",
+          // },
+          //],
         })),
         stayAmenitiesDetails: amenitiesArray.map((x) => ({
           amenity: x.amenities,
@@ -1016,9 +1053,12 @@ function AddStays() {
                       type="number"
                       placeholder="No. of Rooms"
                       style={{ textTransform: "capitalize" }}
-                      value={newRoom}
+                      value={newRoom.noofRooms}
                       onChange={(e) => {
-                        setRooms(e.target.value);
+                        setRooms({
+                          ...newRoom,
+                          noofRooms: Number(e.target.value),
+                        });
                       }}
                     />
                   </FloatingLabel>
@@ -1038,22 +1078,14 @@ function AddStays() {
                         </tr>
                       </thead>
                       <tbody>
-                        {pricingInputData?.noOfRooms?.map((item, index) => (
+                        {pricingInputData?.roomDetails?.map((item, index) => (
                           <tr key={index}>
-                            <td>{item}</td>
-                            <td>{item}</td>
+                            <td>{item.noofRooms}</td>
+                            <td>{item.roomType}</td>
                             <td>
                               <FontAwesomeIcon
                                 icon={faX}
-                                onClick={() => {
-                                  let list = pricingInputData.noOfRooms;
-                                  list.splice(index, 1);
-                                  setPricingInputData({
-                                    ...pricingInputData,
-                                    noOfRooms: list,
-                                  });
-                                  console.log(pricingInputData);
-                                }}
+                                onClick={() => deleteNewRoom(index)}
                               />
                             </td>
                           </tr>
@@ -1072,9 +1104,9 @@ function AddStays() {
                       type="text"
                       placeholder="Room type"
                       style={{ textTransform: "capitalize" }}
-                      value={newRoomType}
+                      value={newRoom.roomType}
                       onChange={(e) => {
-                        setNewRoomType(e.target.value);
+                        setRooms({ ...newRoom, roomType: e.target.value });
                       }}
                     />
                   </FloatingLabel>
@@ -1220,8 +1252,13 @@ function AddStays() {
                           <td>{info.roomsName}</td>
                           <td>{info.price}</td>
                           <td>{info.packageIncludes}</td>
-                          <td>{info.noOfRooms.join(",")}</td>
-                          <td>{info.roomType.join(",")}</td>
+                          <td>
+                            {info.roomDetails.map((x) => x.noofRooms).join(",")}
+                          </td>
+                          <td>
+                            {info.roomDetails.map((x) => x.roomType).join(",")}
+                          </td>
+
                           <td>{info.noOfGuests}</td>
                           <td>
                             <FontAwesomeIcon
@@ -1672,11 +1709,16 @@ function AddStays() {
               </Col>
             </Row>
             <Row>
-              {images.map((image, index) => (
-                <Col key={index} xs={12} md={6} lg={4}>
-                  <Image src={image} fluid />
-                </Col>
-              ))}
+              <div>
+                {images.map((base64Image, index) => (
+                  <Image
+                    key={index}
+                    src={`data:image/jpeg;base64,/9j/${base64Image}`}
+                    alt={`Uploaded ${index}`}
+                    style={{ width: "200px", height: "auto", margin: "10px" }}
+                  />
+                ))}
+              </div>
             </Row>
           </Container>
           <Row>
