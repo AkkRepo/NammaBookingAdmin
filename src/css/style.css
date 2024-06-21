@@ -12,11 +12,11 @@
 
 #header {
   padding: 15px 0;
-  position: fixed;
+  /*position: fixed;*/
   left: 0;
   right: 0;
   top: 0;
-  z-index: 9999;
+  z-index: 2000;
   background: #fff;
   box-shadow: 1px 1px 8px 1px rgba(227, 27, 27, 0.1);
   transition: all 0.5s linear;
@@ -224,6 +224,9 @@ html {
   background-color: #ffffff;
   border-color: #cecece;
   color: #1a1a1a;
+}
+.modal-90w {
+  max-width: 90%;
 }
 
 @media only screen and (max-width: 768px) {

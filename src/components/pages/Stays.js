@@ -16,6 +16,8 @@ import AddUsers from "../subcomponents/AddUsers";
 import { Loading, AppPagination } from "./Others/Index";
 import DeleteStays from "../subcomponents/DeleteStays";
 import { UsersService } from "../../services/Users";
+import Multiple from "../subcomponents/Multiple";
+import ViewStayDetails from "../subcomponents/ViewStayDetails";
 
 function Stays(props) {
   const [modalShow, setModalShow] = React.useState(false);
@@ -85,7 +87,7 @@ function Stays(props) {
       <header id="header">
         <AppNav />
       </header>
-      <div style={{ paddingBottom: "6rem" }} />
+      
       <h1 className="brownbear stays-h1 heading-color"> Stays</h1>
 
       <Row>
@@ -137,14 +139,16 @@ function Stays(props) {
                 <td></td>
                 <td></td>
                 <td>
-                  <Link to="/dashboard/ViewStayDetails">
+                  <ViewStayDetails user={i} />
+                  {/*<Link to="/dashboard/ViewStayDetails">
                     <FontAwesomeIcon
                       icon={faCircleInfo}
                       size="lg"
                       className="custom-icon"
                       style={{ marginLeft: "2.5rem" }}
+                      user={i}
                     />
-                  </Link>
+                  </Link> */}
                 </td>
                 {/* <td>
                   <Link to="/dashboard/editStays">

@@ -122,7 +122,7 @@ function EditStays() {
       <header id="header">
         <AppNav />
       </header>
-      <div style={{ paddingBottom: "6rem" }} />
+      
       <h1 className="brownbear stays-h1 heading-color">Edit Stay</h1>
 
       <Form onSubmit={handleSubmit}>

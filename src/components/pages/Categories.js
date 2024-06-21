@@ -78,7 +78,7 @@ function Categories() {
       <header id="header">
         <AppNav />
       </header>
-      <div style={{ paddingBottom: "6rem" }} />
+      
       <h1 className="brownbear stays-h1 heading-color"> Categories</h1>
 
       <Row>
