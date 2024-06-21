@@ -13,35 +13,57 @@ import {
 //pages
 import AppNav from "../header/AppNav";
 import AddUsers from "../subcomponents/AddUsers";
-
+import { Loading, AppPagination } from "./Others/Index";
 import DeleteStays from "../subcomponents/DeleteStays";
 import { UsersService } from "../../services/Users";
 
 function Stays(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [addModalShow, setAddModalShow] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const [paginations, setPaginations] = useState({
+    cur: 1,
+    max: 1,
+  });
 
   const [user, setUser] = useState([]);
-  const getUser = async () => {
+  const getUser = async (page = 1) => {
+    setLoading(true);
     try {
-      const res = await UsersService.getAllUsers();
+      const res = await UsersService.getAllUsers(page);
       if (res.data.records?.length > 0) {
         setUser(res.data.records);
+        setPaginations({
+          cur: res.data.pagination.page,
+          max: res.data.pagination.pages,
+        });
       } else {
         setUser([]);
+        setPaginations({
+          cur: 1,
+          max: 1,
+        });
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
+      setLoading(false);
+      setPaginations({
+        cur: 1,
+        max: 1,
+      });
     }
   };
   //for future
-  {/*const deleteUsers = async (id) => {
+  {
+    /*const deleteUsers = async (id) => {
     try {
       const val = window.confirm("Do you want to delete?");
       if (val) {
         const res = await UsersService.deleteUsers(id);
         if (res.status === 200) {
           alert("User delete");
+          getUser(paginations.cur);
         } else {
           alert("Error while else");
         }
@@ -49,7 +71,12 @@ function Stays(props) {
     } catch (error) {
       alert("Error while catch");
     }
-  }; */}
+  }; */
+  }
+
+  const changePage = (page) => {
+    getUser(page);
+  };
   useEffect(() => {
     getUser();
   }, []);
@@ -81,16 +108,9 @@ function Stays(props) {
         </Col>
         <Col>
           <div className="stays-add-button">
-            <Button
-              className="custom-btn"
-              onClick={() => setAddModalShow(true)}
-            >
-              Add User
-            </Button>
-            <AddUsers
-              show={addModalShow}
-              onHide={() => setAddModalShow(false)}
-            />
+            <Link to={"/dashboard/addStays"}>
+              <Button className="custom-btn">Add Stay</Button>
+            </Link>
           </div>
         </Col>
       </Row>
@@ -100,55 +120,56 @@ function Stays(props) {
           <tr>
             <th style={{ color: "#051e3c" }}>Sl no</th>
             <th style={{ color: "#051e3c" }}>Stay Name</th>
-            <th style={{ color: "#051e3c" }}>Stay Location</th>
             <th style={{ color: "#051e3c" }}>Contact name</th>
             <th style={{ color: "#051e3c" }}>Contact number</th>
             <th style={{ color: "#051e3c" }}>View Details</th>
-            <th style={{ color: "#051e3c" }}>Edit</th>
+            {/* <th style={{ color: "#051e3c" }}>Edit</th>*/}
+
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
         </thead>
         <tbody>
-          {user.map((i, index) => (
-            <tr key={i.id}>
-              <td>{index + 1}</td>
-              <td>{i.name}</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>
-                <Link to="/dashboard/ViewStayDetails">
+          {!loading &&
+            user.map((i, index) => (
+              <tr key={i.id}>
+                <td>{index + 1}</td>
+                <td>{i.name}</td>
+                <td></td>
+                <td></td>
+                <td>
+                  <Link to="/dashboard/ViewStayDetails">
+                    <FontAwesomeIcon
+                      icon={faCircleInfo}
+                      size="lg"
+                      className="custom-icon"
+                      style={{ marginLeft: "2.5rem" }}
+                    />
+                  </Link>
+                </td>
+                {/* <td>
+                  <Link to="/dashboard/editStays">
+                    <FontAwesomeIcon
+                      icon={faPen}
+                      size="lg"
+                      className="custom-icon"
+                    />
+                  </Link>
+                </td>*/}
+
+                <td>
                   <FontAwesomeIcon
-                    icon={faCircleInfo}
+                    icon={faTrash}
                     size="lg"
                     className="custom-icon"
-                    style={{ marginLeft: "2.5rem" }}
+                    onClick={() => setModalShow(true)}
                   />
-                </Link>
-              </td>
-              <td>
-                <Link to="/dashboard/editStays">
-                  <FontAwesomeIcon
-                    icon={faPen}
-                    size="lg"
-                    className="custom-icon"
+                  <DeleteStays
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
                   />
-                </Link>
-              </td>
-              <td>
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  size="lg"
-                  className="custom-icon"
-                  onClick={() => setModalShow(true)}
-                />
-                <DeleteStays
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
-                />
-              </td>
-            </tr>
-          ))}
+                </td>
+              </tr>
+            ))}
           {/*{records
             .filter((s) => {
               return search == ""
@@ -197,6 +218,14 @@ function Stays(props) {
             ))} */}
         </tbody>
       </Table>
+      {loading && <Loading />}
+      <div className="d-flex justify-content-center my-3">
+        <AppPagination
+          curPage={paginations.cur}
+          maxPage={paginations.max}
+          changePage={changePage}
+        />
+      </div>
 
       {/* Pagination impementation start 
       <nav style={{ marginLeft: "65rem" }}>
