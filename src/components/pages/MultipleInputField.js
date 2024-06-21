@@ -12,19 +12,14 @@ import {
 
 //pages
 import AppNav from "../header/AppNav";
-import amenitiesData from "./amenitiesData.json";
 import AddUsers from "../subcomponents/AddUsers";
-import EditUsers from "../subcomponents/EditUsers";
 
 import DeleteStays from "../subcomponents/DeleteStays";
 import { UsersService } from "../../services/Users";
-import EditUsersCopy from "../subcomponents/EditUsersCopy";
-import TestingFile from "../subcomponents/TestingFile";
 
 function MultipleInputField(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [addModalShow, setAddModalShow] = React.useState(false);
-  const [editModalShow, setEditModalShow] = React.useState(props.id);
 
   const [user, setUser] = useState([]);
   const getUser = async () => {
@@ -39,7 +34,8 @@ function MultipleInputField(props) {
       alert(error.message);
     }
   };
-  const deleteUsers = async (id) => {
+  //for future
+  {/*const deleteUsers = async (id) => {
     try {
       const val = window.confirm("Do you want to delete?");
       if (val) {
@@ -53,7 +49,7 @@ function MultipleInputField(props) {
     } catch (error) {
       alert("Error while catch");
     }
-  };
+  }; */}
   useEffect(() => {
     getUser();
   }, []);
@@ -126,10 +122,10 @@ function MultipleInputField(props) {
                     icon={faCircleInfo}
                     size="lg"
                     className="custom-icon"
-                    style={{marginLeft:"2.5rem"}}
+                    style={{ marginLeft: "2.5rem" }}
                   />
                 </Link>
-              </td>{" "}
+              </td>
               <td>
                 <Link to="/dashboard/editStays">
                   <FontAwesomeIcon

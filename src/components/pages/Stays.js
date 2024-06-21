@@ -11,65 +11,55 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 //pages
-import DeleteStays from "../subcomponents/DeleteStays";
 import AppNav from "../header/AppNav";
-import stayData from "../pages/stayData.json";
+import AddUsers from "../subcomponents/AddUsers";
 
-function Stays() {
+import DeleteStays from "../subcomponents/DeleteStays";
+import { UsersService } from "../../services/Users";
+
+function Stays(props) {
   const [modalShow, setModalShow] = React.useState(false);
+  const [addModalShow, setAddModalShow] = React.useState(false);
 
-  //const [searchQuery, setSearchQuery] = useState("");
-  /*const handleChange = (e) => {
-    setSearchQuery(e.target.value);
-  };*/
-
-  //fetch
-  const [stay, setStay] = useState([]);
-  const fetchStay = () => {
-    fetch(`http://localhost:8000/data`)
-      .then((response) => response.json())
-      .then((data) => setStay(data))
-      .catch((error) => console.log(error));
+  const [user, setUser] = useState([]);
+  const getUser = async () => {
+    try {
+      const res = await UsersService.getAllUsers();
+      if (res.data.records?.length > 0) {
+        setUser(res.data.records);
+      } else {
+        setUser([]);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
   };
-
+  //for future
+  {/*const deleteUsers = async (id) => {
+    try {
+      const val = window.confirm("Do you want to delete?");
+      if (val) {
+        const res = await UsersService.deleteUsers(id);
+        if (res.status === 200) {
+          alert("User delete");
+        } else {
+          alert("Error while else");
+        }
+      }
+    } catch (error) {
+      alert("Error while catch");
+    }
+  }; */}
   useEffect(() => {
-    fetchStay();
-  });
-
-  //pagination start
-  const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 5;
-  const lastIndex = currentPage * recordsPerPage;
-  const firstIndex = lastIndex - recordsPerPage;
-  const records = stayData.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(stay.length / recordsPerPage);
-  const numbers = [...Array(npage + 1).keys()].slice(1);
-  function changeCPage(id) {
-    setCurrentPage(id);
-  }
-  function prePage() {
-    if (currentPage != 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  }
-  function nextPage() {
-    if (currentPage != npage) {
-      setCurrentPage(currentPage + 1);
-    }
-  }
-  //pagination end
-
-  //search start
-  const [search, setSearch] = useState("");
-  console.log(search);
-
+    getUser();
+  }, []);
   return (
     <div style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
       <header id="header">
         <AppNav />
       </header>
       <div style={{ paddingBottom: "6rem" }} />
-      <h1 className="brownbear stays-h1 heading-color"> Namma Stays</h1>
+      <h1 className="brownbear stays-h1 heading-color"> Stays</h1>
 
       <Row>
         <Col>
@@ -83,18 +73,25 @@ function Stays() {
             >
               <Form.Control
                 type="text"
-                onChange={(e) => setSearch(e.target.value)}
+                //onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search"
               />
             </Form.Group>
           </Form>
         </Col>
         <Col>
-          <Link to="/dashboard/addStays">
-            <div className="stays-add-button">
-              <Button className="custom-btn">Add Stays</Button>
-            </div>
-          </Link>
+          <div className="stays-add-button">
+            <Button
+              className="custom-btn"
+              onClick={() => setAddModalShow(true)}
+            >
+              Add User
+            </Button>
+            <AddUsers
+              show={addModalShow}
+              onHide={() => setAddModalShow(false)}
+            />
+          </div>
         </Col>
       </Row>
 
@@ -112,62 +109,46 @@ function Stays() {
           </tr>
         </thead>
         <tbody>
-          {records &&
-            records
-              .filter((s) => {
-                return search == ""
-                  ? s
-                  : s.stayName.toLowerCase().includes(search);
-              })
-              .map(
-                ({
-                  i,
-                  id,
-                  stayName,
-                  stayLocation,
-                  contactName,
-                  contactNumber,
-                }) => (
-                  <tr>
-                    <td key={i}>{id}</td>
-                    <td key={i}>{stayName}</td>
-                    <td key={i}>{stayLocation}</td>
-                    <td key={i}>{contactName}</td>
-                    <td key={i}>{contactNumber}</td>
-                    <td>
-                      <Link to="/dashboard/ViewStayDetails">
-                        <FontAwesomeIcon
-                          icon={faCircleInfo}
-                          size="lg"
-                          className="custom-icon"
-                          style={{ marginLeft: "2.5rem" }}
-                        />
-                      </Link>
-                    </td>{" "}
-                    <td>
-                      <Link to="/dashboard/editStays">
-                        <FontAwesomeIcon
-                          icon={faPen}
-                          size="lg"
-                          className="custom-icon"
-                        />
-                      </Link>
-                    </td>
-                    <td>
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        size="lg"
-                        className="custom-icon"
-                        onClick={() => setModalShow(true)}
-                      />
-                      <DeleteStays
-                        show={modalShow}
-                        onHide={() => setModalShow(false)}
-                      />
-                    </td>
-                  </tr>
-                )
-              )}
+          {user.map((i, index) => (
+            <tr key={i.id}>
+              <td>{index + 1}</td>
+              <td>{i.name}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <Link to="/dashboard/ViewStayDetails">
+                  <FontAwesomeIcon
+                    icon={faCircleInfo}
+                    size="lg"
+                    className="custom-icon"
+                    style={{ marginLeft: "2.5rem" }}
+                  />
+                </Link>
+              </td>
+              <td>
+                <Link to="/dashboard/editStays">
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    size="lg"
+                    className="custom-icon"
+                  />
+                </Link>
+              </td>
+              <td>
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  size="lg"
+                  className="custom-icon"
+                  onClick={() => setModalShow(true)}
+                />
+                <DeleteStays
+                  show={modalShow}
+                  onHide={() => setModalShow(false)}
+                />
+              </td>
+            </tr>
+          ))}
           {/*{records
             .filter((s) => {
               return search == ""
@@ -205,11 +186,11 @@ function Stays() {
                     icon={faTrash}
                     size="lg"
                     className="custom-icon"
-                    onClick={() => setModalShow(true)}
+                    onClick={() => setDeleteModalShow(true)}
                   />
-                  <DeleteStays
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
+                  <DeleteActivities
+                    show={deleteModalShow}
+                    onHide={() => setDeleteModalShow(false)}
                   />
                 </td>
               </tr>
@@ -217,7 +198,7 @@ function Stays() {
         </tbody>
       </Table>
 
-      {/* Pagination impementation start */}
+      {/* Pagination impementation start 
       <nav style={{ marginLeft: "65rem" }}>
         <ul className="pagination">
           <li className="page-item">
@@ -256,7 +237,7 @@ function Stays() {
             </a>
           </li>
         </ul>
-      </nav>
+      </nav>*/}
       {/* Pagination impementation end */}
     </div>
   );
