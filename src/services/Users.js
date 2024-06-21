@@ -1,10 +1,11 @@
 import { ApiEndPoints, NetworkManager } from "../network";
 
 export class UsersService {
-  static getAllUsers = () => {
+  static getAllUsers = (page = 1, limit = 10, pages = 1) => {
     return NetworkManager.getInstance().appRequest({
       method: "get",
       url: ApiEndPoints.users,
+      params: { page, pages, limit },
     });
   };
 

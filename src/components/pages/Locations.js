@@ -12,23 +12,40 @@ import AddLocations from "../subcomponents/AddLocations";
 import EditLocations from "../subcomponents/EditLocations";
 import DeleteLocations from "../subcomponents/DeleteLocations";
 import { LocationsService } from "../../services/Locations";
+import { AppPagination, Loading } from "./Others/Index";
 
 function Locations() {
   const [deleteModalShow, setDeleteModalShow] = React.useState(false);
   const [addModalShow, setAddModalShow] = React.useState(false);
   const [editModalShow, setEditModalShow] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const [pagination, setPagination] = useState({
+    cur: 1,
+    max: 1,
+  });
 
   const [locations, setLocations] = useState([]);
-  const getLocations = async () => {
+  const getLocations = async (page = 1) => {
+    setLoading(true);
     try {
-      const res = await LocationsService.getAllLocations();
+      const res = await LocationsService.getAllLocations(page);
       if (res.data?.length > 0) {
         setLocations(res.data);
+        setPagination({
+          cur: res.pagination_data.page,
+          max: res.pagination_data.pages,
+        });
       } else {
         setLocations([]);
+        setPagination({
+          cur: 1,
+          max: 1,
+        });
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
+      setLoading(false);
     }
   };
 
@@ -48,6 +65,9 @@ function Locations() {
     }
   };
 
+  const changePage = (page) => {
+    getLocations(page);
+  };
   useEffect(() => {
     getLocations();
   }, []);
@@ -103,32 +123,34 @@ function Locations() {
           </tr>
         </thead>
         <tbody>
-          {locations.map((i, index) => (
-            <tr key={i.id}>
-              <td>{index + 1}</td>
-              <td>{i.location}</td>
-              <td>
-                <FontAwesomeIcon
-                  icon={faPen}
-                  size="lg"
-                  className="custom-icon"
-                  onClick={() => setEditModalShow(true)}
-                />
-                <EditLocations
-                  show={editModalShow}
-                  onHide={() => setEditModalShow(false)}
-                />
-              </td>
-              <td>
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  size="lg"
-                  className="custom-icon"
-                  onClick={(e) => deleteLocations(i.id)}
-                />
-              </td>
-            </tr>
-          ))}
+          {!loading &&
+            locations.map((i, index) => (
+              <tr key={i.id}>
+                <td>{index + 1}</td>
+                <td>{i.location}</td>
+                <td>
+                  <EditLocations location={i} />
+                  {/*<FontAwesomeIcon
+                    icon={faPen}
+                    size="lg"
+                    className="custom-icon"
+                    onClick={() => setEditModalShow(true)}
+                  />
+                  <EditLocations
+                    show={editModalShow}
+                    onHide={() => setEditModalShow(false)}
+                  /> */}
+                </td>
+                <td>
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    size="lg"
+                    className="custom-icon"
+                    onClick={(e) => deleteLocations(i.id)}
+                  />
+                </td>
+              </tr>
+            ))}
         </tbody>
         {/*
         <tbody>
@@ -164,6 +186,14 @@ function Locations() {
           ))}
         </tbody> */}
       </Table>
+      {loading && <Loading />}
+      <div className="d-flex justify-content-center my-3">
+        <AppPagination
+          curPage={pagination.cur}
+          maxPage={pagination.max}
+          changePage={changePage}
+        />
+      </div>
     </div>
   );
 }

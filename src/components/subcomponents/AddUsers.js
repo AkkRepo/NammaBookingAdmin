@@ -6,12 +6,14 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Row, Col, Form, FloatingLabel } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { LoadingModal } from "../pages/Others/Index";
 
 //pages
 import { UsersService } from "../../services/Users";
 
 function AddUsers(props) {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState({
     name: "",
     email: "",
@@ -53,6 +55,7 @@ function AddUsers(props) {
   };
 
   const addUsers = async () => {
+    setLoading(true);
     try {
       console.log();
       const res = await UsersService.addUsers(users);
@@ -62,8 +65,10 @@ function AddUsers(props) {
       } else {
         alert("Error while Adding");
       }
+      setLoading(false);
     } catch (error) {
       alert("Error while registration");
+      setLoading(false);
     }
   };
 
@@ -152,6 +157,7 @@ function AddUsers(props) {
           </Row>
         </Modal.Footer>
       </Modal>
+      <LoadingModal show={loading} />
     </>
   );
 }
