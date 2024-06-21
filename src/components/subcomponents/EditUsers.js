@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-
-import { Link } from "react-router-dom";
-
-//css
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Table,
   Row,
@@ -15,18 +12,15 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-//pages
 import AppNav from "../header/AppNav";
 import AddUsers from "../subcomponents/AddUsers";
 import DeleteUsers from "../subcomponents/DeleteUsers";
 import { UsersService } from "../../services/Users";
 import EditUsersCopy from "../subcomponents/EditUsersCopy";
-import { useNavigate, useParams } from "react-router-dom";
 
-function EditUsersModal(props) {
-  const { id } = useParams();
+function EditUsersModal({ show, onHide, user }) {
   const navigate = useNavigate();
-  const [user, setUser] = useState({
+  const [users, setUsers] = useState({
     id: undefined,
     name: "",
     email: "",
@@ -38,6 +32,7 @@ function EditUsersModal(props) {
     email: "",
     password: "",
   });
+
   const validation = () => {
     let tempError = {
       name: "",
@@ -45,28 +40,29 @@ function EditUsersModal(props) {
       password: "",
     };
     let valid = true;
-    if (!user.name) {
+    if (!users.name) {
       tempError.name = "Name is required";
       valid = false;
     }
-    if (!user.email) {
+    if (!users.email) {
       tempError.email = "Email is required";
       valid = false;
     }
-    if (!user.password) {
+    if (!users.password) {
       tempError.password = "Password is required";
       valid = false;
     }
     setError(tempError);
     return valid;
   };
+
   const update = async () => {
     if (validation()) {
       try {
-        const res = await UsersService.updateUsers(user);
+        const res = await UsersService.updateUsers(users);
         if (res.status === 200) {
           alert("User Updated");
-          navigate("/dashboard/users/" + id);
+          navigate("/dashboard/users");
         } else {
           alert("Else Error");
         }
@@ -75,45 +71,85 @@ function EditUsersModal(props) {
       }
     }
   };
-  const getUserDetails = async () => {
-    try {
-      const res = await UsersService.geUsersById(Number(id));
-      if (res.status === 200) {
-        const d = res.data;
-        setUser({
-          id: d.id,
-          name: d.name,
-          email: d.email,
-          password: d.password,
-        });
-      } else {
-        alert("getUserDetails if else issue");
-      }
-    } catch (error) {
-      alert("getUserDetails catch error");
-    }
-  };
 
-  {
-    /* */
-  }
   useEffect(() => {
-    getUserDetails();
-  }, []);
+    if (show) {
+      setUsers({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        roleId: 1,
+      });
+    }
+  }, [show]);
 
   return (
     <Modal
-      {...props}
+      show={show}
+      onHide={onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
+          Update users
         </Modal.Title>
       </Modal.Header>
+      <div style={{ padding: "1rem" }}>
+        <Row>
+          <Col>
+            <FloatingLabel controlId="updateName" label="Name" className="mb-3">
+              <Form.Control
+                type="text"
+                placeholder="Name"
+                value={users.name}
+                onChange={(e) => setUsers({ ...users, name: e.target.value })}
+                isInvalid={!!error.name}
+              />
+              <p>{error.name}</p>
+            </FloatingLabel>
+          </Col>
+        </Row>
 
+        <Row>
+          <Col>
+            <FloatingLabel
+              controlId="updateEmailId"
+              label="Email Id"
+              className="mb-3"
+            >
+              <Form.Control
+                type="email"
+                placeholder="Email Id"
+                value={users.email}
+                onChange={(e) => setUsers({ ...users, email: e.target.value })}
+                isInvalid={!!error.email}
+              />
+              <p>{error.email}</p>
+            </FloatingLabel>
+          </Col>
+          <Col>
+            <FloatingLabel
+              controlId="updatePassword"
+              label="Password"
+              className="mb-3"
+            >
+              <Form.Control
+                type="text"
+                placeholder="Password"
+                value={users.password}
+                onChange={(e) =>
+                  setUsers({ ...users, password: e.target.value })
+                }
+                isInvalid={!!error.password}
+              />
+              <p>{error.password}</p>
+            </FloatingLabel>
+          </Col>
+        </Row>
+      </div>
       <Modal.Footer>
         <Row>
           <Col>
@@ -122,7 +158,7 @@ function EditUsersModal(props) {
             </Button>
           </Col>
           <Col>
-            <Button onClick={props.onHide} className="custom-btn">
+            <Button onClick={onHide} className="custom-btn">
               Cancel
             </Button>
           </Col>
@@ -132,9 +168,15 @@ function EditUsersModal(props) {
   );
 }
 
-function EditUsers() {
-  const [modalShow, setModalShow] = React.useState(false);
-
+function EditUsers(props) {
+  const [modalShow, setModalShow] = useState(false);
+  const [user, setUser] = useState({
+    id: undefined,
+    name: "",
+    email: "",
+    password: "",
+    roleId: 1,
+  });
   return (
     <>
       <FontAwesomeIcon
@@ -143,15 +185,11 @@ function EditUsers() {
         className="custom-icon"
         onClick={() => setModalShow(true)}
       />
-      <EditUsersModal show={modalShow} onHide={() => setModalShow(false)} />
-      {/*<Button variant="primary" onClick={() => setModalShow(true)}>
-        Launch vertically centered modal
-      </Button>
-
-      <MyVerticallyCenteredModal
+      <EditUsersModal
         show={modalShow}
         onHide={() => setModalShow(false)}
-      /> */}
+        user={props.user}
+      />
     </>
   );
 }

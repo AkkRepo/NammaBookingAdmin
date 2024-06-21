@@ -1,36 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-//css
 import { Table, Row, Col, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
-
-//pages
 import AppNav from "../header/AppNav";
-import amenitiesData from "./amenitiesData.json";
 import AddCategories from "../subcomponents/AddCategories";
-import { AmenitiesService } from "../../services/Amenities";
+import { CategoriesService } from "../../services/Categories";
 import EditCategories from "../subcomponents/EditCategories";
 import DeleteCategories from "../subcomponents/DeleteCategories";
-import { CategoriesService } from "../../services/Categories";
+import { Loading, AppPagination } from "./Others/Index";
+import TestingFile from "../subcomponents/TestingFile";
 
 function Categories() {
-  const [deleteModalShow, setDeleteModalShow] = React.useState(false);
-  const [addModalShow, setAddModalShow] = React.useState(false);
-  const [editModalShow, setEditModalShow] = React.useState(false);
+  const [deleteModalShow, setDeleteModalShow] = useState(false);
+  const [addModalShow, setAddModalShow] = useState(false);
+  const [editModalShow, setEditModalShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [pagination, setPagination] = useState({
+    cur: 1,
+    max: 1,
+  });
 
   const [categories, setCategories] = useState([]);
-  const getCategories = async () => {
+
+  const getCategories = async (page = 1) => {
+    setLoading(true);
     try {
-      const res = await CategoriesService.getAllCategories();
+      const res = await CategoriesService.getAllCategories(page);
       if (res.data?.length > 0) {
         setCategories(res.data);
+        setPagination({
+          cur: res.pagination_data.page,
+          max: res.pagination_data.pages,
+        });
       } else {
         setCategories([]);
+        setPagination({
+          cur: 1,
+          max: 1,
+        });
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
+      setLoading(false);
     }
   };
 
@@ -41,7 +54,7 @@ function Categories() {
         const res = await CategoriesService.deleteCategory(id);
         if (res.status === 200) {
           alert("Category deleted");
-          getCategories();
+          getCategories(pagination.cur);
         } else {
           alert("Error while else");
         }
@@ -50,6 +63,10 @@ function Categories() {
       alert("Error while catch");
       console.log(id);
     }
+  };
+
+  const changePage = (page) => {
+    getCategories(page);
   };
 
   useEffect(() => {
@@ -108,67 +125,34 @@ function Categories() {
           </tr>
         </thead>
         <tbody>
-          {categories.map((i, index) => (
-            <tr key={i.id}>
-              <td>{index + 1}</td>
-              <td>{i.category}</td>
-              <td>
-                <FontAwesomeIcon
-                  icon={faPen}
-                  size="lg"
-                  className="custom-icon"
-                  onClick={() => setEditModalShow(true)}
-                />
-                <EditCategories
-                  show={editModalShow}
-                  onHide={() => setEditModalShow(false)}
-                />
-              </td>
-              <td>
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  size="lg"
-                  className="custom-icon"
-                  onClick={(e) => deleteCategory(i.id)}
-                />
-              </td>
-            </tr>
-          ))}
+          {!loading &&
+            categories.map((i, index) => (
+              <tr key={i.id}>
+                <td>{index + 1}</td>
+                <td>{i.category}</td>
+                <td>
+                  <EditCategories category={i} />
+                </td>
+                <td>
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    size="lg"
+                    className="custom-icon"
+                    onClick={(e) => deleteCategory(i.id)}
+                  />
+                </td>
+              </tr>
+            ))}
         </tbody>
-        {/*
-        <tbody>
-          {amenities.map((i, index) => (
-            <tr key={i.id}>
-              <td>{index + 1}</td>
-              <td>{i.amenity}</td>{" "}
-              <td>
-                <FontAwesomeIcon
-                  icon={faPen}
-                  size="lg"
-                  className="custom-icon"
-                  onClick={() => setEditModalShow(true)}
-                />
-                <EditAmenities
-                  show={editModalShow}
-                  onHide={() => setEditModalShow(false)}
-                />
-              </td>
-              <td>
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  size="lg"
-                  className="custom-icon"
-                  onClick={() => setDeleteModalShow(true)}
-                />
-                <DeleteAmenities
-                  show={deleteModalShow}
-                  onHide={() => setDeleteModalShow(false)}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody> */}
       </Table>
+      {loading && <Loading />}
+      <div className="d-flex justify-content-center my-3">
+        <AppPagination
+          curPage={pagination.cur}
+          maxPage={pagination.max}
+          changePage={changePage}
+        />
+      </div>
     </div>
   );
 }

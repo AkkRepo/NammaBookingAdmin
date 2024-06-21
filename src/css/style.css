@@ -213,6 +213,19 @@ html {
   color: red;
 }
 
+.categories-styling {
+  background-color: #ffffff;
+  border-color: #cecece;
+  color: #1a1a1a;
+  text-align: left;
+}
+
+.categories-styling:hover {
+  background-color: #ffffff;
+  border-color: #cecece;
+  color: #1a1a1a;
+}
+
 @media only screen and (max-width: 768px) {
   .login-card-align {
     z-index: 10;

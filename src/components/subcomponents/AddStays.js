@@ -21,12 +21,14 @@ import { LocationsService } from "../../services/Locations";
 import { Capitalize } from "../../core/utils";
 import { useNavigate } from "react-router-dom";
 import { StaysService } from "../../services/Stays";
+import { LoadingModal } from "../pages/Others/Index";
 
 function AddStays() {
   //const [newRoomType, setNewRoomType] = useState("");
   //const [newBed, setBed] = useState("");
   //Rating single decimal implementation start
 
+  const [loading, setLoading] = useState(false);
   const [rating, setRating] = useState("");
   const [error, setError] = useState("");
 
@@ -52,7 +54,7 @@ function AddStays() {
     setRating(0);
   };
 
-  //Image upload
+  // Image upload
   const [images, setImages] = useState([]);
 
   const handleImageUpload = (event) => {
@@ -61,11 +63,9 @@ function AddStays() {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
-          // Slice the base64 string to a specified length
           const base64String = reader.result;
           const slicedBase64String = base64String.slice(27); // Example length
           resolve(slicedBase64String);
-          resolve(base64String);
         };
         reader.onerror = reject;
         reader.readAsDataURL(file);
@@ -74,10 +74,14 @@ function AddStays() {
 
     Promise.all(promises).then((base64Images) => {
       console.log(base64Images); // Display the base64 images in the console
-      setImages(base64Images);
+      setImages((prevImages) => [...prevImages, ...base64Images]);
     });
   };
 
+  const handleRemoveImage = (index) => {
+    console.log(`Removing image at index ${index}:`, images[index]);
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
   const handleImageBase64 = (e) => {
     //const file = e.target.files[0];
     const file = Array.from(e.target.files);
@@ -606,6 +610,7 @@ function AddStays() {
     }
   };
   const addStays = async () => {
+    setLoading(true);
     try {
       const res = await StaysService.addStays({
         ...stays,
@@ -666,9 +671,11 @@ function AddStays() {
       } else {
         alert("Else error");
       }
+      setLoading(false);
     } catch (error) {
       alert("Catch error");
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -720,7 +727,7 @@ function AddStays() {
               <Col>
                 <FloatingLabel controlId="location" label="Location*">
                   <Form.Select
-                    aria-label="Location"
+                    aria-label="Location*"
                     value={stays.locationId}
                     onChange={(e) =>
                       setStays({
@@ -741,13 +748,11 @@ function AddStays() {
                     {addError.locationId}
                   </p>
                 </FloatingLabel>
-              </Col>
-            </Row>
-            <Row>
+              </Col>{" "}
               <Col>
                 <FloatingLabel
                   controlId="rating"
-                  label="Rating"
+                  label="Rating*"
                   className="mb-3"
                 >
                   <Form.Control
@@ -762,31 +767,21 @@ function AddStays() {
                   </Form.Control.Feedback>
                 </FloatingLabel>
               </Col>
+            </Row>
+            <Row>
               <Col>
-                {/*<FloatingLabel
-                  controlId="floatingSelect"
-                  label="Works with selects"
-                >
-                  <Form.Select aria-label="Floating label select example">
-                    <Form>
-                      {categoriesDropdown.map((i, index) => (
-                        <option>
-                          <Form.Check
-                            key={i.id}
-                            type="checkbox"
-                            id={i.id}
-                            label={i.category}
-                            checked={selectedOptions.includes(i)}
-                            onChange={() => handleCheckboxChange(i)}
-                          />
-                        </option>
-                      ))}
-                    </Form>
-                  </Form.Select>
-                </FloatingLabel> */}
                 <Dropdown>
-                  <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                    Categories
+                  <Dropdown.Toggle
+                    className="categories-styling"
+                    id="dropdown-basic"
+                    size="lg"
+                    style={{
+                      width: "21.5rem",
+                      fontSize: "1rem",
+                      height: "3.5rem",
+                    }}
+                  >
+                    Categories*
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     {categoriesDropdown.map((i, index) => (
@@ -805,12 +800,10 @@ function AddStays() {
                   {addError.stayCategoriesDetails}
                 </p>
               </Col>
-            </Row>
-            <Row>
               <Col>
                 <FloatingLabel
                   controlId="priceStartsFrom"
-                  label="Price starts from"
+                  label="Price starts from*"
                   className="mb-3"
                 >
                   <Form.Control
@@ -831,9 +824,9 @@ function AddStays() {
                 </FloatingLabel>
               </Col>
               <Col>
-                <FloatingLabel controlId="select" label="Select">
+                <FloatingLabel controlId="select" label="Select*">
                   <Form.Select
-                    aria-label="Select"
+                    aria-label="Select*"
                     value={stays.select}
                     onChange={(e) =>
                       setStays({
@@ -855,7 +848,7 @@ function AddStays() {
             </Row>
             <Row>
               <Col>
-                <FloatingLabel controlId="aboutStay" label="About Stay">
+                <FloatingLabel controlId="aboutStay" label="About Stay*">
                   <Form.Control
                     as="textarea"
                     placeholder="Leave a comment here"
@@ -1062,43 +1055,13 @@ function AddStays() {
                       }}
                     />
                   </FloatingLabel>
-
-                  <Button onClick={addNewRoom} className="custom-btn">
-                    Add room
-                  </Button>
-                  <Container
-                    style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
-                  >
-                    <Table striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Rooms</th>
-                          <th>Room type</th>
-                          <th>Remove</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {pricingInputData?.roomDetails?.map((item, index) => (
-                          <tr key={index}>
-                            <td>{item.noofRooms}</td>
-                            <td>{item.roomType}</td>
-                            <td>
-                              <FontAwesomeIcon
-                                icon={faX}
-                                onClick={() => deleteNewRoom(index)}
-                              />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </Table>
-                  </Container>
                 </Col>
-                <Col>
+                <Col style={{ display: "flex" }}>
                   <FloatingLabel
                     controlId="roomType"
                     label="Room Type"
                     className="mb-3"
+                    style={{ width: "27rem" }}
                   >
                     <Form.Control
                       type="text"
@@ -1110,102 +1073,48 @@ function AddStays() {
                       }}
                     />
                   </FloatingLabel>
-                  {/*
-
-                  
-                  <FloatingLabel
-                    controlId="roomType"
-                    label="Room Type"
-                    className="mb-3"
+                  <div
+                    style={{
+                      paddingLeft: "1rem",
+                      paddingTop: "0.5rem",
+                      width: "5rem",
+                    }}
                   >
-                    <Form.Control
-                      type="text"
-                      placeholder="Room Type"
-                      style={{ textTransform: "capitalize" }}
-                      value={pricingInputData.roomType}
-                      onChange={(e) => {
-                        setPricingInputData({
-                          ...pricingInputData,
-                          roomType: Capitalize(e.target.value),
-                        });
-                      }}
-                    />
-                  </FloatingLabel>
-                  
-                  
-                  <FloatingLabel
-                    controlId="roomType"
-                    label="Room Type"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      type="text"
-                      placeholder="Room Type"
-                      style={{ textTransform: "capitalize" }}
-                      value={pricingInputData.roomType}
-                      onChange={(e) => {
-                        setPricingInputData({
-                          ...pricingInputData,
-                          roomType: Capitalize(e.target.value),
-                        });
-                      }}
-                    />
-                  </FloatingLabel> */}
-                  {/*
-                  <FloatingLabel
-                    controlId="noOfBeds"
-                    label="Total no. of Beds"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      type="number"
-                      placeholder="Total no. of Beds"
-                      style={{ textTransform: "capitalize" }}
-                      value={newBed}
-                      onChange={(e) => {
-                        setBed(e.target.value);
-                      }}
-                    />
-                    <br />
-                    <Button onClick={addNewBed} className="custom-btn">
-                      Add Bed
+                    <Button
+                      onClick={addNewRoom}
+                      className="custom-btn"
+                      style={{ height: "3rem" }}
+                    >
+                      Add
                     </Button>
-                  </FloatingLabel>
-                  <Container
-                    style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
-                  >
-                    <Table striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Beds</th>
-                          <th>Remove</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {pricingInputData?.noOfBeds?.map((item, index) => (
-                          <tr key={index}>
-                            <td>{item}</td>
-                            <td>
-                              <FontAwesomeIcon
-                                icon={faX}
-                                onClick={() => {
-                                  let list = pricingInputData.noOfBeds;
-                                  list.splice(index, 1);
-                                  setPricingInputData({
-                                    ...pricingInputData,
-                                    noOfBeds: list,
-                                  });
-                                  console.log(pricingInputData);
-                                }}
-                              />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </Table>
-                  </Container> */}
+                  </div>
                 </Col>
               </Row>
+              <Container style={{ paddingRight: "8rem" }}>
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Rooms</th>
+                      <th>Room type</th>
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pricingInputData?.roomDetails?.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.noofRooms}</td>
+                        <td>{item.roomType}</td>
+                        <td>
+                          <FontAwesomeIcon
+                            icon={faX}
+                            onClick={() => deleteNewRoom(index)}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Container>
               <Row>
                 <Col>
                   <FloatingLabel
@@ -1704,19 +1613,39 @@ function AddStays() {
                     multiple
                     onChange={handleImageUpload}
                   />
-                  <p className="required-field-meassage">{addError.images}</p>
                 </FloatingLabel>
               </Col>
             </Row>
             <Row>
               <div>
                 {images.map((base64Image, index) => (
-                  <Image
+                  <div
                     key={index}
-                    src={`data:image/jpeg;base64,/9j/${base64Image}`}
-                    alt={`Uploaded ${index}`}
-                    style={{ width: "200px", height: "auto", margin: "10px" }}
-                  />
+                    style={{
+                      display: "inline-block",
+                      position: "relative",
+                      margin: "10px",
+                    }}
+                  >
+                    <Image
+                      src={`data:image/jpeg;base64,/9j/${base64Image}`}
+                      alt={`Uploaded ${index}`}
+                      style={{ width: "200px", height: "auto" }}
+                      thumbnail
+                    />
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                      }}
+                      onClick={() => handleRemoveImage(index)}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
                 ))}
               </div>
             </Row>
@@ -1740,6 +1669,7 @@ function AddStays() {
         </Container>
         <br />
       </Form>
+      <LoadingModal show={loading} />
     </div>
   );
 }

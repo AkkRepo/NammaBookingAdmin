@@ -16,22 +16,44 @@ import { UsersService } from "../../services/Users";
 import EditUsersCopy from "../subcomponents/EditUsersCopy";
 import MultipleInputField from "../subcomponents/MultipleInputField";
 import TestingFile from "../subcomponents/TestingFile";
+import { Loading, AppPagination } from "./Others/Index";
 
 function Users(props) {
   const [addModalShow, setAddModalShow] = React.useState(false);
   const [editModalShow, setEditModalShow] = React.useState(props.id);
+  const [loading, setLoading] = useState(false);
+  const [paginations, setPaginations] = useState({
+    cur: 1,
+    max: 1,
+  });
 
   const [user, setUser] = useState([]);
-  const getUser = async () => {
+  const getUser = async (page = 1) => {
+    setLoading(true);
     try {
-      const res = await UsersService.getAllUsers();
+      const res = await UsersService.getAllUsers(page);
+      console.log(res);
       if (res.data.records?.length > 0) {
         setUser(res.data.records);
+        setPaginations({
+          cur: res.data.pagination.page,
+          max: res.data.pagination.pages,
+        });
       } else {
         setUser([]);
+        setPaginations({
+          cur: 1,
+          max: 1,
+        });
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
+      setLoading(false);
+      setPaginations({
+        cur: 1,
+        max: 1,
+      });
     }
   };
   const deleteUsers = async (id) => {
@@ -41,6 +63,7 @@ function Users(props) {
         const res = await UsersService.deleteUsers(id);
         if (res.status === 200) {
           alert("User delete");
+          getUser(paginations.cur);
         } else {
           alert("Error while else");
         }
@@ -49,6 +72,11 @@ function Users(props) {
       alert("Error while catch");
     }
   };
+
+  const changePage = (page) => {
+    getUser(page);
+  };
+
   useEffect(() => {
     getUser();
   }, []);
@@ -104,12 +132,17 @@ function Users(props) {
           </tr>
         </thead>
         <tbody>
-          {user.map((i, index) => (
-            <tr key={i.id}>
-              <td>{index + 1}</td>
-              <td>{i.name}</td>
-              <td>
-                {/*<EditUsersCopy
+          {!loading &&
+            user.map((i, index) => (
+              <tr key={i.id}>
+                <td>{index + 1}</td>
+                <td>{i.name}</td>
+                <td>
+                  <EditUsers user={i} />
+
+                  {/*
+                  <EditUsers />
+                  
                 //name={i.name}
                 // email={i.email}
                 // password={i.password}
@@ -134,26 +167,26 @@ function Users(props) {
                   className="custom-icon"
                   onClick={() => setEditModalShow(true)}
                 />
-              <EditUsers />*/}
-                <TestingFile />
-              </td>
-              <td>
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  size="lg"
-                  className="custom-icon"
-                  onClick={(e) => {
-                    deleteUsers(i.id);
-                  }}
-                />
-                {/*<DeleteUsers
+                  <TestingFile />
+                  <EditUsers />*/}
+                </td>
+                <td>
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    size="lg"
+                    className="custom-icon"
+                    onClick={(e) => {
+                      deleteUsers(i.id);
+                    }}
+                  />
+                  {/*<DeleteUsers
                   onClick={(e) => {
                     deleteUsers(i.id);
                   }}
                 />*/}
-              </td>
-            </tr>
-          ))}
+                </td>
+              </tr>
+            ))}
           {/*{records
             .filter((s) => {
               return search == ""
@@ -202,6 +235,14 @@ function Users(props) {
             ))} */}
         </tbody>
       </Table>
+      {loading && <Loading />}
+      <div className="d-flex justify-content-center my-3">
+        <AppPagination
+          curPage={paginations.cur}
+          maxPage={paginations.max}
+          changePage={changePage}
+        />
+      </div>
 
       {/* Pagination impementation start 
       <nav style={{ marginLeft: "65rem" }}>

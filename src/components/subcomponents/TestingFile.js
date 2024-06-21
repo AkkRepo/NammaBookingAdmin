@@ -1,180 +1,110 @@
-import { useState, useEffect } from "react";
-import { Modal, Button, Form, FloatingLabel, Col, Row } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState } from "react";
 
-import { UsersService } from "../../services/Users";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import { Row, Col, Form, FloatingLabel, Image } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-function TestingFile() {
-  const [show, setShow] = useState(false);
+function EditLocationsModal(props) {
+  const [image, setImage] = useState(null);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(getUsersDetails());
-
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [user, setUser] = useState({
-    id: undefined,
-    name: "",
-    email: "",
-    password: "",
-    roleId: 1,
-  });
-  const [error, setError] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const validation = () => {
-    let tempError = {
-      name: "",
-      email: "",
-      password: "",
-    };
-    let valid = true;
-    if (!user.name) {
-      tempError.name = "Name is required";
-      valid = false;
-    }
-    if (!user.password) {
-      tempError.password = "Password is required";
-      valid = false;
-    }
-    if (!user.email) {
-      tempError.email = "Email is required";
-      valid = false;
-    }
-    setError(tempError);
-    return valid;
-  };
-
-  const register = async () => {
-    if (validation()) {
-      try {
-        const res = await UsersService.updateUsers(user);
-        if (res.status === 200) {
-          alert("User Updated");
-          navigate("/dashboard/users/" + id);
-        } else {
-          alert("Error: " + res.status);
-        }
-      } catch (error) {
-        console.error("Register error:", error);
-        alert("Catch error: " + error.message);
-      }
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
     }
   };
 
-  const getUsersDetails = async () => {
-    try {
-      const res = await UsersService.getUsersById(Number(id)); // Correct the method name if needed
-      if (res.status === 200) {
-        const d = res.data;
-        setUser({
-          id: d.id,
-          name: d.name,
-          email: d.email,
-          password: d.password,
-        });
-      } else {
-        alert("getUsersDetails error: " + res.status);
-      }
-    } catch (error) {
-      console.error("getUsersDetails error:", error);
-      alert("getUsersDetails catch error: " + error.message);
-    }
-  };
-
-  {
-    /*useEffect(() => {
-    getUsersDetails();
-  }, []);
- */
-  }
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Edit Categories
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ display: "flex" }}>
+          <div style={{ padding: "1rem" }}>
+            <FloatingLabel
+              controlId="addLocations"
+              label="Add Locations"
+              className="mb-3"
+            >
+              <Form.Control type="text" placeholder="Add Categories" />
+            </FloatingLabel>
+            <FloatingLabel
+              controlId="locationsImage"
+              label="Edit Image"
+              className="mb-3"
+            >
+              <Form.Control
+                type="file"
+                placeholder="Edit Image"
+                multiple={false}
+                onChange={handleImageChange}
+              />
+            </FloatingLabel>
+          </div>
+          <div style={{ marginLeft: "5rem" }}>
+            {image && (
+              <div style={{ textAlign: "center", marginTop: "1rem" }}>
+                <Image
+                  rounded
+                  src={image}
+                  alt="Selected"
+                  style={{ width: "10rem", height: "12rem" }}
+                />
+              </div>
+            )}
+          </div>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Row>
+            <Col>
+              <Button onClick={props.onHide} className="custom-btn">
+                Update
+              </Button>
+            </Col>
+            <Col>
+              <Button onClick={props.onHide} className="custom-btn">
+                Cancel
+              </Button>
+            </Col>
+          </Row>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}
+
+function TestingFile() {
+  const [modalShow, setModalShow] = React.useState(false);
+
+  return (
+    <>
+      <FontAwesomeIcon
+        icon={faPen}
+        size="lg"
+        className="custom-icon"
+        onClick={() => setModalShow(true)}
+      />
+      <EditLocationsModal show={modalShow} onHide={() => setModalShow(false)} />
+      {/*<Button variant="primary" onClick={() => setModalShow(true)}>
+        Launch vertically centered modal
       </Button>
 
-      <div>
-        <Modal show={show} onHide={handleClose} style={{ paddingTop: "12rem" }}>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div style={{ padding: "1rem" }}>
-              <Row>
-                <Col>
-                  <FloatingLabel
-                    controlId="updateName"
-                    label="Name"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      type="text"
-                      placeholder="Name"
-                      value={user.name}
-                      onChange={(e) =>
-                        setUser({ ...user, name: e.target.value })
-                      }
-                      isInvalid={!!error.name}
-                    />
-                    <p>{error.name}</p>
-                  </FloatingLabel>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col>
-                  <FloatingLabel
-                    controlId="updateEmailId"
-                    label="Email Id"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      type="email"
-                      placeholder="Email Id"
-                      value={user.email}
-                      onChange={(e) =>
-                        setUser({ ...user, email: e.target.value })
-                      }
-                      isInvalid={!!error.email}
-                    />
-                    <p>{error.email}</p>
-                  </FloatingLabel>
-                </Col>
-                <Col>
-                  <FloatingLabel
-                    controlId="updatePassword"
-                    label="Password"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      type="text"
-                      placeholder="Password"
-                      value={user.password}
-                      onChange={(e) =>
-                        setUser({ ...user, password: e.target.value })
-                      }
-                      isInvalid={!!error.password}
-                    />
-                    <p>{error.password}</p>
-                  </FloatingLabel>
-                </Col>
-              </Row>
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={register}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+      <MyVerticallyCenteredModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      /> */}
     </>
   );
 }

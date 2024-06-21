@@ -7,9 +7,11 @@ import Modal from "react-bootstrap/Modal";
 import { Row, Col, Form, FloatingLabel } from "react-bootstrap";
 import { LocationsService } from "../../services/Locations";
 import { useNavigate } from "react-router-dom";
+import { LoadingModal } from "../pages/Others/Index";
 
 function AddLocations(props) {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [locations, setLocations] = useState({
     location: "",
     imageUrl: "",
@@ -55,6 +57,7 @@ function AddLocations(props) {
   };
 
   const addLocation = async () => {
+    setLoading(true);
     try {
       const res = await LocationsService.addLocations(locations);
       if (res.status === 200) {
@@ -63,8 +66,10 @@ function AddLocations(props) {
       } else {
         alert("Error while Adding");
       }
+      setLoading(false);
     } catch (error) {
       alert("Error while adding category");
+      setLoading(false);
     }
   };
 
@@ -133,6 +138,7 @@ function AddLocations(props) {
           </Row>
         </Modal.Footer>
       </Modal>
+      <LoadingModal show={loading} />
     </>
   );
 }
