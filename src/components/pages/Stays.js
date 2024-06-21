@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 //css
 import { Table, Row, Col, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPen,
+  faTrash,
+  faCircleInfo,
+} from "@fortawesome/free-solid-svg-icons";
 
 //pages
 import DeleteStays from "../subcomponents/DeleteStays";
@@ -102,6 +106,7 @@ function Stays() {
             <th style={{ color: "#051e3c" }}>Stay Location</th>
             <th style={{ color: "#051e3c" }}>Contact name</th>
             <th style={{ color: "#051e3c" }}>Contact number</th>
+            <th style={{ color: "#051e3c" }}>View Details</th>
             <th style={{ color: "#051e3c" }}>Edit</th>
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
@@ -129,6 +134,16 @@ function Stays() {
                     <td key={i}>{stayLocation}</td>
                     <td key={i}>{contactName}</td>
                     <td key={i}>{contactNumber}</td>
+                    <td>
+                      <Link to="/dashboard/ViewStayDetails">
+                        <FontAwesomeIcon
+                          icon={faCircleInfo}
+                          size="lg"
+                          className="custom-icon"
+                          style={{ marginLeft: "2.5rem" }}
+                        />
+                      </Link>
+                    </td>{" "}
                     <td>
                       <Link to="/dashboard/editStays">
                         <FontAwesomeIcon

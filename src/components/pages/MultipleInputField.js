@@ -4,20 +4,25 @@ import { Link } from "react-router-dom";
 //css
 import { Table, Row, Col, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPen,
+  faTrash,
+  faCircleInfo,
+} from "@fortawesome/free-solid-svg-icons";
 
 //pages
 import AppNav from "../header/AppNav";
 import amenitiesData from "./amenitiesData.json";
 import AddUsers from "../subcomponents/AddUsers";
 import EditUsers from "../subcomponents/EditUsers";
-import DeleteUsers from "../subcomponents/DeleteUsers";
+
+import DeleteStays from "../subcomponents/DeleteStays";
 import { UsersService } from "../../services/Users";
 import EditUsersCopy from "../subcomponents/EditUsersCopy";
-import MultipleInputField from "./MultipleInputField";
 import TestingFile from "../subcomponents/TestingFile";
 
-function Users(props) {
+function MultipleInputField(props) {
+  const [modalShow, setModalShow] = React.useState(false);
   const [addModalShow, setAddModalShow] = React.useState(false);
   const [editModalShow, setEditModalShow] = React.useState(props.id);
 
@@ -98,7 +103,11 @@ function Users(props) {
         <thead>
           <tr>
             <th style={{ color: "#051e3c" }}>Sl no</th>
-            <th style={{ color: "#051e3c" }}>Users</th>
+            <th style={{ color: "#051e3c" }}>Stay Name</th>
+            <th style={{ color: "#051e3c" }}>Stay Location</th>
+            <th style={{ color: "#051e3c" }}>Contact name</th>
+            <th style={{ color: "#051e3c" }}>Contact number</th>
+            <th style={{ color: "#051e3c" }}>View Details</th>
             <th style={{ color: "#051e3c" }}>Edit</th>
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
@@ -108,49 +117,39 @@ function Users(props) {
             <tr key={i.id}>
               <td>{index + 1}</td>
               <td>{i.name}</td>
+              <td></td>
+              <td></td>
+              <td></td>
               <td>
-                {/*<EditUsersCopy
-                //name={i.name}
-                // email={i.email}
-                // password={i.password}
-                // id={i.id}
-                />
-                
-              <FontAwesomeIcon
-                icon={faPen}
-                size="lg"
-                className="custom-icon"
-                onClick={() => setEditModalShow(true)}
-              />
-              <EditUsers
-                show={editModalShow}
-                onHide={() => setEditModalShow(false)}
-                id={props.id}
-              /> 
-            
-            <FontAwesomeIcon
-                  icon={faPen}
-                  size="lg"
-                  className="custom-icon"
-                  onClick={() => setEditModalShow(true)}
-                />
-              <EditUsers />*/}
-                <TestingFile />
+                <Link to="/dashboard/ViewStayDetails">
+                  <FontAwesomeIcon
+                    icon={faCircleInfo}
+                    size="lg"
+                    className="custom-icon"
+                    style={{marginLeft:"2.5rem"}}
+                  />
+                </Link>
+              </td>{" "}
+              <td>
+                <Link to="/dashboard/editStays">
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    size="lg"
+                    className="custom-icon"
+                  />
+                </Link>
               </td>
               <td>
                 <FontAwesomeIcon
                   icon={faTrash}
                   size="lg"
                   className="custom-icon"
-                  onClick={(e) => {
-                    deleteUsers(i.id);
-                  }}
+                  onClick={() => setModalShow(true)}
                 />
-                {/*<DeleteUsers
-                  onClick={(e) => {
-                    deleteUsers(i.id);
-                  }}
-                />*/}
+                <DeleteStays
+                  show={modalShow}
+                  onHide={() => setModalShow(false)}
+                />
               </td>
             </tr>
           ))}
@@ -248,4 +247,4 @@ function Users(props) {
   );
 }
 
-export default Users;
+export default MultipleInputField;

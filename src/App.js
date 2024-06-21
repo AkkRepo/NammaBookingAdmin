@@ -10,7 +10,7 @@ import EditStays from "./components/subcomponents/EditStays";
 import Login from "./components/pages/Login";
 import ForgotPassword from "./components/pages/ForgotPassword";
 import Multiple from "./components/subcomponents/Multiple";
-import MultipleInputField from "./components/subcomponents/MultipleInputField";
+import MultipleInputField from "./components/pages/MultipleInputField";
 import Amenities from "./components/pages/Amenities";
 import Activities from "./components/pages/Activities";
 import Users from "./components/pages/Users";
@@ -20,6 +20,7 @@ import EditUsersCopy from "./components/subcomponents/EditUsersCopy";
 
 import { AuthService } from "./services/Auth";
 import TestingFile from "./components/subcomponents/TestingFile";
+import ViewStayDetails from "./components/subcomponents/ViewStayDetails";
 const DashboardLayout = () => {
   if (AuthService.isLoggedin()) {
     return <Outlet />;
@@ -51,6 +52,7 @@ function App() {
           <Route path="/dashboard/locations" element={<Locations />} />
           <Route path="/dashboard/EditUsersCopy" element={<EditUsersCopy />} />
           <Route path="/dashboard/TestingFile" element={<TestingFile />} />
+          <Route path="/dashboard/ViewStayDetails" element={<ViewStayDetails />} />
         </Route>
       </Routes>
     </div>

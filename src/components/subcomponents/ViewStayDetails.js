@@ -15,7 +15,7 @@ import {
 //page
 import AppNav from "../header/AppNav";
 
-function Multiple() {
+function ViewStayDetails() {
   return (
     <div>
       <header id="header">
@@ -294,4 +294,4 @@ function Multiple() {
   );
 }
 
-export default Multiple;
+export default ViewStayDetails;
