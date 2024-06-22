@@ -45,8 +45,9 @@ function EditLocationsModal({ show, onHide, location }) {
           imageUrl: image ? locations.imageUrl.slice(23) : locations.imageUrl,
         });
         if (res.status === 200) {
-          alert("User Updated");
-          navigate("/dashboard/locations");
+          alert(res.message);
+          onHide();
+          navigate("/locations");
         } else {
           alert("Else Error");
         }
@@ -183,7 +184,10 @@ function EditLocations(props) {
       />
       <EditLocationsModal
         show={modalShow}
-        onHide={() => setModalShow(false)}
+        onHide={() => {
+          setModalShow(false);
+          props.onClose();
+        }}
         location={props.location}
       />
     </>

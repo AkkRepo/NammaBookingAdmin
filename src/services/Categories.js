@@ -14,7 +14,7 @@ export class CategoriesService {
     console.log(category + " " + imageUrl);
     return NetworkManager.getInstance().appRequest({
       method: "post",
-      url: ApiEndPoints.categories + "/admin/add",
+      url: ApiEndPoints.categoriesAdd,
       data: { ...category, ...imageUrl },
     });
   };

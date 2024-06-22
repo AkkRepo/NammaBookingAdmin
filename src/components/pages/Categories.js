@@ -53,7 +53,7 @@ function Categories() {
       if (val) {
         const res = await CategoriesService.deleteCategory(id);
         if (res.status === 200) {
-          alert("Category deleted");
+          alert(res.message);
           getCategories(pagination.cur);
         } else {
           alert("Error while else");
@@ -78,10 +78,11 @@ function Categories() {
       <header id="header">
         <AppNav />
       </header>
-      
+
       <h1 className="brownbear stays-h1 heading-color"> Categories</h1>
 
       <Row>
+        {/*
         <Col>
           <Form>
             <Form.Group
@@ -98,7 +99,7 @@ function Categories() {
               />
             </Form.Group>
           </Form>
-        </Col>
+        </Col> */}
         <Col>
           <div className="stays-add-button">
             <Button
@@ -131,7 +132,7 @@ function Categories() {
                 <td>{index + 1}</td>
                 <td>{i.category}</td>
                 <td>
-                  <EditCategories category={i} />
+                  <EditCategories category={i} onClose={()=>getCategories()} />
                 </td>
                 <td>
                   <FontAwesomeIcon

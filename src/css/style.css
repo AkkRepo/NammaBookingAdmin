@@ -228,6 +228,17 @@ html {
 .modal-90w {
   max-width: 90%;
 }
+.stay-id-details {
+  border: 1px solid #777676;
+  border-radius: 5px;
+  padding: 5px;
+  width: 20rem;
+}
+
+.stay-id-decor{
+  text-decoration: underline;
+  font-weight: bold;
+}
 
 @media only screen and (max-width: 768px) {
   .login-card-align {

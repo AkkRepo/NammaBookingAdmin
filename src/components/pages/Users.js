@@ -14,7 +14,7 @@ import EditUsers from "../subcomponents/EditUsers";
 import DeleteUsers from "../subcomponents/DeleteUsers";
 import { UsersService } from "../../services/Users";
 import EditUsersCopy from "../subcomponents/EditUsersCopy";
-import MultipleInputField from "./MultipleInputField";
+import MultipleInputField from "./StayDetails";
 import TestingFile from "../subcomponents/TestingFile";
 import { Loading, AppPagination } from "./Others/Index";
 
@@ -62,7 +62,7 @@ function Users(props) {
       if (val) {
         const res = await UsersService.deleteUsers(id);
         if (res.status === 200) {
-          alert("User delete");
+          alert(res.data.message);
           getUser(paginations.cur);
         } else {
           alert("Error while else");
@@ -85,11 +85,11 @@ function Users(props) {
       <header id="header">
         <AppNav />
       </header>
-      
+
       <h1 className="brownbear stays-h1 heading-color"> Users</h1>
 
       <Row>
-        <Col>
+        {/* <Col>
           <Form>
             <Form.Group
               className="mb-3"
@@ -105,7 +105,7 @@ function Users(props) {
               />
             </Form.Group>
           </Form>
-        </Col>
+        </Col> */}
         <Col>
           <div className="stays-add-button">
             <Button
@@ -138,7 +138,7 @@ function Users(props) {
                 <td>{index + 1}</td>
                 <td>{i.name}</td>
                 <td>
-                  <EditUsers user={i} />
+                  <EditUsers user={i} onClose={()=>getUser()}/>
 
                   {/*
                   <EditUsers />

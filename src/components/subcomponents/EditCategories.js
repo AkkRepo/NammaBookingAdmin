@@ -42,11 +42,12 @@ function EditCategoriesModal({ show, onHide, category }) {
       try {
         const res = await CategoriesService.updateCategories({
           ...categories,
-          imageUrl: image ? categories.imageUrl.slice(23) : categories.imageUrl,
+          imageUrl: image ? categories.imageUrl.slice(23) : '',
         });
         if (res.status === 200) {
-          alert("User Updated");
-          navigate("/dashboard/categories");
+          alert(res.message);
+          onHide()
+          navigate("/categories");
         } else {
           alert("Else Error");
         }
@@ -184,7 +185,7 @@ function EditCategories(props) {
       />
       <EditCategoriesModal
         show={modalShow}
-        onHide={() => setModalShow(false)}
+        onHide={() => {setModalShow(false);props.onClose()}}
         category={props.category}
       />
     </>

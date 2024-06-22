@@ -60,8 +60,8 @@ function AddCategories(props) {
     try {
       const res = await CategoriesService.addCategories(categories);
       if (res.status === 200) {
-        alert("Category Added");
-        navigate("/dashboard/categories");
+        alert(res.message);
+        navigate("/categories");
       } else {
         alert("Error while Adding");
       }

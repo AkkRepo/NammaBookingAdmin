@@ -19,6 +19,10 @@ const AppNav = () => {
     AuthService.logout();
     navigate("/login");
   };
+  const highlight=()=>{
+    const path = window.location.pathname
+    return path.includes('locations')||path.includes('categories')||path.includes('users')
+  }
   return (
     <Navbar expand="lg">
       <Container>
@@ -35,31 +39,31 @@ const AppNav = () => {
             >
               Dashboard
             </NavLink>
-            <NavLink
-              to="/dashboard/stays"
-              className="nav-link"
-              activeClassName="active"
-            >
+            <NavLink to="/stays" className="nav-link" activeClassName="active">
               Stays
             </NavLink>
-            <NavDropdown title="Master data">
+            <NavDropdown title="Master data" activeClassName="active" className={highlight()?'active':''}> 
               <Link
-                to="/dashboard/categories"
+                to="/categories"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}
+                activeClassName="active"
+                className={window.location.pathname.includes('categories')?'active':''}
               >
                 Categories
               </Link>
               <div style={{ padding: "5px" }} />
               <Link
-                to="/dashboard/locations"
+                to="/locations"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}
+                className={window.location.pathname.includes('locations')?'active':''}
               >
                 Locations
               </Link>
               <div style={{ padding: "5px" }} />
               <Link
-                to="/dashboard/users"
+                to="/users"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}
+                className={window.location.pathname.includes('users')?'active':''}
               >
                 Users
               </Link>

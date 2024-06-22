@@ -666,7 +666,7 @@ function AddStays() {
         //images: ["images"],
       });
       if (res.status === 200) {
-        alert("Stays Added");
+        alert(res.message);
         navigate("/dashboard/addStays");
       } else {
         alert("Else error");

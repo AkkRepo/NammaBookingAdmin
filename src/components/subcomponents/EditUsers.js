@@ -61,8 +61,9 @@ function EditUsersModal({ show, onHide, user }) {
       try {
         const res = await UsersService.updateUsers(users);
         if (res.status === 200) {
-          alert("User Updated");
-          navigate("/dashboard/users");
+          alert(res.data.message);
+          onHide()
+          navigate("/users");
         } else {
           alert("Else Error");
         }
@@ -187,7 +188,7 @@ function EditUsers(props) {
       />
       <EditUsersModal
         show={modalShow}
-        onHide={() => setModalShow(false)}
+        onHide={() => {setModalShow(false);props.onClose()}}
         user={props.user}
       />
     </>

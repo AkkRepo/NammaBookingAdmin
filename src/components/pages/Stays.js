@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //css
 import { Table, Row, Col, Button, Form } from "react-bootstrap";
@@ -12,35 +12,33 @@ import {
 
 //pages
 import AppNav from "../header/AppNav";
-import AddUsers from "../subcomponents/AddUsers";
 import { Loading, AppPagination } from "./Others/Index";
 import DeleteStays from "../subcomponents/DeleteStays";
-import { UsersService } from "../../services/Users";
-import Multiple from "../subcomponents/Multiple";
-import ViewStayDetails from "../subcomponents/ViewStayDetails";
+import { StaysService } from "../../services/Stays";
 
 function Stays(props) {
-  const [modalShow, setModalShow] = React.useState(false);
-  const [addModalShow, setAddModalShow] = React.useState(false);
+  const navigate = useNavigate();
+  //const [modalShow, setModalShow] = React.useState(false);
   const [loading, setLoading] = useState(false);
   const [paginations, setPaginations] = useState({
     cur: 1,
     max: 1,
   });
 
-  const [user, setUser] = useState([]);
-  const getUser = async (page = 1) => {
+  const [stay, setStay] = useState([]);
+  const getStay = async (page = 1) => {
     setLoading(true);
     try {
-      const res = await UsersService.getAllUsers(page);
-      if (res.data.records?.length > 0) {
-        setUser(res.data.records);
+      const res = await StaysService.getAllStays(page);
+      console.log(res);
+      if (res.data?.length > 0) {
+        setStay(res.data);
         setPaginations({
-          cur: res.data.pagination.page,
-          max: res.data.pagination.pages,
+          cur: res.pagination_data.page,
+          max: res.pagination_data.pages,
         });
       } else {
-        setUser([]);
+        setStay([]);
         setPaginations({
           cur: 1,
           max: 1,
@@ -56,42 +54,41 @@ function Stays(props) {
       });
     }
   };
-  //for future
-  {
-    /*const deleteUsers = async (id) => {
+  const deleteStays = async (id) => {
     try {
       const val = window.confirm("Do you want to delete?");
       if (val) {
-        const res = await UsersService.deleteUsers(id);
+        const res = await StaysService.deleteStays(id);
         if (res.status === 200) {
-          alert("User delete");
-          getUser(paginations.cur);
+          alert(res.message);
+          getStay(paginations.cur);
         } else {
           alert("Error while else");
         }
       }
     } catch (error) {
-      alert("Error while catch");
+      alert(error.message);
     }
-  }; */
-  }
-
+  };
+  const navigateToStay = (id) => {
+    navigate("/stays/stayDetails/" + id);
+  };
   const changePage = (page) => {
-    getUser(page);
+    getStay(page);
   };
   useEffect(() => {
-    getUser();
+    getStay();
   }, []);
   return (
     <div style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
       <header id="header">
         <AppNav />
       </header>
-      
+
       <h1 className="brownbear stays-h1 heading-color"> Stays</h1>
 
       <Row>
-        <Col>
+        {/*<Col>
           <Form>
             <Form.Group
               className="mb-3"
@@ -107,7 +104,7 @@ function Stays(props) {
               />
             </Form.Group>
           </Form>
-        </Col>
+        </Col> */}
         <Col>
           <div className="stays-add-button">
             <Link to={"/dashboard/addStays"}>
@@ -126,51 +123,39 @@ function Stays(props) {
             <th style={{ color: "#051e3c" }}>Contact number</th>
             <th style={{ color: "#051e3c" }}>View Details</th>
             {/* <th style={{ color: "#051e3c" }}>Edit</th>*/}
-
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
         </thead>
         <tbody>
           {!loading &&
-            user.map((i, index) => (
+            stay.map((i, index) => (
               <tr key={i.id}>
                 <td>{index + 1}</td>
                 <td>{i.name}</td>
-                <td></td>
-                <td></td>
+                <td>{i.contactPersonName}</td>
+                <td>{i.contactPersonNumber}</td>
                 <td>
-                  <ViewStayDetails user={i} />
-                  {/*<Link to="/dashboard/ViewStayDetails">
-                    <FontAwesomeIcon
-                      icon={faCircleInfo}
-                      size="lg"
-                      className="custom-icon"
-                      style={{ marginLeft: "2.5rem" }}
-                      user={i}
-                    />
-                  </Link> */}
+                  <FontAwesomeIcon
+                    icon={faCircleInfo}
+                    size="lg"
+                    className="custom-icon"
+                    style={{ marginLeft: "2.5rem" }}
+                    onClick={() => navigateToStay(i.id)}
+                  />
                 </td>
-                {/* <td>
-                  <Link to="/dashboard/editStays">
-                    <FontAwesomeIcon
-                      icon={faPen}
-                      size="lg"
-                      className="custom-icon"
-                    />
-                  </Link>
-                </td>*/}
-
                 <td>
                   <FontAwesomeIcon
                     icon={faTrash}
                     size="lg"
                     className="custom-icon"
-                    onClick={() => setModalShow(true)}
+                    onClick={(e) => {
+                      deleteStays(i.id);
+                    }}
                   />
-                  <DeleteStays
+                  {/*<DeleteStays
                     show={modalShow}
                     onHide={() => setModalShow(false)}
-                  />
+                  /> */}
                 </td>
               </tr>
             ))}

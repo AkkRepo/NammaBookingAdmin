@@ -60,8 +60,8 @@ function AddUsers(props) {
       console.log();
       const res = await UsersService.addUsers(users);
       if (res.status === 200) {
-        alert("User Added");
-        navigate("/dashboard/users");
+        alert(res.data.message);
+        navigate("/users");
       } else {
         alert("Error while Adding");
       }

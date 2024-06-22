@@ -19,22 +19,40 @@ import DeleteUsers from "../subcomponents/DeleteUsers";
 import { UsersService } from "../../services/Users";
 import EditUsersCopy from "../subcomponents/EditUsersCopy";
 
-function EditUsersModal({ show, onHide, user }) {
+function EditUsersModal({ show, onHide, stay }) {
   const [users, setUsers] = useState({
-    id: undefined,
     name: "",
-    email: "",
-    password: "",
-    roleId: 1,
+    locationId: undefined,
+    rating: undefined,
+    priceStartsFrom: "",
+    about: "",
+    accommodationType: "",
+    accommodation: "",
+    noOfRooms: "",
+    noOfBeds: "",
+    contactPersonName: "",
+    contactPersonNumber: "",
+    googleMapLink: "",
+    instagramLink: "",
+    facebookLink: "",
+    address: "",
+    stayCategoriesDetails: [],
+    accommodationTypesDetails: [],
+    stayAmenitiesDetails: [],
+    stayActivitiesDetails: [],
+    otherFacilityDetails: [],
+    nearByPlacesDetails: [],
+    stayTAndCDetails: [],
+    images: [""],
   });
 
   useEffect(() => {
     if (show) {
       setUsers({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        password: user.password,
+        id: stay.id,
+        name: stay.name,
+        //location:stay.location,
+        //rating: stay.rating,
         roleId: 1,
       });
     }
@@ -64,10 +82,10 @@ function EditUsersModal({ show, onHide, user }) {
               <h6>Stay name: {users.name}</h6>
             </Col>
             <Col>
-              <h6>Location:</h6>
+              <h6>Location:{users.location}</h6>
             </Col>
             <Col>
-              <h6>Rating:</h6>
+              <h6>Rating: {users.rating}</h6>
             </Col>
           </Row>
           <Row>
@@ -348,7 +366,7 @@ function ViewStayDetails(props) {
       <EditUsersModal
         show={modalShow}
         onHide={() => setModalShow(false)}
-        user={props.user}
+        stay={props.stay}
       />
     </>
   );

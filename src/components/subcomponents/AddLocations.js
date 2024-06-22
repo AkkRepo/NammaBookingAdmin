@@ -61,8 +61,8 @@ function AddLocations(props) {
     try {
       const res = await LocationsService.addLocations(locations);
       if (res.status === 200) {
-        alert("Location Added");
-        navigate("/dashboard/locations");
+        alert(res.message);
+        navigate("/locations");
       } else {
         alert("Error while Adding");
       }

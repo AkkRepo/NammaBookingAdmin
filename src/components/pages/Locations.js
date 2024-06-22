@@ -55,7 +55,7 @@ function Locations() {
       if (val) {
         const res = await LocationsService.deleteLocations(id);
         if (res.status === 200) {
-          alert("Location delete");
+          alert(res.message);
         } else {
           alert("Error while else");
         }
@@ -76,11 +76,11 @@ function Locations() {
       <header id="header">
         <AppNav />
       </header>
-      
+
       <h1 className="brownbear stays-h1 heading-color"> Locations</h1>
 
       <Row>
-        <Col>
+        {/*<Col>
           <Form>
             <Form.Group
               className="mb-3"
@@ -96,7 +96,7 @@ function Locations() {
               />
             </Form.Group>
           </Form>
-        </Col>
+        </Col> */}
         <Col>
           <div className="stays-add-button">
             <Button
@@ -129,7 +129,7 @@ function Locations() {
                 <td>{index + 1}</td>
                 <td>{i.location}</td>
                 <td>
-                  <EditLocations location={i} />
+                  <EditLocations location={i} onClose={()=>getLocations()}/>
                   {/*<FontAwesomeIcon
                     icon={faPen}
                     size="lg"

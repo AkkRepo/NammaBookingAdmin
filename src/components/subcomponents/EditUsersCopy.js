@@ -56,7 +56,7 @@ function EditUsersCopy(props) {
         const res = await UsersService.updateUsers(user);
         if (res.status === 200) {
           alert("User Updated");
-          navigate("/dashboard/users" + id);
+          navigate("/users" + id);
         } else {
           alert("Error while uplading");
         }
