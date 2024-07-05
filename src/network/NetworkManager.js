@@ -5,8 +5,8 @@ import { AuthService } from "../services/Auth";
 const DEFAULT_TIMEOUT = 60 * 1000;
 
 const apiClient = axios.create({
-  // baseURL: process.env.REACT_APP_API_BASE_URL,
-  baseURL: "http://test.ekathvainnovations.com:9097",
+  baseURL: process.env.REACT_APP_API_BASE_URL,
+  // baseURL: "http://test.ekathvainnovations.com:9097",
   timeout: DEFAULT_TIMEOUT,
   headers: {
     "Content-Type": "application/json",

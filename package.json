@@ -1,5 +1,6 @@
 {
-  "name": "demorouter",
+  "name": "nammabookingadmin",
+  "homepage": "https://admin.nammabooking.com/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
