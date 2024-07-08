@@ -10,7 +10,7 @@ import EditStays from "./components/subcomponents/EditStays";
 import Login from "./components/pages/Login";
 import ForgotPassword from "./components/pages/ForgotPassword";
 import Multiple from "./components/subcomponents/Multiple";
-import MultipleInputField from "./components/pages/StayDetails";
+import MultipleInputField from "./components/subcomponents/StayDetails";
 import Amenities from "./components/pages/Amenities";
 import Activities from "./components/pages/Activities";
 import Users from "./components/pages/Users";
@@ -20,8 +20,9 @@ import EditUsersCopy from "./components/subcomponents/EditUsersCopy";
 
 import { AuthService } from "./services/Auth";
 import TestingFile from "./components/subcomponents/TestingFile";
-import ViewStayDetails from "./components/subcomponents/ViewStayDetails";
-import StayDetails from "./components/pages/StayDetails";
+import StayDetails from "./components/subcomponents/StayDetails";
+import CategoriesDetails from "./components/subcomponents/CategoriesDetails";
+import LocationDetails from "./components/subcomponents/LocationDetails";
 const DashboardLayout = () => {
   if (AuthService.isLoggedin()) {
     return <Outlet />;
@@ -38,6 +39,8 @@ function App() {
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/stays" element={<Stays />} />
         <Route path="/stays/stayDetails/:id" element={<StayDetails />} />
+        <Route path="/stays/categoryDetails/:id" element={<CategoriesDetails/>} />
+        <Route path="/stays/locationDetails/:id" element={<LocationDetails/>} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/users" element={<Users />} />
         <Route path="/locations" element={<Locations />} />
@@ -51,10 +54,7 @@ function App() {
           <Route path="/dashboard/activities" element={<Activities />} />
           <Route path="/dashboard/EditUsersCopy" element={<EditUsersCopy />} />
           <Route path="/dashboard/TestingFile" element={<TestingFile />} />
-          <Route
-            path="/dashboard/ViewStayDetails"
-            element={<ViewStayDetails />}
-          />
+          
         </Route>
       </Routes>
     </div>

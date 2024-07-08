@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //css
 import { Table, Row, Col, Button, Form } from "react-bootstrap";
@@ -13,8 +13,10 @@ import EditLocations from "../subcomponents/EditLocations";
 import DeleteLocations from "../subcomponents/DeleteLocations";
 import { LocationsService } from "../../services/Locations";
 import { AppPagination, Loading } from "./Others/Index";
+import LocationDetails from "../subcomponents/LocationDetails";
 
 function Locations() {
+  const navigate = useNavigate();
   const [deleteModalShow, setDeleteModalShow] = React.useState(false);
   const [addModalShow, setAddModalShow] = React.useState(false);
   const [editModalShow, setEditModalShow] = React.useState(false);
@@ -65,6 +67,9 @@ function Locations() {
     }
   };
 
+  const navigateToLocation = (id) => {
+    navigate("/stays/locationDetails/" + id);
+  };
   const changePage = (page) => {
     getLocations(page);
   };
@@ -118,7 +123,9 @@ function Locations() {
           <tr>
             <th style={{ color: "#051e3c" }}>Sl no</th>
             <th style={{ color: "#051e3c" }}>Locations</th>
-            <th style={{ color: "#051e3c" }}>Edit</th>
+            <th style={{ color: "#051e3c" }}>View Details</th>
+            {/*
+            <th style={{ color: "#051e3c" }}>Edit</th> */}
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
         </thead>
@@ -128,19 +135,16 @@ function Locations() {
               <tr key={i.id}>
                 <td>{index + 1}</td>
                 <td>{i.location}</td>
+                <td style={{ paddingLeft: "3rem" }}>
+                  <LocationDetails
+                    location={i}
+                    onClick={() => navigateToLocation(i.id)}
+                  />
+                </td>
+                {/*
                 <td>
                   <EditLocations location={i} onClose={()=>getLocations()}/>
-                  {/*<FontAwesomeIcon
-                    icon={faPen}
-                    size="lg"
-                    className="custom-icon"
-                    onClick={() => setEditModalShow(true)}
-                  />
-                  <EditLocations
-                    show={editModalShow}
-                    onHide={() => setEditModalShow(false)}
-                  /> */}
-                </td>
+                </td> */}
                 <td>
                   <FontAwesomeIcon
                     icon={faTrash}

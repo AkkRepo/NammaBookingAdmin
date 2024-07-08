@@ -62,7 +62,7 @@ function EditUsersModal({ show, onHide, user }) {
         const res = await UsersService.updateUsers(users);
         if (res.status === 200) {
           alert(res.data.message);
-          onHide()
+          onHide();
           navigate("/users");
         } else {
           alert("Else Error");
@@ -131,7 +131,7 @@ function EditUsersModal({ show, onHide, user }) {
               <p>{error.email}</p>
             </FloatingLabel>
           </Col>
-          <Col>
+          {/*<Col>
             <FloatingLabel
               controlId="updatePassword"
               label="Password"
@@ -140,7 +140,7 @@ function EditUsersModal({ show, onHide, user }) {
               <Form.Control
                 type="text"
                 placeholder="Password"
-                value={users.password}
+                //value={users.password}
                 onChange={(e) =>
                   setUsers({ ...users, password: e.target.value })
                 }
@@ -148,7 +148,7 @@ function EditUsersModal({ show, onHide, user }) {
               />
               <p>{error.password}</p>
             </FloatingLabel>
-          </Col>
+          </Col> */}
         </Row>
       </div>
       <Modal.Footer>
@@ -188,7 +188,10 @@ function EditUsers(props) {
       />
       <EditUsersModal
         show={modalShow}
-        onHide={() => {setModalShow(false);props.onClose()}}
+        onHide={() => {
+          setModalShow(false);
+          props.onClose();
+        }}
         user={props.user}
       />
     </>

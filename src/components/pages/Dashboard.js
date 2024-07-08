@@ -51,11 +51,11 @@ function Dashboard() {
             </Card.Body>
           </Card>
         </Col>
-        <Row>
+        {/*<Row>
           <Col style={{ marginTop: "1rem" }}>
             <Location />
           </Col>
-        </Row>
+        </Row> */}
       </Row>
     </div>
   );

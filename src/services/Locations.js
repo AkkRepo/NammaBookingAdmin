@@ -25,6 +25,13 @@ export class LocationsService {
       data: { ...id },
     });
   };
+  static getLocationsById = (id) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "get",
+      url: ApiEndPoints.locationById + id,
+      data: { ...id },
+    });
+  };
   static updateLocations = (id, location, imageUrl) => {
     return NetworkManager.getInstance().appRequest({
       method: "put",

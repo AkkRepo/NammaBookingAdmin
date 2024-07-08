@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Table, Row, Col, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -10,8 +10,10 @@ import EditCategories from "../subcomponents/EditCategories";
 import DeleteCategories from "../subcomponents/DeleteCategories";
 import { Loading, AppPagination } from "./Others/Index";
 import TestingFile from "../subcomponents/TestingFile";
+import ViewCategories from "../subcomponents/CategoriesDetails";
 
 function Categories() {
+  const navigate = useNavigate();
   const [deleteModalShow, setDeleteModalShow] = useState(false);
   const [addModalShow, setAddModalShow] = useState(false);
   const [editModalShow, setEditModalShow] = useState(false);
@@ -64,7 +66,9 @@ function Categories() {
       console.log(id);
     }
   };
-
+  const navigateToCategory = (id) => {
+    navigate("/stays/categoryDetails/" + id);
+  };
   const changePage = (page) => {
     getCategories(page);
   };
@@ -121,7 +125,9 @@ function Categories() {
           <tr>
             <th style={{ color: "#051e3c" }}>Sl no</th>
             <th style={{ color: "#051e3c" }}>Categories</th>
-            <th style={{ color: "#051e3c" }}>Edit</th>
+            <th style={{ color: "#051e3c" }}>View Details</th>
+            {/*
+            <th style={{ color: "#051e3c" }}>Edit</th> */}
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
         </thead>
@@ -131,9 +137,15 @@ function Categories() {
               <tr key={i.id}>
                 <td>{index + 1}</td>
                 <td>{i.category}</td>
-                <td>
-                  <EditCategories category={i} onClose={()=>getCategories()} />
+                <td style={{ paddingLeft: "3rem" }}>
+                  <ViewCategories
+                    category={i}
+                    onClick={() => navigateToCategory(i.id)}
+                  />
                 </td>
+                {/*<td>
+                  <EditCategories category={i} onClose={()=>getCategories()} />
+                </td> */}
                 <td>
                   <FontAwesomeIcon
                     icon={faTrash}

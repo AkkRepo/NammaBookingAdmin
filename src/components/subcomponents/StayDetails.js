@@ -10,6 +10,7 @@ import {
   Container,
   Form,
   Image,
+  Modal,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -21,9 +22,10 @@ import {
 //pages
 import AppNav from "../header/AppNav";
 import { StaysService } from "../../services/Stays";
-import Loading from "./Others/Loading";
+import Loading from "../pages/Others/Loading";
 
 function StayDetails(props) {
+  const [modalShow, setModalShow] = useState(false);
   const { id } = useParams();
   const [stay, setStay] = useState();
   const [loading, setLoading] = useState(false);
@@ -168,8 +170,7 @@ function StayDetails(props) {
                   <th>Name</th>
                   <th>Price</th>
                   <th>Package Includes</th>
-                  <th>Number of Rooms</th>
-                  <th>Room Type</th>
+                  <th>Room Details</th>
                   <th>Number of Guests</th>
                 </tr>
               </thead>
@@ -181,10 +182,68 @@ function StayDetails(props) {
                       <td>{item.roomName}</td>
                       <td>{item.price}</td>
                       <td>{item.includedPackages}</td>
-                      {/*<td>{item.roomDetails.map((x) => x.noofRooms).join(",")}</td>
-                  <td>{item.roomDetails.map((x) => x.roomType).join(",")}</td> */}
-                      <td></td>
-                      <td></td>
+                      <td>
+                        <FontAwesomeIcon
+                          icon={faCircleInfo}
+                          size="lg"
+                          className="custom-icon"
+                          onClick={() => setModalShow(true)}
+                          // onHide={() => {
+                          // setModalShow(false);
+                          // }}
+                          //show={modalShow}
+                        />
+                        <Modal
+                          show={modalShow}
+                          onHide={() => {
+                            setModalShow(false);
+                          }}
+                          size="lg"
+                          aria-labelledby="contained-modal-title-vcenter"
+                          centered
+                        >
+                          <Modal.Header closeButton>
+                            <Modal.Title id="contained-modal-title-vcenter">
+                              View Room Details
+                            </Modal.Title>
+                          </Modal.Header>
+                          <div style={{ padding: "2rem" }}>
+                            <Table striped bordered hover>
+                              <thead>
+                                <tr>
+                                  <th>No of Rooms</th>
+                                  <th>Room Type</th>
+                                </tr>
+                              </thead>
+                              {item.roomDetails.map((room, index) => {
+                                return (
+                                  <tr key={index}>
+                                    <td style={{ paddingLeft: "2rem" }}>
+                                      {room.noOfRooms}
+                                    </td>
+                                    <td>{room.roomType}</td>
+                                  </tr>
+                                );
+                              })}
+                            </Table>
+                          </div>
+                          <Modal.Footer>
+                            <Row>
+                              <Col>
+                                <Button
+                                  onClick={() => {
+                                    setModalShow(false);
+                                  }}
+                                  className="custom-btn"
+                                >
+                                  Cancel
+                                </Button>
+                              </Col>
+                            </Row>
+                          </Modal.Footer>
+                        </Modal>
+                      </td>
+                      {/*<td>{item.roomDetails[0].roomType}</td> */}
                       <td>{item.noOfGuests}</td>
                     </tr>
                   );
@@ -366,17 +425,16 @@ function StayDetails(props) {
           <Container className="add-stay-group-border">
             <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
               Stay Images
-              <br/>
-              {
-                stay.images.map((i) => (
-                  <Image
-                    key={i.id}
-                    rounded
-                    src={i.imageUrl}
-                    alt="Selected"
-                    style={{ width: "10rem", height: "12rem" }}
-                  />
-                ))}
+              <br />
+              {stay.images.map((i) => (
+                <Image
+                  key={i.id}
+                  rounded
+                  src={i.imageUrl}
+                  alt="Selected"
+                  style={{ width: "10rem", height: "12rem" }}
+                />
+              ))}
             </h4>
           </Container>
           <br />

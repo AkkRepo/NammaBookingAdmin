@@ -14,7 +14,7 @@ import EditUsers from "../subcomponents/EditUsers";
 import DeleteUsers from "../subcomponents/DeleteUsers";
 import { UsersService } from "../../services/Users";
 import EditUsersCopy from "../subcomponents/EditUsersCopy";
-import MultipleInputField from "./StayDetails";
+import MultipleInputField from "../subcomponents/StayDetails";
 import TestingFile from "../subcomponents/TestingFile";
 import { Loading, AppPagination } from "./Others/Index";
 

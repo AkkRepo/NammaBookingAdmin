@@ -10,5 +10,6 @@ export const ApiEndPoints = {
   adminAddLocation: "/api/locations/admin/add",
   allStay: "/api/stays/admin/getStaysList",
   stayById: "/api/stays/admin/findByStayId",
-  deleteStay:"/api/stays/admin/delete/"
+  deleteStay:"/api/stays/admin/delete/",
+  locationById: "/api/locations/admin/"
 };
