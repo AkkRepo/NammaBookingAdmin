@@ -24,8 +24,23 @@ import AppNav from "../header/AppNav";
 import { StaysService } from "../../services/Stays";
 import Loading from "../pages/Others/Loading";
 
-function StayDetails(props) {
-  const [modalShow, setModalShow] = useState(false);
+function StayDetails() {
+  const [showM, set_Show_M] = useState(false);
+  const [modalData, setModalData] = useState([]);
+  const modalShow = () => {
+    set_Show_M(true);
+  };
+  const closeModal = () => {
+    setModalData([]);
+    set_Show_M(false);
+  };
+  const openModalHandle = (roomDetails) => {
+    console.log(roomDetails);
+    setModalData(roomDetails);
+    //console.log(modalData);
+    modalShow();
+  };
+
   const { id } = useParams();
   const [stay, setStay] = useState();
   const [loading, setLoading] = useState(false);
@@ -183,21 +198,28 @@ function StayDetails(props) {
                       <td>{item.price}</td>
                       <td>{item.includedPackages}</td>
                       <td>
-                        <FontAwesomeIcon
+                        <Button
+                          onClick={openModalHandle(item.roomDetails)}
+                          variant="success"
+                        >
+                          Open Modal
+                        </Button>
+
+                        {/*<FontAwesomeIcon
                           icon={faCircleInfo}
                           size="lg"
                           className="custom-icon"
-                          onClick={() => setModalShow(true)}
+                          onClick={openModalHandle}
+                          //onClick={() => setModalShow(true)}
+
                           // onHide={() => {
                           // setModalShow(false);
                           // }}
                           //show={modalShow}
                         />
                         <Modal
-                          show={modalShow}
-                          onHide={() => {
-                            setModalShow(false);
-                          }}
+                          show={showM}
+                          onHide={closeModal}
                           size="lg"
                           aria-labelledby="contained-modal-title-vcenter"
                           centered
@@ -207,33 +229,11 @@ function StayDetails(props) {
                               View Room Details
                             </Modal.Title>
                           </Modal.Header>
-                          <div style={{ padding: "2rem" }}>
-                            <Table striped bordered hover>
-                              <thead>
-                                <tr>
-                                  <th>No of Rooms</th>
-                                  <th>Room Type</th>
-                                </tr>
-                              </thead>
-                              {item.roomDetails.map((room, index) => {
-                                return (
-                                  <tr key={index}>
-                                    <td style={{ paddingLeft: "2rem" }}>
-                                      {room.noOfRooms}
-                                    </td>
-                                    <td>{room.roomType}</td>
-                                  </tr>
-                                );
-                              })}
-                            </Table>
-                          </div>
                           <Modal.Footer>
                             <Row>
                               <Col>
                                 <Button
-                                  onClick={() => {
-                                    setModalShow(false);
-                                  }}
+                                  onClick={closeModal}
                                   className="custom-btn"
                                 >
                                   Cancel
@@ -241,7 +241,7 @@ function StayDetails(props) {
                               </Col>
                             </Row>
                           </Modal.Footer>
-                        </Modal>
+                        </Modal> */}
                       </td>
                       {/*<td>{item.roomDetails[0].roomType}</td> */}
                       <td>{item.noOfGuests}</td>
@@ -441,6 +441,41 @@ function StayDetails(props) {
         </Container>
       )}
       {loading && <Loading />}
+
+      <Modal show={showM} onHide={closeModal}>
+        <Modal.Header closeButton className="bg-primary text-white">
+          <Modal.Title>Data in Modal</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div style={{ padding: "2rem" }}>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>No of Rooms</th>
+                  <th>Room Type</th>
+                </tr>
+              </thead>
+              {modalData.map((room, index) => {
+                return (
+                  <tr key={index}>
+                    <td style={{ paddingLeft: "2rem" }}>{room.noOfRooms}</td>
+                    <td>{room.roomType}</td>
+                  </tr>
+                );
+              })}
+            </Table>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={closeModal}
+            className="text-danger"
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
