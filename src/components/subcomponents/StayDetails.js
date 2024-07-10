@@ -198,52 +198,14 @@ function StayDetails() {
                       <td>{item.price}</td>
                       <td>{item.includedPackages}</td>
                       <td>
-                        <Button
-                          onClick={openModalHandle(item.roomDetails)}
-                          variant="success"
-                        >
-                          Open Modal
-                        </Button>
-
-                        {/*<FontAwesomeIcon
+                        <FontAwesomeIcon
                           icon={faCircleInfo}
                           size="lg"
                           className="custom-icon"
-                          onClick={openModalHandle}
-                          //onClick={() => setModalShow(true)}
-
-                          // onHide={() => {
-                          // setModalShow(false);
-                          // }}
-                          //show={modalShow}
-                        />
-                        <Modal
-                          show={showM}
-                          onHide={closeModal}
-                          size="lg"
-                          aria-labelledby="contained-modal-title-vcenter"
-                          centered
-                        >
-                          <Modal.Header closeButton>
-                            <Modal.Title id="contained-modal-title-vcenter">
-                              View Room Details
-                            </Modal.Title>
-                          </Modal.Header>
-                          <Modal.Footer>
-                            <Row>
-                              <Col>
-                                <Button
-                                  onClick={closeModal}
-                                  className="custom-btn"
-                                >
-                                  Cancel
-                                </Button>
-                              </Col>
-                            </Row>
-                          </Modal.Footer>
-                        </Modal> */}
+                          onClick={() => openModalHandle(item.roomDetails)}
+                          />
+                       
                       </td>
-                      {/*<td>{item.roomDetails[0].roomType}</td> */}
                       <td>{item.noOfGuests}</td>
                     </tr>
                   );
@@ -442,9 +404,9 @@ function StayDetails() {
       )}
       {loading && <Loading />}
 
-      <Modal show={showM} onHide={closeModal}>
+      <Modal show={showM} onHide={closeModal} data={modalData}>
         <Modal.Header closeButton className="bg-primary text-white">
-          <Modal.Title>Data in Modal</Modal.Title>
+          <Modal.Title>Room Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div style={{ padding: "2rem" }}>
