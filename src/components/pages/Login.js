@@ -117,14 +117,8 @@ function Login() {
                   {error.password && <p className="error">{error.password}</p>}
                 </Form.Control>
               </Form.Group> */}
-              <Link to="/forgotPassword" style={{ textDecoration: "none" }}>
-                <p style={{ fontSize: "12px", color: "grey" }}>
-                  Forgot password?
-                </p>
-              </Link>
+
               <Row>
-                <Col></Col>
-                <Col></Col>
                 <Col>
                   <Button
                     className="custom-btn"
@@ -133,6 +127,13 @@ function Login() {
                   >
                     Login
                   </Button>
+                </Col>
+                <Col>
+                  <Link to="/forgotPassword" style={{ textDecoration: "none" }}>
+                    <p style={{ fontSize: "12px", color: "grey", paddingLeft:"20px"}}>
+                      Forgot password?
+                    </p>
+                  </Link>
                 </Col>
               </Row>
             </Form>

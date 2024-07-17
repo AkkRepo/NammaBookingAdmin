@@ -107,7 +107,7 @@ function Stays(props) {
         </Col> */}
         <Col>
           <div className="stays-add-button">
-            <Link to={"/dashboard/addStays"}>
+            <Link to={"/stays/addStays"}>
               <Button className="custom-btn">Add Stay</Button>
             </Link>
           </div>

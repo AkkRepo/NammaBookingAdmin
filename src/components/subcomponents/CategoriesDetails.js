@@ -47,36 +47,37 @@ function CategoriesDetailsModal({ show, onHide, category }) {
       <Modal
         show={show}
         onHide={onHide}
-        size="lg"
+        size="md-down"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            View Category Details
+            {category?.id && !loading && (
+              <p className="brownbear view-details-heading-style heading-color">
+                {category.category}
+              </p>
+            )}
           </Modal.Title>
         </Modal.Header>
-        {category?.id && !loading && (
-          <div>
-            <br />
-            <h4 style={{ textAlign: "center" }}>{Capitalize(category.category)}</h4>
-          </div>
-        )}
+
         <br />
 
-        <div style={{ marginLeft: "5rem" }}>
+        <div>
           {category.imageUrl && (
             <div style={{ textAlign: "center" }}>
               <Image
-                rounded
+                //rounded
+                className="view-details-image-style"
                 src={category.imageUrl}
                 alt="Selected"
-                style={{ width: "20rem", height: "12rem" }}
+                style={{ width: "25rem", height: "17rem" }}
               />
             </div>
           )}
         </div>
-        <br/>
+        <br />
+        {/*
         <Modal.Footer>
           <Row>
             <Col>
@@ -85,7 +86,7 @@ function CategoriesDetailsModal({ show, onHide, category }) {
               </Button>
             </Col>
           </Row>
-        </Modal.Footer>
+        </Modal.Footer> */}
       </Modal>
     </>
   );

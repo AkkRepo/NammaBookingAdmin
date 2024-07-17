@@ -61,6 +61,10 @@ function AddUsers(props) {
       const res = await UsersService.addUsers(users);
       if (res.status === 200) {
         alert(res.data.message);
+        setUsers({ name: "", email: "", password:"", roleId: 1 }); // Clear the form
+        //setError({ name: "", email: "", password:"", roleId: 1 }); // Clear errors
+         props.onHide();
+         props.onClose();
         navigate("/users");
       } else {
         alert("Error while Adding");
@@ -141,21 +145,26 @@ function AddUsers(props) {
           </Row>
         </div>
 
-        <Modal.Footer>
-          <Row>
-            <Col>
-              <Button onClick={submitUsers} className="custom-btn">
-                {" "}
-                Add{" "}
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={props.onHide} className="custom-btn">
-                Cancel
-              </Button>
-            </Col>
-          </Row>
-        </Modal.Footer>
+        <Row style={{ paddingBottom: "1rem" }}>
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col>
+            <Button onClick={submitUsers} className="custom-btn">
+              {" "}
+              Add{" "}
+            </Button>
+          </Col>
+          <Col style={{ paddingRight: "2rem" }}>
+            <Button onClick={props.onHide} className="custom-btn-reverse">
+              Cancel
+            </Button>
+          </Col>
+        </Row>
       </Modal>
       <LoadingModal show={loading} />
     </>

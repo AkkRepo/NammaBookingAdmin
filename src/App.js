@@ -38,15 +38,21 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/stays" element={<Stays />} />
+        <Route path="/stays/addStays" element={<AddStays />} />
         <Route path="/stays/stayDetails/:id" element={<StayDetails />} />
-        <Route path="/stays/categoryDetails/:id" element={<CategoriesDetails/>} />
-        <Route path="/stays/locationDetails/:id" element={<LocationDetails/>} />
+        <Route
+          path="/stays/categoryDetails/:id"
+          element={<CategoriesDetails />}
+        />
+        <Route
+          path="/stays/locationDetails/:id"
+          element={<LocationDetails />}
+        />
         <Route path="/categories" element={<Categories />} />
         <Route path="/users" element={<Users />} />
         <Route path="/locations" element={<Locations />} />
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="" element={<Dashboard />} />
-          <Route path="/dashboard/addStays" element={<AddStays />} />
           <Route path="/dashboard/editStays" element={<EditStays />} />
           <Route path="/dashboard/Multiple" element={<Multiple />} />
 
@@ -54,7 +60,6 @@ function App() {
           <Route path="/dashboard/activities" element={<Activities />} />
           <Route path="/dashboard/EditUsersCopy" element={<EditUsersCopy />} />
           <Route path="/dashboard/TestingFile" element={<TestingFile />} />
-          
         </Route>
       </Routes>
     </div>

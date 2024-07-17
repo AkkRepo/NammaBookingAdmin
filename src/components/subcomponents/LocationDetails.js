@@ -48,36 +48,37 @@ function LocationDetailsModal({ show, onHide, location }) {
       <Modal
         show={show}
         onHide={onHide}
-        size="lg"
+        size="md-down"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            View Location Details
+            {location?.id && !loading && (
+              <p className="brownbear view-details-heading-style heading-color">
+                {location.location}
+              </p>
+            )}
           </Modal.Title>
         </Modal.Header>
-        {location?.id && !loading && (
-          <div>
-            <br />
-            <h4 style={{ textAlign: "center" }}>{Capitalize(location.location)}</h4>
-          </div>
-        )}
+
         <br />
 
-        <div style={{ marginLeft: "5rem" }}>
+        <div>
           {location.imageUrl && (
             <div style={{ textAlign: "center" }}>
               <Image
-                rounded
+                //rounded
+                className="view-details-image-style"
                 src={location.imageUrl}
                 alt="Selected"
-                style={{ width: "20rem", height: "12rem" }}
+                style={{ width: "25rem", height: "17rem" }}
               />
             </div>
           )}
         </div>
-        <br/>
+        <br />
+        {/*
         <Modal.Footer>
           <Row>
             <Col>
@@ -86,7 +87,7 @@ function LocationDetailsModal({ show, onHide, location }) {
               </Button>
             </Col>
           </Row>
-        </Modal.Footer>
+        </Modal.Footer> */}
       </Modal>
     </>
   );

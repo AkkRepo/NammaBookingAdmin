@@ -667,7 +667,7 @@ function AddStays() {
       });
       if (res.status === 200) {
         alert(res.message);
-        navigate("/dashboard/addStays");
+        navigate("/stays");
       } else {
         alert("Else error");
       }
