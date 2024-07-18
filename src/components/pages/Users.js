@@ -117,6 +117,7 @@ function Users(props) {
             <AddUsers
               show={addModalShow}
               onHide={() => setAddModalShow(false)}
+              onClose={() => getUser()}
             />
           </div>
         </Col>

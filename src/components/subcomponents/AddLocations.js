@@ -62,6 +62,10 @@ function AddLocations(props) {
       const res = await LocationsService.addLocations(locations);
       if (res.status === 200) {
         alert(res.message);
+        setLocations({ location: "", imageUrl: "" }); // Clear the form
+        //setError({ category: "", imageUrl: "" }); // Clear errors
+        props.onHide();
+        props.onClose();
         navigate("/locations");
       } else {
         alert("Error while Adding");
@@ -87,56 +91,80 @@ function AddLocations(props) {
           </Modal.Title>
         </Modal.Header>
         <div style={{ padding: "1rem" }}>
-          {" "}
-          <FloatingLabel
-            controlId="addLocations"
-            label="Add Locations"
-            className="mb-3"
-          >
-            <Form.Control
-              type="text"
-              placeholder="Add Locations"
-              value={locations.location}
-              onChange={(e) =>
-                setLocations({ ...locations, location: e.target.value })
-              }
-              isInvalid={!!error.location}
-            />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="locationsImage"
-            label="Add Image"
-            className="mb-3"
-          >
-            <Form.Control
-              type="file"
-              placeholder="Add Image"
-              multiple={false}
-              onChange={handleImageChange}
-              isInvalid={!!error.imageUrl}
-            />
-          </FloatingLabel>
-          <p style={{ fontSize: "12px", marginTop: "-10px", color: "#e77225" }}>
-            (Maximum one image is allowed)
-          </p>
-        </div>
-
-        <Modal.Footer>
           <Row>
             <Col>
-              <Button onClick={submitLocations} className="custom-btn">
-                {" "}
-                Add{" "}
-              </Button>
+              {" "}
+              <FloatingLabel
+                controlId="addLocations"
+                label="Add Locations"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="text"
+                  placeholder="Add Locations"
+                  value={locations.location}
+                  onChange={(e) =>
+                    setLocations({ ...locations, location: e.target.value })
+                  }
+                  isInvalid={!!error.location}
+                />
+              </FloatingLabel>
+              <FloatingLabel
+                controlId="locationsImage"
+                label="Add Image"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="file"
+                  placeholder="Add Image"
+                  multiple={false}
+                  onChange={handleImageChange}
+                  isInvalid={!!error.imageUrl}
+                />
+              </FloatingLabel>
+              <p
+                style={{
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  color: "#e77225",
+                }}
+              >
+                (Maximum one image is allowed)
+              </p>
             </Col>
             <Col>
-              <Button onClick={props.onHide} className="custom-btn">
-                {" "}
-                Cancel{" "}
-              </Button>
+              {locations.imageUrl && (
+                <div style={{ textAlign: "center", marginBottom: "1rem" }}>
+                  <img
+                    src={`data:image/jpeg;base64,${locations.imageUrl}`}
+                    alt="Uploaded"
+                    style={{ maxWidth: "100%", height: "auto" }}
+                  />
+                </div>
+              )}
             </Col>
           </Row>
-        </Modal.Footer>
+        </div>
+
+        <Row style={{ paddingBottom: "1rem" }}>
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col>
+            <Button onClick={submitLocations} className="custom-btn">
+              Add
+            </Button>
+          </Col>
+          <Col style={{ paddingRight: "2rem" }}>
+            <Button onClick={props.onHide} className="custom-btn-reverse">
+              Cancel
+            </Button>
+          </Col>
+        </Row>
       </Modal>
       <LoadingModal show={loading} />
     </>

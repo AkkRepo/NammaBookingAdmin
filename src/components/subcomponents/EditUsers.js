@@ -154,12 +154,12 @@ function EditUsersModal({ show, onHide, user }) {
       <Modal.Footer>
         <Row>
           <Col>
-            <Button onClick={update} className="custom-btn">
+            {/*<Button onClick={update} className="custom-btn">
               Update
-            </Button>
+            </Button> */}
           </Col>
           <Col>
-            <Button onClick={onHide} className="custom-btn">
+            <Button onClick={onHide} className="custom-btn-reverse">
               Cancel
             </Button>
           </Col>

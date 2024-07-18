@@ -115,6 +115,7 @@ function Categories() {
             <AddCategories
               show={addModalShow}
               onHide={() => setAddModalShow(false)}
+              onClose={() => getCategories()}
             />
           </div>
         </Col>
@@ -145,7 +146,7 @@ function Categories() {
                 </td>
                 {/*<td>
                   <EditCategories category={i} onClose={()=>getCategories()} />
-                </td> */}
+                </td>  */}
                 <td>
                   <FontAwesomeIcon
                     icon={faTrash}

@@ -58,6 +58,7 @@ function Locations() {
         const res = await LocationsService.deleteLocations(id);
         if (res.status === 200) {
           alert(res.message);
+          getLocations(pagination.cur);
         } else {
           alert("Error while else");
         }
@@ -113,6 +114,7 @@ function Locations() {
             <AddLocations
               show={addModalShow}
               onHide={() => setAddModalShow(false)}
+              onClose={() => getLocations()}
             />
           </div>
         </Col>
