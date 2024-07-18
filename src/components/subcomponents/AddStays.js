@@ -63,9 +63,11 @@ function AddStays() {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
-          const base64String = reader.result;
-          const slicedBase64String = base64String.slice(27); // Example length
-          resolve(slicedBase64String);
+          // const base64String = reader.result;
+          // const slicedBase64String = base64String.slice(27); // Example length
+          // resolve(slicedBase64String);
+          const base64String = reader.result.split(",")[1];
+          resolve(base64String);
         };
         reader.onerror = reject;
         reader.readAsDataURL(file);
@@ -1628,7 +1630,7 @@ function AddStays() {
                     }}
                   >
                     <Image
-                      src={`data:image/jpeg;base64,/9j/${base64Image}`}
+                      src={`data:image/jpeg;base64,${base64Image}`}
                       alt={`Uploaded ${index}`}
                       style={{ width: "200px", height: "auto" }}
                       thumbnail
