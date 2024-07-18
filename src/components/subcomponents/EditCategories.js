@@ -42,11 +42,11 @@ function EditCategoriesModal({ show, onHide, category }) {
       try {
         const res = await CategoriesService.updateCategories({
           ...categories,
-          imageUrl: image ? categories.imageUrl.slice(23) : '',
+          imageUrl: image ? categories.imageUrl.slice(23) : "",
         });
         if (res.status === 200) {
           alert(res.message);
-          onHide()
+          onHide();
           navigate("/categories");
         } else {
           alert("Else Error");
@@ -143,6 +143,7 @@ function EditCategoriesModal({ show, onHide, category }) {
                   src={categories.imageUrl}
                   alt="Selected"
                   style={{ width: "10rem", height: "12rem" }}
+                  loading="lazy"
                 />
               </div>
             )}
@@ -185,7 +186,10 @@ function EditCategories(props) {
       />
       <EditCategoriesModal
         show={modalShow}
-        onHide={() => {setModalShow(false);props.onClose()}}
+        onHide={() => {
+          setModalShow(false);
+          props.onClose();
+        }}
         category={props.category}
       />
     </>

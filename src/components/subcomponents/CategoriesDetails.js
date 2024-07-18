@@ -72,6 +72,7 @@ function CategoriesDetailsModal({ show, onHide, category }) {
                 src={category.imageUrl}
                 alt="Selected"
                 style={{ width: "25rem", height: "17rem" }}
+                loading="lazy"
               />
             </div>
           )}

@@ -684,7 +684,7 @@ function AddStays() {
       <header id="header">
         <AppNav />
       </header>
-      
+
       <h1 className="brownbear stays-h1 heading-color">Add New Stay</h1>
 
       <Form onSubmit={handleSubmit}>
@@ -796,9 +796,15 @@ function AddStays() {
                     ))}
                   </Dropdown.Menu>
                 </Dropdown>
-                <p className="required-field-meassage">
-                  {addError.stayCategoriesDetails}
-                </p>
+                {selectedOptions.map((category, i) => (
+                  <span>
+                    {category.category}
+                    {i < selectedOptions.length - 1 &&
+                      selectedOptions.length > 1 &&
+                      ", "}
+                  </span>
+                ))}
+                <p>{addError.stayCategoriesDetails}</p>
               </Col>
               <Col>
                 <FloatingLabel
@@ -1632,6 +1638,7 @@ function AddStays() {
                       alt={`Uploaded ${index}`}
                       style={{ width: "200px", height: "auto" }}
                       thumbnail
+                      loading="lazy"
                     />
                     <Button
                       variant="danger"

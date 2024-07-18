@@ -28,7 +28,7 @@ function AddCategories(props) {
     let valid = true;
     if (!categories.category || !categories.category.match(/^[a-zA-Z'" ]*$/)) {
       tempError.category =
-        "Category is required and should contain only letters and spaces";
+        "Category is required and should contain only letters and inverted commas";
       valid = false;
     }
     if (!categories.imageUrl) {
@@ -63,7 +63,7 @@ function AddCategories(props) {
       if (res.status === 200) {
         alert(res.message);
         setCategories({ category: "", imageUrl: "" }); // Clear the form
-       // setError({ category: "", imageUrl: "" }); // Clear errors
+        // setError({ category: "", imageUrl: "" }); // Clear errors
         props.onHide();
         props.onClose();
         navigate("/categories");
@@ -108,6 +108,17 @@ function AddCategories(props) {
                   isInvalid={!!error.category}
                 />
               </FloatingLabel>
+              {error.category && (
+                <p
+                  style={{
+                    fontSize: "12px",
+                    marginTop: "-10px",
+                    color: "red",
+                  }}
+                >
+                  {error.category}
+                </p>
+              )}
               <FloatingLabel
                 controlId="categoryImage"
                 label="Add Image"
@@ -137,7 +148,8 @@ function AddCategories(props) {
                   <img
                     src={`data:image/jpeg;base64,${categories.imageUrl}`}
                     alt="Uploaded"
-                    style={{ maxWidth: "100%", height: "auto" }}
+                    style={{ width: "25rem", height: "17rem" }}
+                    loading="lazy"
                   />
                 </div>
               )}

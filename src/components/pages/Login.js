@@ -15,6 +15,8 @@ import {
 import logo from "../../img/NB_Logo_Icon.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthService } from "../../services/Auth";
+import Loading from "./Others/Loading";
+import LoadingModal from "./Others/LoadingModal";
 
 function Login() {
   const navigate = useNavigate();
@@ -26,6 +28,7 @@ function Login() {
     email: "",
     password: "",
   });
+  const [loading,setLoading]=useState(false)
   const isValid = () => {
     let temp = { email: "", password: "" };
     let flag = true;
@@ -42,6 +45,7 @@ function Login() {
   };
   const onLogin = async () => {
     if (isValid()) {
+      setLoading(true)
       try {
         const res = await AuthService.login(user.email, user.password);
         if (res.status === 200) {
@@ -49,8 +53,10 @@ function Login() {
           navigate("/dashboard");
         } else {
         }
+        setLoading(false)
       } catch (error) {
         alert(error.message);
+        setLoading(false)
       }
     }
   };
@@ -60,7 +66,7 @@ function Login() {
         <Card style={{ width: "20rem" }}>
           <Card.Body>
             <Card.Title>
-              <Image src={logo} className="login-logo-style" roundedCircle />
+              <Image src={logo} className="login-logo-style" roundedCircle loading="lazy"/>
             </Card.Title>
             <FloatingLabel label="Email" className="my-3">
               <Form.Control
@@ -124,6 +130,7 @@ function Login() {
                     className="custom-btn"
                     type="button"
                     onClick={onLogin}
+                    disabled={loading}
                   >
                     Login
                   </Button>
@@ -140,6 +147,7 @@ function Login() {
           </Card.Body>
         </Card>
       </Container>
+      <LoadingModal show={loading} />
     </div>
   );
 }

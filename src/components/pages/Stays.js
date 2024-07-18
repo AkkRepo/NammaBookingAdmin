@@ -207,6 +207,9 @@ function Stays(props) {
             ))} */}
         </tbody>
       </Table>
+      {stay.length < 1 && (
+        <h3 style={{ color: "#e77225", textAlign: "center" }}>List is empty</h3>
+      )}
       {loading && <Loading />}
       <div className="d-flex justify-content-center my-3">
         <AppPagination

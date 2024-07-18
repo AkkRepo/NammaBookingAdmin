@@ -142,6 +142,7 @@ function EditLocationsModal({ show, onHide, location }) {
                   src={locations.imageUrl}
                   alt="Selected"
                   style={{ width: "10rem", height: "12rem" }}
+                  loading="lazy"
                 />
               </div>
             )}

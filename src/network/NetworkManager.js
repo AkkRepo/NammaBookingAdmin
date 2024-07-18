@@ -25,7 +25,7 @@ apiClient.interceptors.request.use((config) => {
 
 apiClient.interceptors.response.use(
   (response) => {
-    return { ...response.data, status: response.status };
+    return { ...response.data, status: response?.status?response.status:400 };
   },
   (error) => {
     // if (error.response.data.error.code === 403) {

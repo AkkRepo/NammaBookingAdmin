@@ -27,8 +27,9 @@ function AddLocations(props) {
       imageUrl: "",
     };
     let valid = true;
-    if (!locations.location) {
-      tempError.location = "location is required";
+    if (!locations.location || !locations.location.match(/^[a-zA-Z'" ]*$/)) {
+      tempError.location =
+        "Location is required and should contain only letters and inverted commas";
       valid = false;
     }
     if (!locations.imageUrl) {
@@ -109,6 +110,17 @@ function AddLocations(props) {
                   isInvalid={!!error.location}
                 />
               </FloatingLabel>
+              {error.location && (
+                <p
+                  style={{
+                    fontSize: "12px",
+                    marginTop: "-10px",
+                    color: "red",
+                  }}
+                >
+                  {error.location}
+                </p>
+              )}
               <FloatingLabel
                 controlId="locationsImage"
                 label="Add Image"
@@ -139,6 +151,7 @@ function AddLocations(props) {
                     src={`data:image/jpeg;base64,${locations.imageUrl}`}
                     alt="Uploaded"
                     style={{ maxWidth: "100%", height: "auto" }}
+                    loading="lazy"
                   />
                 </div>
               )}

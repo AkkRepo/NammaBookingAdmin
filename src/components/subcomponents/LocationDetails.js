@@ -73,6 +73,7 @@ function LocationDetailsModal({ show, onHide, location }) {
                 src={location.imageUrl}
                 alt="Selected"
                 style={{ width: "25rem", height: "17rem" }}
+                loading="lazy"
               />
             </div>
           )}
