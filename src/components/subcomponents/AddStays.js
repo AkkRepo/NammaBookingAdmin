@@ -1169,6 +1169,7 @@ function AddStays() {
                       <th>No. of Rooms</th>
                       <th>No. of Guests</th>
                       <th>Package Includes</th>
+                      <th>No Of Beds</th>
                       <th>Bed Type</th>
                     </tr>
                   </thead>
