@@ -28,12 +28,15 @@ function Login() {
     email: "",
     password: "",
   });
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
   const isValid = () => {
     let temp = { email: "", password: "" };
     let flag = true;
-    if (!user.email) {
-      temp.email = "Required";
+    if (
+      !user.email ||
+      !user.email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+    ) {
+      temp.email = "Required or Invalid Email";
       flag = false;
     }
     if (!user.password) {
@@ -45,7 +48,7 @@ function Login() {
   };
   const onLogin = async () => {
     if (isValid()) {
-      setLoading(true)
+      setLoading(true);
       try {
         const res = await AuthService.login(user.email, user.password);
         if (res.status === 200) {
@@ -53,10 +56,10 @@ function Login() {
           navigate("/dashboard");
         } else {
         }
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
         alert(error.message);
-        setLoading(false)
+        setLoading(false);
       }
     }
   };
@@ -66,7 +69,12 @@ function Login() {
         <Card style={{ width: "20rem" }}>
           <Card.Body>
             <Card.Title>
-              <Image src={logo} className="login-logo-style" roundedCircle loading="lazy"/>
+              <Image
+                src={logo}
+                className="login-logo-style"
+                roundedCircle
+                loading="lazy"
+              />
             </Card.Title>
             <FloatingLabel label="Email" className="my-3">
               <Form.Control
@@ -77,7 +85,7 @@ function Login() {
                 isInvalid={!!error.email}
                 placeholder="Email"
               />
-              {error.email && <p className="error">{error.email}</p>}
+              {error.email && <p className="required-field-meassage">{error.email}</p>}
             </FloatingLabel>
             <FloatingLabel label="Password" className="my-3">
               <Form.Control
@@ -91,7 +99,7 @@ function Login() {
                 type="password"
                 isInvalid={!!error.password}
               />
-              {error.password && <p className="error">{error.password}</p>}
+              {error.password && <p className="required-field-meassage">{error.password}</p>}
             </FloatingLabel>
             <Form>
               {/*<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -137,7 +145,13 @@ function Login() {
                 </Col>
                 <Col>
                   <Link to="/forgotPassword" style={{ textDecoration: "none" }}>
-                    <p style={{ fontSize: "12px", color: "grey", paddingLeft:"20px"}}>
+                    <p
+                      style={{
+                        fontSize: "12px",
+                        color: "grey",
+                        paddingLeft: "20px",
+                      }}
+                    >
                       Forgot password?
                     </p>
                   </Link>

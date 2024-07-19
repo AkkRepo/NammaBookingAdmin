@@ -36,8 +36,11 @@ function AddUsers(props) {
       tempError.name = "Name is required";
       valid = false;
     }
-    if (!users.email) {
-      tempError.email = "Email is required";
+    if (
+      !users.email ||
+      !users.email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+    ) {
+      tempError.email = "Email is required or Email is not valid";
       valid = false;
     }
     if (!users.password) {
@@ -61,10 +64,10 @@ function AddUsers(props) {
       const res = await UsersService.addUsers(users);
       if (res.status === 200) {
         alert(res.data.message);
-        setUsers({ name: "", email: "", password:"", roleId: 1 }); // Clear the form
+        setUsers({ name: "", email: "", password: "", roleId: 1 }); // Clear the form
         //setError({ name: "", email: "", password:"", roleId: 1 }); // Clear errors
-         props.onHide();
-         props.onClose();
+        props.onHide();
+        props.onClose();
         navigate("/users");
       } else {
         alert("Error while Adding");

@@ -2,7 +2,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import axios, { AxiosRequestConfig } from "axios";
 import { AuthService } from "../services/Auth";
 
-const DEFAULT_TIMEOUT = 60 * 1000;
+const DEFAULT_TIMEOUT = 25000;
 
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
@@ -25,7 +25,10 @@ apiClient.interceptors.request.use((config) => {
 
 apiClient.interceptors.response.use(
   (response) => {
-    return { ...response.data, status: response?.status?response.status:400 };
+    return {
+      ...response.data,
+      status: response?.status ? response.status : 400,
+    };
   },
   (error) => {
     // if (error.response.data.error.code === 403) {

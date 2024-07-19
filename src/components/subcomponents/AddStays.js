@@ -257,91 +257,42 @@ function AddStays() {
   //terms and condition multiple input end
 
   //Pricing multiple input start
-
-  {
-    /*
-  const addNewRoom_1 = () => {
-    // Check if newRoom and newRoomType are not empty
-    if (newRoom && newRoomType) {
-      let roomsList = pricingInputData.noOfRooms;
-      let roomTypesList = pricingInputData.roomType;
-
-      roomsList.push(newRoom);
-      roomTypesList.push(newRoomType);
-
-      setPricingInputData({
-        ...pricingInputData,
-        noOfRooms: roomsList,
-        roomType: roomTypesList,
-      });
-
-      // Clear the inputs after adding the room
-      setRooms("");
-      setNewRoomType("");
-
-      console.log(pricingInputData);
-    } else {
-      // Handle the case where newRoom or newRoomType is empty
-      alert("No room data provided. Please enter the room details.");
-      // You can also set an error state and display it in your UI
-      // setError("No room data provided. Please enter the room details.");
-    }
-  }; */
-  }
-
   const [newRoom, setRooms] = useState({
-    noofRooms: "",
-    roomType: "",
+    noOfBeds: "",
+    bedType: "",
   });
   const addNewRoom = () => {
-    if (newRoom.noofRooms && newRoom.roomType) {
-      let list = pricingInputData.roomDetails;
+    if (newRoom.noOfBeds && newRoom.bedType) {
+      let list = pricingInputData.bedDetails;
       list.push(newRoom);
       setPricingInputData({
         ...pricingInputData,
-        roomDetails: list,
+        bedDetails: list,
       });
-      setRooms({ noofRooms: "", roomType: "" });
+      setRooms({ noOfBeds: "", bedType: "" });
       console.log(pricingInputData);
     } else {
-      alert("No bed data provided. Please enter the room details.");
+      alert("No bed data provided. Please enter the bed details.");
     }
   };
   const deleteNewRoom = (ind) => {
-    let list = pricingInputData.roomDetails;
+    let list = pricingInputData.bedDetails;
     list.splice(ind, 1);
     setPricingInputData({
       ...pricingInputData,
-      roomDetails: list,
+      bedDetails: list,
     });
 
     console.log(pricingInputData);
   };
-
-  {
-    /*
-  const addNewBed = () => {
-    if (newBed) {
-      let list = pricingInputData.noOfBeds;
-      list.push(newBed);
-      setPricingInputData({
-        ...pricingInputData,
-        noOfBeds: list,
-      });
-      setBed("");
-      console.log(pricingInputData);
-    } else {
-      alert("No bed data provided. Please enter the room details.");
-    }
-  }; */
-  }
   const [pricingInputData, setPricingInputData] = useState({
     roomsName: "",
     price: "",
     packageIncludes: "",
-    roomDetails: [],
-    //noOfRooms: [],
+    bedDetails: [],
+    selectacc: "",
     //roomType: [],
+    noOfRooms: "",
     noOfGuests: "",
   });
 
@@ -350,10 +301,11 @@ function AddStays() {
     roomsName,
     price,
     packageIncludes,
-    roomDetails,
-    //noOfRooms,
+    bedDetails,
+    selectacc,
     //roomType,
     noOfGuests,
+    noOfRooms,
   } = pricingInputData;
   function addData() {
     // Check if any of the fields are empty
@@ -361,10 +313,12 @@ function AddStays() {
       !roomsName ||
       !price ||
       !packageIncludes ||
-      !roomDetails ||
+      !bedDetails ||
+      !noOfRooms ||
+      !noOfGuests ||
+      !selectacc
       //!(noOfRooms.length > 0) ||
       //!roomType ||
-      !noOfGuests
     ) {
       alert("All fields are required");
       return;
@@ -377,9 +331,10 @@ function AddStays() {
         roomsName,
         price,
         packageIncludes,
-        //noOfRooms,
+        noOfRooms,
+        selectacc,
         //roomType,
-        roomDetails,
+        bedDetails,
         noOfGuests,
       },
     ]);
@@ -389,9 +344,10 @@ function AddStays() {
       roomsName: "",
       price: "",
       packageIncludes: "",
-      roomDetails: [],
-      //noOfRooms: [],
+      bedDetails: [],
+      selectacc: "",
       //roomType: [],
+      noOfRooms: "",
       noOfGuests: "",
     });
   }
@@ -486,6 +442,7 @@ function AddStays() {
     rating: "",
     priceStartsFrom: "",
     select: "",
+    selectacc: "",
     about: "",
     accommodationType: "",
     accommodation: "",
@@ -508,6 +465,7 @@ function AddStays() {
       rating: "",
       priceStartsFrom: "",
       select: "",
+      selectacc: "",
       about: "",
       accommodationType: "",
       accommodation: "",
@@ -542,6 +500,10 @@ function AddStays() {
     }
     if (!stays.select) {
       tempError.select = "Select is required";
+      valid = false;
+    }
+    if (!stays.selectacc) {
+      tempError.selectacc = "Select is required";
       valid = false;
     }
     if (!stays.about) {
@@ -635,19 +597,14 @@ function AddStays() {
         })),
         accommodationTypesDetails: pricingInputArr.map((x) => ({
           roomName: x.roomsName,
-          price: x.price,
+          price: x.price + " " + x.selectacc,
           includedPackages: x.packageIncludes,
+          noOfRooms: x.noOfRooms,
           noOfGuests: x.noOfGuests,
-          roomDetails: x.roomDetails.map((x) => ({
-            noOfRooms: Number(x.noofRooms),
-            roomType: x.roomType,
+          bedDetails: x.bedDetails.map((x) => ({
+            noOfBeds: Number(x.noOfBeds),
+            bedType: x.bedType,
           })),
-          //roomDetails: [
-          // {
-          //  noOfRooms: 1,
-          /// roomType: "room Type",
-          // },
-          //],
         })),
         stayAmenitiesDetails: amenitiesArray.map((x) => ({
           amenity: x.amenities,
@@ -1020,7 +977,73 @@ function AddStays() {
                     }}
                   />
                 </FloatingLabel>
+              </Col>{" "}
+              <Col>
+                <FloatingLabel controlId="selectacc" label="Select*">
+                  <Form.Select
+                    aria-label="Select*"
+                    value={pricingInputData.selectacc}
+                    onChange={(e) =>
+                      setPricingInputData({
+                        ...pricingInputData,
+                        selectacc: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.selectacc}
+                  >
+                    <option>Select</option>
+                    <option value="Price / Per Person">
+                      Price / Per Person
+                    </option>
+                    <option value="Price / Per Room">Price / Per Room</option>
+                  </Form.Select>
+                  <p className="required-field-meassage">
+                    {addError.selectacc}
+                  </p>
+                </FloatingLabel>
               </Col>
+              <Row>
+                <Col>
+                  <FloatingLabel
+                    controlId="noOfRooms"
+                    label="Total no. of Rooms"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="number"
+                      placeholder="No. of Rooms"
+                      style={{ textTransform: "capitalize" }}
+                      value={pricingInputData.noOfRooms}
+                      onChange={(e) => {
+                        setPricingInputData({
+                          ...pricingInputData,
+                          noOfRooms: e.target.value,
+                        });
+                      }}
+                    />
+                  </FloatingLabel>
+                </Col>
+                <Col>
+                  <FloatingLabel
+                    controlId="noOfGuests"
+                    label="Total no. of Guests"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="number"
+                      placeholder="No. of Guests"
+                      style={{ textTransform: "capitalize" }}
+                      value={pricingInputData.noOfGuests}
+                      onChange={(e) => {
+                        setPricingInputData({
+                          ...pricingInputData,
+                          noOfGuests: e.target.value,
+                        });
+                      }}
+                    />
+                  </FloatingLabel>
+                </Col>
+              </Row>
               <Row>
                 <Col>
                   <FloatingLabel
@@ -1046,38 +1069,39 @@ function AddStays() {
               <Row>
                 <Col>
                   <FloatingLabel
-                    controlId="noOfRooms"
-                    label="Total no. of Rooms"
+                    controlId="bedType"
+                    label="Bed Type"
                     className="mb-3"
+                    style={{ width: "32rem" }}
                   >
                     <Form.Control
-                      type="number"
-                      placeholder="No. of Rooms"
+                      type="text"
+                      placeholder="Room type"
                       style={{ textTransform: "capitalize" }}
-                      value={newRoom.noofRooms}
+                      value={newRoom.bedType}
                       onChange={(e) => {
-                        setRooms({
-                          ...newRoom,
-                          noofRooms: Number(e.target.value),
-                        });
+                        setRooms({ ...newRoom, bedType: e.target.value });
                       }}
                     />
                   </FloatingLabel>
                 </Col>
                 <Col style={{ display: "flex" }}>
                   <FloatingLabel
-                    controlId="roomType"
-                    label="Room Type"
+                    controlId="noOfBeds"
+                    label="Total no. of Beds"
                     className="mb-3"
                     style={{ width: "27rem" }}
                   >
                     <Form.Control
-                      type="text"
-                      placeholder="Room type"
+                      type="number"
+                      placeholder="No. of Rooms"
                       style={{ textTransform: "capitalize" }}
-                      value={newRoom.roomType}
+                      value={newRoom.noOfBeds}
                       onChange={(e) => {
-                        setRooms({ ...newRoom, roomType: e.target.value });
+                        setRooms({
+                          ...newRoom,
+                          noOfBeds: Number(e.target.value),
+                        });
                       }}
                     />
                   </FloatingLabel>
@@ -1102,16 +1126,16 @@ function AddStays() {
                 <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th>Rooms</th>
-                      <th>Room type</th>
+                      <th>No. of Guest</th>
+                      <th>Bed type</th>
                       <th>Remove</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {pricingInputData?.roomDetails?.map((item, index) => (
+                    {pricingInputData?.bedDetails?.map((item, index) => (
                       <tr key={index}>
-                        <td>{item.noofRooms}</td>
-                        <td>{item.roomType}</td>
+                        <td>{item.noOfBeds}</td>
+                        <td>{item.bedType}</td>
                         <td>
                           <FontAwesomeIcon
                             icon={faX}
@@ -1125,41 +1149,27 @@ function AddStays() {
               </Container>
               <Row>
                 <Col>
-                  <FloatingLabel
-                    controlId="noOfGuests"
-                    label="No. of Guests"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      type="number"
-                      placeholder="No. of Guests"
-                      style={{ textTransform: "capitalize" }}
-                      value={pricingInputData.noOfGuests}
-                      onChange={(e) => {
-                        setPricingInputData({
-                          ...pricingInputData,
-                          noOfGuests: e.target.value,
-                        });
-                      }}
-                    />
-                  </FloatingLabel>
-                </Col>
-                <Col>
                   <Button onClick={addData} className="custom-btn-reverse">
                     Add Accomodation Types
                   </Button>
                 </Col>
               </Row>
-              <Container style={{ paddingLeft: "10px", paddingRight: "10px" }}>
+              <Container
+                style={{
+                  paddingLeft: "10px",
+                  paddingRight: "10px",
+                  paddingTop: "1rem",
+                }}
+              >
                 <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th>Name</th>
+                      <th>Room Name</th>
                       <th>Price</th>
+                      <th>No. of Rooms</th>
+                      <th>No. of Guests</th>
                       <th>Package Includes</th>
-                      <th>Number of Rooms</th>
-                      <th>Room Type</th>
-                      <th>Number of Guests</th>
+                      <th>Bed Type</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1167,16 +1177,18 @@ function AddStays() {
                       return (
                         <tr>
                           <td>{info.roomsName}</td>
-                          <td>{info.price}</td>
+                          {/*
+                          <td>{info.price + " " + info.selectacc}</td> */}
+                          <td>{info.price+ " " + info.selectacc}</td>
+                          <td>{info.noOfRooms}</td>
+                          <td>{info.noOfGuests}</td>
                           <td>{info.packageIncludes}</td>
                           <td>
-                            {info.roomDetails.map((x) => x.noofRooms).join(",")}
+                            {info.bedDetails.map((x) => x.noOfBeds).join(",")}
                           </td>
                           <td>
-                            {info.roomDetails.map((x) => x.roomType).join(",")}
+                            {info.bedDetails.map((x) => x.bedType).join(",")}
                           </td>
-
-                          <td>{info.noOfGuests}</td>
                           <td>
                             <FontAwesomeIcon
                               icon={faX}

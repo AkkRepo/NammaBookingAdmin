@@ -34,9 +34,9 @@ function StayDetails() {
     setModalData([]);
     set_Show_M(false);
   };
-  const openModalHandle = (roomDetails) => {
-    console.log(roomDetails);
-    setModalData(roomDetails);
+  const openModalHandle = (bedDetails) => {
+    console.log(bedDetails);
+    setModalData(bedDetails);
     //console.log(modalData);
     modalShow();
   };
@@ -185,8 +185,9 @@ function StayDetails() {
                   <th>Name</th>
                   <th>Price</th>
                   <th>Package Includes</th>
-                  <th>Room Details</th>
-                  <th>Number of Guests</th>
+                  <th>Bed Details</th>
+                  <th>No. of Rooms</th>
+                  <th>No. of Guests</th>
                 </tr>
               </thead>
               <tbody>
@@ -202,10 +203,11 @@ function StayDetails() {
                           icon={faCircleInfo}
                           size="lg"
                           className="custom-icon"
-                          onClick={() => openModalHandle(item.roomDetails)}
-                          />
-                       
+                          onClick={() => openModalHandle(item.bedDetails)}
+                          style={{paddingLeft:"4rem"}}
+                        />
                       </td>
+                      <td>{item.noOfRooms}</td>
                       <td>{item.noOfGuests}</td>
                     </tr>
                   );
@@ -394,7 +396,7 @@ function StayDetails() {
                   rounded
                   src={i.imageUrl}
                   alt="Selected"
-                  style={{ width: "10rem", height: "12rem" }}
+                  style={{ width: "15rem", height: "17rem", padding: "20px" }}
                 />
               ))}
             </h4>
@@ -406,29 +408,29 @@ function StayDetails() {
 
       <Modal show={showM} onHide={closeModal} data={modalData}>
         <Modal.Header closeButton className="bg-primary text-white">
-          <Modal.Title>Room Details</Modal.Title>
+          <Modal.Title style={{ paddingLeft: "9rem" }}>Bed Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div style={{ padding: "2rem" }}>
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th>No of Rooms</th>
-                  <th>Room Type</th>
+                  <th>No of Beds</th>
+                  <th>Bed Type</th>
                 </tr>
               </thead>
-              {modalData.map((room, index) => {
+              {modalData.map((bed, index) => {
                 return (
                   <tr key={index}>
-                    <td style={{ paddingLeft: "2rem" }}>{room.noOfRooms}</td>
-                    <td>{room.roomType}</td>
+                    <td style={{ paddingLeft: "2rem" }}>{bed.noOfBeds}</td>
+                    <td>{bed.bedType}</td>
                   </tr>
                 );
               })}
             </Table>
           </div>
         </Modal.Body>
-        <Modal.Footer>
+        {/* <Modal.Footer>
           <Button
             variant="secondary"
             onClick={closeModal}
@@ -436,7 +438,7 @@ function StayDetails() {
           >
             Close
           </Button>
-        </Modal.Footer>
+        </Modal.Footer> */}
       </Modal>
     </div>
   );
