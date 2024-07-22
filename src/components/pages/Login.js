@@ -13,13 +13,14 @@ import {
 //image
 
 import logo from "../../img/NB_Logo_Icon.jpg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { AuthService } from "../../services/Auth";
 import Loading from "./Others/Loading";
 import LoadingModal from "./Others/LoadingModal";
 
 function Login() {
   const navigate = useNavigate();
+  const [session, setSession] = useSearchParams();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -85,7 +86,9 @@ function Login() {
                 isInvalid={!!error.email}
                 placeholder="Email"
               />
-              {error.email && <p className="required-field-meassage">{error.email}</p>}
+              {error.email && (
+                <p className="required-field-meassage">{error.email}</p>
+              )}
             </FloatingLabel>
             <FloatingLabel label="Password" className="my-3">
               <Form.Control
@@ -99,7 +102,9 @@ function Login() {
                 type="password"
                 isInvalid={!!error.password}
               />
-              {error.password && <p className="required-field-meassage">{error.password}</p>}
+              {error.password && (
+                <p className="required-field-meassage">{error.password}</p>
+              )}
             </FloatingLabel>
             <Form>
               {/*<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -161,6 +166,14 @@ function Login() {
           </Card.Body>
         </Card>
       </Container>
+
+      {session.get("session") && (
+        <Card>
+          <Card.Body className="session-expired">
+            Your session has expired. Please log in again to continue.
+          </Card.Body>
+        </Card>
+      )}
       <LoadingModal show={loading} />
     </div>
   );

@@ -38,22 +38,12 @@ function AddStays() {
 
     if (regex.test(value) || value === "") {
       setRating(value);
+      setStays({ ...stays, rating: value });
       setError("");
     } else {
       setError("Please enter a valid rating with one decimal place.");
     }
   };
-  //Rating single decimal implementation end
-
-  // Function to handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Logic to handle form submission, e.g., sending rating to server
-    console.log("Submitted rating:", rating);
-    // Reset the rating after submission
-    setRating(0);
-  };
-
   // Image upload
   const [images, setImages] = useState([]);
 
@@ -313,7 +303,7 @@ function AddStays() {
       !roomsName ||
       !price ||
       !packageIncludes ||
-      !bedDetails ||
+      //!bedDetails ||
       !noOfRooms ||
       !noOfGuests ||
       !selectacc
@@ -502,10 +492,10 @@ function AddStays() {
       tempError.select = "Select is required";
       valid = false;
     }
-    if (!stays.selectacc) {
-      tempError.selectacc = "Select is required";
-      valid = false;
-    }
+    // if (!stays.selectacc) {
+    //   tempError.selectacc = "Select is required";
+    //   valid = false;
+    // }
     if (!stays.about) {
       tempError.about = "About stay is required";
       valid = false;
@@ -569,7 +559,7 @@ function AddStays() {
     return valid;
   };
   const submitStays = () => {
-    if (validation() || true) {
+    if (validation()) {
       addStays();
     }
   };
@@ -580,7 +570,7 @@ function AddStays() {
         ...stays,
         name: stays.name,
         locationId: Number(stays.locationId),
-        rating: Number(rating),
+        rating: Number(stays.rating),
         about: stays.about,
         accommodationType: stays.accommodationType,
         accommodation: stays.accommodation,
@@ -638,6 +628,11 @@ function AddStays() {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    submitStays();
+  };
+
   return (
     <div>
       <header id="header">
@@ -671,6 +666,7 @@ function AddStays() {
                   className="mb-3"
                 >
                   <Form.Control
+                    required
                     type="text"
                     placeholder="Please enter Stay name"
                     style={{ textTransform: "capitalize" }}
@@ -686,6 +682,7 @@ function AddStays() {
               <Col>
                 <FloatingLabel controlId="location" label="Location*">
                   <Form.Select
+                    required
                     aria-label="Location*"
                     value={stays.locationId}
                     onChange={(e) =>
@@ -715,6 +712,7 @@ function AddStays() {
                   className="mb-3"
                 >
                   <Form.Control
+                    required
                     type="text"
                     placeholder="Rating"
                     value={rating}
@@ -731,6 +729,7 @@ function AddStays() {
               <Col>
                 <Dropdown>
                   <Dropdown.Toggle
+                    required
                     className="categories-styling"
                     id="dropdown-basic"
                     size="lg"
@@ -745,6 +744,7 @@ function AddStays() {
                   <Dropdown.Menu>
                     {categoriesDropdown.map((i, index) => (
                       <Form.Check
+                        required
                         key={i.id}
                         type="checkbox"
                         id={i.id}
@@ -772,6 +772,7 @@ function AddStays() {
                   className="mb-3"
                 >
                   <Form.Control
+                    required
                     type="text"
                     placeholder="Please enter Price"
                     value={stays.priceStartsFrom}
@@ -791,6 +792,7 @@ function AddStays() {
               <Col>
                 <FloatingLabel controlId="select" label="Select*">
                   <Form.Select
+                    required
                     aria-label="Select*"
                     value={stays.select}
                     onChange={(e) =>
@@ -815,6 +817,7 @@ function AddStays() {
               <Col>
                 <FloatingLabel controlId="aboutStay" label="About Stay*">
                   <Form.Control
+                    required
                     as="textarea"
                     placeholder="Leave a comment here"
                     style={{ height: "100px" }}
@@ -846,6 +849,7 @@ function AddStays() {
                   className="mb-3"
                 >
                   <Form.Control
+                    required
                     type="text"
                     placeholder="Accomodation Tyoe"
                     style={{ textTransform: "capitalize" }}
@@ -865,6 +869,7 @@ function AddStays() {
               </Col>
               <Col>
                 <FloatingLabel
+                  required
                   controlId="accomodation"
                   label="Accomodation*"
                   className="mb-3"
@@ -891,6 +896,7 @@ function AddStays() {
             <Row>
               <Col>
                 <FloatingLabel
+                  required
                   controlId="rooms"
                   label="Rooms*"
                   className="mb-3"
@@ -916,6 +922,7 @@ function AddStays() {
               <Col>
                 <FloatingLabel controlId="beds" label="Beds*" className="mb-3">
                   <Form.Control
+                    required
                     type="text"
                     placeholder="Beds"
                     style={{ textTransform: "capitalize" }}
@@ -945,10 +952,11 @@ function AddStays() {
               <Col>
                 <FloatingLabel
                   controlId="roomsName"
-                  label="Room Name"
+                  label="Room Name*"
                   className="mb-3"
                 >
                   <Form.Control
+                    required
                     type="text"
                     placeholder="Name"
                     style={{ textTransform: "capitalize" }}
@@ -965,8 +973,9 @@ function AddStays() {
               <Col>
                 <FloatingLabel controlId="price" label="Price" className="mb-3">
                   <Form.Control
+                    required
                     type="number"
-                    placeholder="Price"
+                    placeholder="Price*"
                     style={{ textTransform: "capitalize" }}
                     value={pricingInputData.price}
                     onChange={(e) => {
@@ -981,6 +990,7 @@ function AddStays() {
               <Col>
                 <FloatingLabel controlId="selectacc" label="Select*">
                   <Form.Select
+                    required
                     aria-label="Select*"
                     value={pricingInputData.selectacc}
                     onChange={(e) =>
@@ -989,7 +999,7 @@ function AddStays() {
                         selectacc: e.target.value,
                       })
                     }
-                    isInvalid={!!addError.selectacc}
+                    //isInvalid={!!addError.selectacc}
                   >
                     <option>Select</option>
                     <option value="Price / Per Person">
@@ -997,19 +1007,20 @@ function AddStays() {
                     </option>
                     <option value="Price / Per Room">Price / Per Room</option>
                   </Form.Select>
-                  <p className="required-field-meassage">
+                  {/* <p className="required-field-meassage">
                     {addError.selectacc}
-                  </p>
+                  </p> */}
                 </FloatingLabel>
               </Col>
               <Row>
                 <Col>
                   <FloatingLabel
                     controlId="noOfRooms"
-                    label="Total no. of Rooms"
+                    label="Total no. of Rooms*"
                     className="mb-3"
                   >
                     <Form.Control
+                      required
                       type="number"
                       placeholder="No. of Rooms"
                       style={{ textTransform: "capitalize" }}
@@ -1025,11 +1036,12 @@ function AddStays() {
                 </Col>
                 <Col>
                   <FloatingLabel
-                    controlId="noOfGuests"
+                    controlId="noOfGuests*"
                     label="Total no. of Guests"
                     className="mb-3"
                   >
                     <Form.Control
+                      required
                       type="number"
                       placeholder="No. of Guests"
                       style={{ textTransform: "capitalize" }}
@@ -1048,10 +1060,11 @@ function AddStays() {
                 <Col>
                   <FloatingLabel
                     controlId="packageIncludes"
-                    label="Package Includes"
+                    label="Package Includes*"
                     className="mb-3"
                   >
                     <Form.Control
+                      required
                       type="text"
                       placeholder="Name"
                       style={{ textTransform: "capitalize" }}
@@ -1070,11 +1083,12 @@ function AddStays() {
                 <Col>
                   <FloatingLabel
                     controlId="bedType"
-                    label="Bed Type"
+                    label="Bed Type*"
                     className="mb-3"
                     style={{ width: "32rem" }}
                   >
                     <Form.Control
+                      required
                       type="text"
                       placeholder="Room type"
                       style={{ textTransform: "capitalize" }}
@@ -1087,8 +1101,9 @@ function AddStays() {
                 </Col>
                 <Col style={{ display: "flex" }}>
                   <FloatingLabel
+                    required
                     controlId="noOfBeds"
-                    label="Total no. of Beds"
+                    label="Total no. of Beds*"
                     className="mb-3"
                     style={{ width: "27rem" }}
                   >
@@ -1180,7 +1195,7 @@ function AddStays() {
                           <td>{info.roomsName}</td>
                           {/*
                           <td>{info.price + " " + info.selectacc}</td> */}
-                          <td>{info.price+ " " + info.selectacc}</td>
+                          <td>{info.price + " " + info.selectacc}</td>
                           <td>{info.noOfRooms}</td>
                           <td>{info.noOfGuests}</td>
                           <td>{info.packageIncludes}</td>
@@ -1218,6 +1233,7 @@ function AddStays() {
                     style={{ marginRight: "1rem" }}
                   >
                     <Form.Control
+                      required
                       type="text"
                       placeholder="Please enter Amenities"
                       style={{ textTransform: "capitalize" }}
@@ -1271,6 +1287,7 @@ function AddStays() {
                     style={{ marginRight: "1rem" }}
                   >
                     <Form.Control
+                      required
                       type="text"
                       placeholder="Please enter Activities"
                       style={{ textTransform: "capitalize" }}
@@ -1323,6 +1340,7 @@ function AddStays() {
                     style={{ marginRight: "1rem" }}
                   >
                     <Form.Control
+                      required
                       type="text"
                       placeholder="Please enter Facilities"
                       style={{ textTransform: "capitalize" }}
@@ -1373,6 +1391,7 @@ function AddStays() {
                     style={{ marginRight: "1rem" }}
                   >
                     <Form.Control
+                      required
                       type="text"
                       placeholder="Please enter Near By Places"
                       style={{ textTransform: "capitalize" }}
@@ -1425,6 +1444,7 @@ function AddStays() {
                     style={{ marginRight: "1rem" }}
                   >
                     <Form.Control
+                      required
                       as="textarea"
                       placeholder="Please enter T&C"
                       style={{ height: "100px", width: "30rem" }}
@@ -1490,6 +1510,7 @@ function AddStays() {
                   className="mb-3"
                 >
                   <Form.Control
+                    required
                     type="text"
                     placeholder="Please enter contact name"
                     style={{ textTransform: "capitalize" }}
@@ -1511,6 +1532,7 @@ function AddStays() {
                   className="mb-3"
                 >
                   <Form.Control
+                    required
                     type="text"
                     placeholder="Please enter contact number"
                     value={stays.contactPersonNumber}
@@ -1629,6 +1651,7 @@ function AddStays() {
                   className="mb-3"
                 >
                   <Form.Control
+                    required
                     type="file"
                     accept="image/*"
                     multiple

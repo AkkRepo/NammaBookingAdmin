@@ -31,13 +31,13 @@ apiClient.interceptors.response.use(
     };
   },
   (error) => {
-    // if (error.response.data.error.code === 403) {
-    //   AuthService.logout();
-    //   window.location.href = window.location.origin + "/login";
-    //   return { ...error.response };
-    // } else {
-    //   Promise.reject(error);
-    // }
+    if (error.response.data.error.message === "Invalid Token!") {
+      AuthService.logout();
+      window.location.href = window.location.origin + '/login?session=true';
+      return { ...error.response };
+    } else {
+      return { ...error.response };
+    }
   }
 );
 
