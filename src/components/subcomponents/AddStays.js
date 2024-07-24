@@ -526,14 +526,14 @@ function AddStays() {
       tempError.contactPersonNumber = "Contact number is required";
       valid = false;
     }
-    if (!stays.googleMapLink) {
-      tempError.googleMapLink = "Location is required";
-      valid = false;
-    }
-    if (!stays.address) {
-      tempError.address = "Address is required";
-      valid = false;
-    }
+    // if (!stays.googleMapLink) {
+    //   tempError.googleMapLink = "Location is required";
+    //   valid = false;
+    // }
+    // if (!stays.address) {
+    //   tempError.address = "Address is required";
+    //   valid = false;
+    // }
     if (selectedOptions.length === 0) {
       tempError.stayCategoriesDetails = "Categories is required";
       valid = false;
@@ -956,7 +956,6 @@ function AddStays() {
                   className="mb-3"
                 >
                   <Form.Control
-                    required
                     type="text"
                     placeholder="Name"
                     style={{ textTransform: "capitalize" }}
@@ -973,7 +972,6 @@ function AddStays() {
               <Col>
                 <FloatingLabel controlId="price" label="Price" className="mb-3">
                   <Form.Control
-                    required
                     type="number"
                     placeholder="Price*"
                     style={{ textTransform: "capitalize" }}
@@ -990,7 +988,6 @@ function AddStays() {
               <Col>
                 <FloatingLabel controlId="selectacc" label="Select*">
                   <Form.Select
-                    required
                     aria-label="Select*"
                     value={pricingInputData.selectacc}
                     onChange={(e) =>
@@ -1020,7 +1017,6 @@ function AddStays() {
                     className="mb-3"
                   >
                     <Form.Control
-                      required
                       type="number"
                       placeholder="No. of Rooms"
                       style={{ textTransform: "capitalize" }}
@@ -1041,7 +1037,6 @@ function AddStays() {
                     className="mb-3"
                   >
                     <Form.Control
-                      required
                       type="number"
                       placeholder="No. of Guests"
                       style={{ textTransform: "capitalize" }}
@@ -1064,7 +1059,6 @@ function AddStays() {
                     className="mb-3"
                   >
                     <Form.Control
-                      required
                       type="text"
                       placeholder="Name"
                       style={{ textTransform: "capitalize" }}
@@ -1088,7 +1082,6 @@ function AddStays() {
                     style={{ width: "32rem" }}
                   >
                     <Form.Control
-                      required
                       type="text"
                       placeholder="Room type"
                       style={{ textTransform: "capitalize" }}
@@ -1101,7 +1094,6 @@ function AddStays() {
                 </Col>
                 <Col style={{ display: "flex" }}>
                   <FloatingLabel
-                    required
                     controlId="noOfBeds"
                     label="Total no. of Beds*"
                     className="mb-3"
@@ -1141,16 +1133,16 @@ function AddStays() {
                 <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th>No. of Guest</th>
                       <th>Bed type</th>
+                      <th>No. of Beds</th>
                       <th>Remove</th>
                     </tr>
                   </thead>
                   <tbody>
                     {pricingInputData?.bedDetails?.map((item, index) => (
                       <tr key={index}>
-                        <td>{item.noOfBeds}</td>
                         <td>{item.bedType}</td>
+                        <td>{item.noOfBeds}</td>
                         <td>
                           <FontAwesomeIcon
                             icon={faX}
@@ -1233,7 +1225,6 @@ function AddStays() {
                     style={{ marginRight: "1rem" }}
                   >
                     <Form.Control
-                      required
                       type="text"
                       placeholder="Please enter Amenities"
                       style={{ textTransform: "capitalize" }}
@@ -1287,7 +1278,6 @@ function AddStays() {
                     style={{ marginRight: "1rem" }}
                   >
                     <Form.Control
-                      required
                       type="text"
                       placeholder="Please enter Activities"
                       style={{ textTransform: "capitalize" }}
@@ -1340,7 +1330,6 @@ function AddStays() {
                     style={{ marginRight: "1rem" }}
                   >
                     <Form.Control
-                      required
                       type="text"
                       placeholder="Please enter Facilities"
                       style={{ textTransform: "capitalize" }}
@@ -1391,7 +1380,6 @@ function AddStays() {
                     style={{ marginRight: "1rem" }}
                   >
                     <Form.Control
-                      required
                       type="text"
                       placeholder="Please enter Near By Places"
                       style={{ textTransform: "capitalize" }}
@@ -1444,7 +1432,6 @@ function AddStays() {
                     style={{ marginRight: "1rem" }}
                   >
                     <Form.Control
-                      required
                       as="textarea"
                       placeholder="Please enter T&C"
                       style={{ height: "100px", width: "30rem" }}
@@ -1567,11 +1554,11 @@ function AddStays() {
                         googleMapLink: e.target.value,
                       })
                     }
-                    isInvalid={!!addError.googleMapLink}
+                    //isInvalid={!!addError.googleMapLink}
                   />
-                  <p className="required-field-meassage">
+                  {/* <p className="required-field-meassage">
                     {addError.googleMapLink}
-                  </p>
+                  </p> */}
                 </FloatingLabel>
               </Col>
               <Col>
@@ -1630,9 +1617,9 @@ function AddStays() {
                         address: e.target.value,
                       })
                     }
-                    isInvalid={!!addError.address}
+                    //isInvalid={!!addError.address}
                   />
-                  <p className="required-field-meassage">{addError.address}</p>
+                  {/* <p className="required-field-meassage">{addError.address}</p> */}
                 </FloatingLabel>
               </Col>
             </Row>
@@ -1651,7 +1638,6 @@ function AddStays() {
                   className="mb-3"
                 >
                   <Form.Control
-                    required
                     type="file"
                     accept="image/*"
                     multiple
