@@ -106,10 +106,6 @@ function StayDetails() {
                   <h6 className="stay-id-decor">Price Starts from:</h6>
                   <p style={{ paddingLeft: "50px" }}>{stay.priceStartsFrom}</p>
                 </Container>
-                <Container style={{ display: "flex" }}>
-                  <h6 className="stay-id-decor">About Stay:</h6>
-                  <p style={{ paddingLeft: "112px" }}>{stay.about}</p>
-                </Container>
               </Container>
               <Container>
                 <Col>
@@ -135,6 +131,10 @@ function StayDetails() {
                   </Container>
                 </Col>
               </Container>
+            </Container>
+            <Container style={{ display: "flex", paddingLeft: "2rem" }}>
+              <h6 className="stay-id-decor">About Stay:</h6>
+              <p style={{ paddingLeft: "112px" }}>{stay.about}</p>
             </Container>
           </Container>
           <br />
@@ -204,7 +204,7 @@ function StayDetails() {
                           size="lg"
                           className="custom-icon"
                           onClick={() => openModalHandle(item.bedDetails)}
-                          style={{paddingLeft:"4rem"}}
+                          style={{ paddingLeft: "4rem" }}
                         />
                       </td>
                       <td>{item.noOfRooms}</td>
