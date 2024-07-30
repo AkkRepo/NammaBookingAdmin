@@ -251,7 +251,14 @@ function AddStays() {
     noOfBeds: "",
     bedType: "",
   });
-  const addNewRoom = () => {
+  const addNewBedDetails = () => {
+    // let list = pricingInputData.bedDetails;
+    // list.push(newRoom);
+    // setPricingInputData({
+    //   ...pricingInputData,
+    //   bedDetails: list,
+    // });
+
     if (newRoom.noOfBeds && newRoom.bedType) {
       let list = pricingInputData.bedDetails;
       list.push(newRoom);
@@ -1120,7 +1127,7 @@ function AddStays() {
                     }}
                   >
                     <Button
-                      onClick={addNewRoom}
+                      onClick={addNewBedDetails}
                       className="custom-btn"
                       style={{ height: "3rem" }}
                     >
