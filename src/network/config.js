@@ -6,7 +6,7 @@ export const ApiEndPoints = {
   categoriesAdd:"/api/categories/admin/add",
   stays: "/api/stays/admin/add",
   categoriesDelete: "/api/categories/admin/delete",
-  locations: "/api/locations",
+  locations: "/api/locations/admin/",
   adminAddLocation: "/api/locations/admin/add",
   allStay: "/api/stays/admin/getStaysList",
   stayById: "/api/stays/admin/findByStayId",
