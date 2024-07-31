@@ -259,6 +259,10 @@ html {
   color: red;
 }
 
+.text-capitalize{
+  text-transform: capitalize;
+}
+
 @media only screen and (max-width: 768px) {
   .login-card-align {
     z-index: 10;

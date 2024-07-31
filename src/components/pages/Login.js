@@ -56,6 +56,7 @@ function Login() {
           AuthService.setUser(res.data);
           navigate("/dashboard");
         } else {
+          alert("Wrong username or password");
         }
         setLoading(false);
       } catch (error) {

@@ -23,7 +23,9 @@ function LocationDetailsModal({ show, onHide, location }) {
         setLocations(res.data);
         if (res.data?.images?.length > 0) {
           setImage(res.data.images[0].imageUrl);
+          console.log(res.data.images[0].imageUrl);
         }
+        
       } else {
         alert(res.data.message);
       }

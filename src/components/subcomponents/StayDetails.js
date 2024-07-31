@@ -310,7 +310,7 @@ function StayDetails() {
                 </Container>
               </Col>
             </Row>
-            <Row>
+            {/* <Row>
               <Col>
                 <Container
                   style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
@@ -333,7 +333,82 @@ function StayDetails() {
                   </Table>
                 </Container>
               </Col>
-            </Row>
+            </Row> */}
+          </Container>
+          <br />
+          <Container className="add-stay-group-border">
+            <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
+              House Policies
+            </h4>
+            <h5 style={{ paddingBottom: "15px", color: "#051e3c" }}>
+              Check In/Out time:
+            </h5>
+            <Container style={{ display: "flex" }}>
+              <h6 className="stay-id-decor">Check-In Time:</h6>
+              <p style={{ paddingLeft: "10px" }}>
+                {stay.stayHousePolicyDetails.checkInTime}
+              </p>
+            </Container>
+            <Container style={{ display: "flex" }}>
+              <h6 className="stay-id-decor">Check-Out Time:</h6>
+              <p style={{ paddingLeft: "10px" }}>
+                {stay.stayHousePolicyDetails.checkOutTime}
+              </p>
+            </Container>
+            <Container style={{ display: "flex" }}>
+              <h6 className="stay-id-decor">Smoking:</h6>
+              <p style={{ paddingLeft: "10px" }}>
+                {stay.stayHousePolicyDetails.smoking}
+              </p>
+            </Container>
+            <Container style={{ display: "flex" }}>
+              <h6 className="stay-id-decor">Pets:</h6>
+              <p style={{ paddingLeft: "10px" }}>
+                {stay.stayHousePolicyDetails.pets}
+              </p>
+            </Container>
+            <Container style={{ display: "flex" }}>
+              <h6 className="stay-id-decor">Couple friendly:</h6>
+              <p style={{ paddingLeft: "10px" }}>
+                {stay.stayHousePolicyDetails.coupleFriendly}
+              </p>
+            </Container>
+            <h5 style={{ paddingBottom: "15px", color: "#051e3c" }}>
+              Children's Payment:
+            </h5>
+            <Container style={{ display: "flex" }}>
+              <h6 className="stay-id-decor">Children below 5 year:</h6>
+              <p style={{ paddingLeft: "10px" }}>
+                {stay.stayHousePolicyDetails.childrenBelow5}
+              </p>
+            </Container>
+            <Container style={{ display: "flex" }}>
+              <h6 className="stay-id-decor">Children aged 5-10 year:</h6>
+              <p style={{ paddingLeft: "10px" }}>
+                {stay.stayHousePolicyDetails.children5To10}
+              </p>
+            </Container>
+            <Container style={{ display: "flex" }}>
+              <h6 className="stay-id-decor">Children above 10 year:</h6>
+              <p style={{ paddingLeft: "10px" }}>
+                {stay.stayHousePolicyDetails.childrenAbove10}
+              </p>
+            </Container>
+            <h5 style={{ paddingBottom: "15px", color: "#051e3c" }}>
+              Food Policy:
+            </h5>
+            <Container style={{ display: "flex" }}>
+              <h6 className="stay-id-decor">Included meals:</h6>
+              <p style={{ paddingLeft: "10px" }}>
+                {stay.stayHousePolicyDetails.includedMeals}
+              </p>
+            </Container>
+            <Container style={{ display: "flex" }}>
+              <h6 className="stay-id-decor">Extra starters:</h6>
+              <p style={{ paddingLeft: "10px" }}>
+                {stay.stayHousePolicyDetails.extraStarters}
+              </p>
+            </Container>
           </Container>
           <br />
           <Container className="add-stay-group-border">

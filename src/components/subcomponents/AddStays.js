@@ -96,7 +96,7 @@ function AddStays() {
   const amenitiesInputChange = (e) => {
     setAmenitiesInputData({
       ...amenitiesInputData,
-      amenities: e.target.value,
+      amenities: Capitalize(e.target.value),
     });
   };
 
@@ -128,7 +128,7 @@ function AddStays() {
   const activitiesInputChange = (e) => {
     setActivitiesInputData({
       ...activitiesInputData,
-      activities: e.target.value,
+      activities: Capitalize(e.target.value),
     });
   };
 
@@ -160,7 +160,7 @@ function AddStays() {
   const facilitiesInputChange = (e) => {
     setFacilitiesInputData({
       ...facilitiesInputData,
-      facilities: e.target.value,
+      facilities: Capitalize(e.target.value),
     });
   };
 
@@ -192,7 +192,7 @@ function AddStays() {
   const nearByPlacesInputChange = (e) => {
     setNearByPlacesInputData({
       ...nearByPlacesInputData,
-      nearByPlaces: e.target.value,
+      nearByPlaces: Capitalize(e.target.value),
     });
   };
 
@@ -213,38 +213,6 @@ function AddStays() {
     setNearByPlacestArray(updatedArray);
   };
   //near by places myltiple input end
-
-  //terms and condition multiple input start
-  let [termsAndConditionArray, setTermsAndConditionArray] = useState([]);
-  let [termsAndConditionInputData, setTermsAndConditionInputData] = useState({
-    termsAndCondition: "",
-  });
-  function data2(e) {
-    setTermsAndConditionInputData({
-      ...termsAndConditionArray,
-      termsAndCondition: e.target.value,
-    });
-  }
-  let termsAndCondition = termsAndConditionInputData;
-  function addTermsAndConditionInputData() {
-    // Check if the input field is not empty
-    if (termsAndConditionInputData.termsAndCondition.trim() !== "") {
-      setTermsAndConditionArray([...termsAndConditionArray, termsAndCondition]);
-      console.log(termsAndConditionInputData);
-      setTermsAndConditionInputData({ termsAndCondition: "" });
-    } else {
-      // Display an alert or handle the empty input case in some other way
-      alert("Please enter Terms & Conditions");
-    }
-  }
-
-  function deleteTermsAndConditionInputData(i) {
-    console.log(i, "this index row wants to be deleted");
-    let total2 = [...termsAndConditionArray];
-    total2.splice(i, 1);
-    setTermsAndConditionArray(total2);
-  }
-  //terms and condition multiple input end
 
   //Pricing multiple input start
   const [newRoom, setRooms] = useState({
@@ -429,7 +397,18 @@ function AddStays() {
     stayActivitiesDetails: [],
     otherFacilityDetails: [],
     nearByPlacesDetails: [],
-    stayTAndCDetails: [],
+    stayHousePolicyDetails: {
+      checkInTime: "",
+      checkOutTime: "",
+      smoking: "",
+      pets: "",
+      coupleFriendly: "",
+      childrenBelow5: "",
+      children5To10: "",
+      childrenAbove10: "",
+      includedMeals: "",
+      extraStarters: "",
+    },
     images: [""],
   });
 
@@ -448,11 +427,20 @@ function AddStays() {
     stayCategoriesDetails: "",
     accommodationTypesDetails: "",
     stayAmenitiesDetails: "",
-    stayTAndCDetails: "",
     contactPersonName: "",
     contactPersonNumber: "",
     googleMapLink: "",
     address: "",
+    checkInTime: "",
+    checkOutTime: "",
+    smoking: "",
+    pets: "",
+    coupleFriendly: "",
+    childrenBelow5: "",
+    children5To10: "",
+    childrenAbove10: "",
+    includedMeals: "",
+    extraStarters: "",
     images: "",
   });
   const validation = () => {
@@ -471,11 +459,20 @@ function AddStays() {
       stayCategoriesDetails: "",
       accommodationTypesDetails: "",
       stayAmenitiesDetails: "",
-      stayTAndCDetails: "",
       contactPersonName: "",
       contactPersonNumber: "",
       googleMapLink: "",
       address: "",
+      checkInTime: "",
+      checkOutTime: "",
+      smoking: "",
+      pets: "",
+      coupleFriendly: "",
+      childrenBelow5: "",
+      children5To10: "",
+      childrenAbove10: "",
+      includedMeals: "",
+      extraStarters: "",
       images: "",
     };
     let valid = true;
@@ -499,10 +496,6 @@ function AddStays() {
       tempError.select = "Select is required";
       valid = false;
     }
-    // if (!stays.selectacc) {
-    //   tempError.selectacc = "Select is required";
-    //   valid = false;
-    // }
     if (!stays.about) {
       tempError.about = "About stay is required";
       valid = false;
@@ -533,14 +526,6 @@ function AddStays() {
       tempError.contactPersonNumber = "Contact number is required";
       valid = false;
     }
-    // if (!stays.googleMapLink) {
-    //   tempError.googleMapLink = "Location is required";
-    //   valid = false;
-    // }
-    // if (!stays.address) {
-    //   tempError.address = "Address is required";
-    //   valid = false;
-    // }
     if (selectedOptions.length === 0) {
       tempError.stayCategoriesDetails = "Categories is required";
       valid = false;
@@ -549,12 +534,48 @@ function AddStays() {
       tempError.stayAmenitiesDetails = "Amenity is required";
       valid = false;
     }
-    if (termsAndConditionArray.length === 0) {
-      tempError.stayTAndCDetails = "Terms and Condition is required";
-      valid = false;
-    }
     if (pricingInputArr.length === 0) {
       tempError.accommodationTypesDetails = "Accomodation Type is required";
+      valid = false;
+    }
+    if (!stays.stayHousePolicyDetails.checkInTime) {
+      tempError.checkInTime = "Required Field";
+      valid = false;
+    }
+    if (!stays.stayHousePolicyDetails.checkOutTime) {
+      tempError.checkOutTime = "Required Field";
+      valid = false;
+    }
+    if (!stays.stayHousePolicyDetails.smoking) {
+      tempError.smoking = "Required Field";
+      valid = false;
+    }
+    if (!stays.stayHousePolicyDetails.pets) {
+      tempError.pets = "Required Field";
+      valid = false;
+    }
+    if (!stays.stayHousePolicyDetails.coupleFriendly) {
+      tempError.coupleFriendly = "Required Field";
+      valid = false;
+    }
+    if (!stays.stayHousePolicyDetails.childrenBelow5) {
+      tempError.childrenBelow5 = "Required Field";
+      valid = false;
+    }
+    if (!stays.stayHousePolicyDetails.children5To10) {
+      tempError.children5To10 = "Required Field";
+      valid = false;
+    }
+    if (!stays.stayHousePolicyDetails.childrenAbove10) {
+      tempError.childrenAbove10 = "Required Field";
+      valid = false;
+    }
+    if (!stays.stayHousePolicyDetails.includedMeals) {
+      tempError.includedMeals = "Required Field";
+      valid = false;
+    }
+    if (!stays.stayHousePolicyDetails.extraStarters) {
+      tempError.extraStarters = "Required Field";
       valid = false;
     }
     if (!stays.images) {
@@ -615,10 +636,22 @@ function AddStays() {
         nearByPlacesDetails: nearByPlacesArray.map((x) => ({
           placeName: x.nearByPlaces,
         })),
-        stayTAndCDetails: termsAndConditionArray.map((x) => ({
-          tandc: x.termsAndCondition,
-        })),
         images: images,
+        // stayHousePolicyDetails: {
+        //   checkInTime: "string",
+        // },
+        checkInTime: stays.stayHousePolicyDetails.checkInTime,
+        checkOutTime: stays.stayHousePolicyDetails.checkOutTime,
+
+        smoking: stays.stayHousePolicyDetails.smoking,
+        pets: stays.stayHousePolicyDetails.pets,
+        coupleFriendly: stays.stayHousePolicyDetails.coupleFriendly,
+        childrenBelow5: stays.stayHousePolicyDetails.childrenBelow5,
+        children5To10: stays.stayHousePolicyDetails.children5To10,
+        childrenAbove10: stays.stayHousePolicyDetails.childrenAbove10,
+        includedMeals: stays.stayHousePolicyDetails.includedMeals,
+        extraStarters: stays.stayHousePolicyDetails.extraStarters,
+
         //images: ["images"],
       });
       if (res.status === 200) {
@@ -676,10 +709,10 @@ function AddStays() {
                     required
                     type="text"
                     placeholder="Please enter Stay name"
-                    style={{ textTransform: "capitalize" }}
+                    className="text-capitalize"
                     value={stays.name}
                     onChange={(e) =>
-                      setStays({ ...stays, name: e.target.value })
+                      setStays({ ...stays, name: Capitalize(e.target.value) })
                     }
                     isInvalid={!!addError.name}
                   />
@@ -726,7 +759,10 @@ function AddStays() {
                     onChange={handleRatingChange}
                     isInvalid={!!error || !!addError.rating}
                   />
-                  <Form.Control.Feedback type="invalid">
+                  <Form.Control.Feedback
+                    type="invalid"
+                    className="required-field-meassage"
+                  >
                     {error ? error : addError.rating}
                   </Form.Control.Feedback>
                 </FloatingLabel>
@@ -770,7 +806,9 @@ function AddStays() {
                       ", "}
                   </span>
                 ))}
-                <p>{addError.stayCategoriesDetails}</p>
+                <p className="required-field-meassage">
+                  {addError.stayCategoriesDetails}
+                </p>
               </Col>
               <Col>
                 <FloatingLabel
@@ -859,12 +897,12 @@ function AddStays() {
                     required
                     type="text"
                     placeholder="Accomodation Tyoe"
-                    style={{ textTransform: "capitalize" }}
+                    className="text-capitalize"
                     value={stays.accommodationType}
                     onChange={(e) =>
                       setStays({
                         ...stays,
-                        accommodationType: e.target.value,
+                        accommodationType: Capitalize(e.target.value),
                       })
                     }
                     isInvalid={!!addError.accommodationType}
@@ -965,7 +1003,7 @@ function AddStays() {
                   <Form.Control
                     type="text"
                     placeholder="Name"
-                    style={{ textTransform: "capitalize" }}
+                    className="text-capitalize"
                     value={pricingInputData.roomsName}
                     onChange={(e) => {
                       setPricingInputData({
@@ -1068,12 +1106,12 @@ function AddStays() {
                     <Form.Control
                       type="text"
                       placeholder="Name"
-                      style={{ textTransform: "capitalize" }}
+                      className="text-capitalize"
                       value={pricingInputData.packageIncludes}
                       onChange={(e) => {
                         setPricingInputData({
                           ...pricingInputData,
-                          packageIncludes: e.target.value,
+                          packageIncludes: Capitalize(e.target.value),
                         });
                       }}
                     />
@@ -1091,10 +1129,13 @@ function AddStays() {
                     <Form.Control
                       type="text"
                       placeholder="Room type"
-                      style={{ textTransform: "capitalize" }}
+                      className="text-capitalize"
                       value={newRoom.bedType}
                       onChange={(e) => {
-                        setRooms({ ...newRoom, bedType: e.target.value });
+                        setRooms({
+                          ...newRoom,
+                          bedType: Capitalize(e.target.value),
+                        });
                       }}
                     />
                   </FloatingLabel>
@@ -1234,7 +1275,7 @@ function AddStays() {
                     <Form.Control
                       type="text"
                       placeholder="Please enter Amenities"
-                      style={{ textTransform: "capitalize" }}
+                      className="text-capitalize"
                       value={amenitiesInputData.amenities}
                       onChange={amenitiesInputChange}
                     />
@@ -1287,7 +1328,7 @@ function AddStays() {
                     <Form.Control
                       type="text"
                       placeholder="Please enter Activities"
-                      style={{ textTransform: "capitalize" }}
+                      className="text-capitalize"
                       value={activitiesInputData.activities}
                       onChange={activitiesInputChange}
                     />
@@ -1339,7 +1380,7 @@ function AddStays() {
                     <Form.Control
                       type="text"
                       placeholder="Please enter Facilities"
-                      style={{ textTransform: "capitalize" }}
+                      className="text-capitalize"
                       value={facilitiesInputData.facilities}
                       onChange={facilitiesInputChange}
                     />
@@ -1389,7 +1430,7 @@ function AddStays() {
                     <Form.Control
                       type="text"
                       placeholder="Please enter Near By Places"
-                      style={{ textTransform: "capitalize" }}
+                      className="text-capitalize"
                       value={nearByPlacesInputData.nearByPlaces}
                       onChange={nearByPlacesInputChange}
                     />
@@ -1429,64 +1470,284 @@ function AddStays() {
                 </Container>
               </Col>
             </Row>
+          </Container>
+          <br />
+
+          <Container className="add-stay-group-border">
+            <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
+              House Policy
+            </h4>
+            <Row>
+              <h5>Check In/Out Time</h5>
+              <Col>
+                <FloatingLabel
+                  controlId="checkInTime"
+                  label="Check-In Time*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Please enter data"
+                    value={stays.stayHousePolicyDetails.checkInTime}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        stayHousePolicyDetails: {
+                          ...stays.stayHousePolicyDetails,
+                          checkInTime: e.target.value,
+                        },
+                      })
+                    }
+                    isInvalid={!!addError.checkInTime}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.checkInTime}
+                  </p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="checkOutTime"
+                  label="Check-Out Time*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Please enter data"
+                    value={stays.stayHousePolicyDetails.checkOutTime}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        stayHousePolicyDetails: {
+                          ...stays.stayHousePolicyDetails,
+                          checkOutTime: e.target.value,
+                        },
+                      })
+                    }
+                    isInvalid={!!addError.checkOutTime}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.checkOutTime}
+                  </p>
+                </FloatingLabel>
+              </Col>
+            </Row>
             <Row>
               <Col>
-                <div style={{ display: "flex" }}>
-                  <FloatingLabel
-                    controlId="termsAndCondition"
-                    label="Terms & Conditions*"
-                    className="mb-3"
-                    style={{ marginRight: "1rem" }}
-                  >
-                    <Form.Control
-                      as="textarea"
-                      placeholder="Please enter T&C"
-                      style={{ height: "100px", width: "30rem" }}
-                      value={termsAndConditionInputData.termsAndCondition || ""}
-                      onChange={data2}
-                    />
-                    <p className="required-field-meassage">
-                      {addError.stayTAndCDetails}
-                    </p>
-                  </FloatingLabel>
-                  <Button
-                    onClick={addTermsAndConditionInputData}
-                    style={{ height: "40px" }}
-                    className="custom-btn-reverse"
-                  >
-                    Add
-                  </Button>
-                </div>
-                <Container
-                  style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
+                <FloatingLabel
+                  controlId="smoking"
+                  label="Smoking*"
+                  className="mb-3"
                 >
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>Terms and Conditions</th>
-                        <th>Remove</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {termsAndConditionArray &&
-                        termsAndConditionArray.map((item, i) => {
-                          return (
-                            <tr key={i}>
-                              <td>{item.termsAndCondition} </td>
-                              <td>
-                                <FontAwesomeIcon
-                                  icon={faX}
-                                  onClick={() =>
-                                    deleteTermsAndConditionInputData(i)
-                                  }
-                                />
-                              </td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                  </Table>
-                </Container>
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Please enter data"
+                    value={stays.stayHousePolicyDetails.smoking}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        stayHousePolicyDetails: {
+                          ...stays.stayHousePolicyDetails,
+                          smoking: e.target.value,
+                        },
+                      })
+                    }
+                    isInvalid={!!addError.smoking}
+                  />
+                  <p className="required-field-meassage">{addError.smoking}</p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel controlId="pets" label="Pets*" className="mb-3">
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Please enter data"
+                    value={stays.stayHousePolicyDetails.pets}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        stayHousePolicyDetails: {
+                          ...stays.stayHousePolicyDetails,
+                          pets: e.target.value,
+                        },
+                      })
+                    }
+                    isInvalid={!!addError.pets}
+                  />
+                  <p className="required-field-meassage">{addError.pets}</p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="coupleFriendly"
+                  label="Couple Friendly*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Please enter data"
+                    value={stays.stayHousePolicyDetails.coupleFriendly}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        stayHousePolicyDetails: {
+                          ...stays.stayHousePolicyDetails,
+                          coupleFriendly: e.target.value,
+                        },
+                      })
+                    }
+                    isInvalid={!!addError.coupleFriendly}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.coupleFriendly}
+                  </p>
+                </FloatingLabel>
+              </Col>
+            </Row>
+            <Row>
+              <h5>Children's Payment</h5>
+              <Col>
+                <FloatingLabel
+                  controlId="childrenBelow5"
+                  label="Children below 5 year*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Please enter data"
+                    value={stays.stayHousePolicyDetails.childrenBelow5}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        stayHousePolicyDetails: {
+                          ...stays.stayHousePolicyDetails,
+                          childrenBelow5: e.target.value,
+                        },
+                      })
+                    }
+                    isInvalid={!!addError.childrenBelow5}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.childrenBelow5}
+                  </p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="children5To10"
+                  label="Children aged 5-10 years*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Please enter data"
+                    value={stays.stayHousePolicyDetails.children5To10}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        stayHousePolicyDetails: {
+                          ...stays.stayHousePolicyDetails,
+                          children5To10: e.target.value,
+                        },
+                      })
+                    }
+                    isInvalid={!!addError.children5To10}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.children5To10}
+                  </p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="childrenAbove10"
+                  label="Children above 5 year*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Please enter data"
+                    value={stays.stayHousePolicyDetails.childrenAbove10}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        stayHousePolicyDetails: {
+                          ...stays.stayHousePolicyDetails,
+                          childrenAbove10: e.target.value,
+                        },
+                      })
+                    }
+                    isInvalid={!!addError.childrenAbove10}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.childrenAbove10}
+                  </p>
+                </FloatingLabel>
+              </Col>
+            </Row>
+            <Row>
+              <h5>Food Policy</h5>
+              <Col>
+                <FloatingLabel
+                  controlId="includedMeals"
+                  label="Included meals*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Please enter data"
+                    value={stays.stayHousePolicyDetails.includedMeals}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        stayHousePolicyDetails: {
+                          ...stays.stayHousePolicyDetails,
+                          includedMeals: e.target.value,
+                        },
+                      })
+                    }
+                    isInvalid={!!addError.includedMeals}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.includedMeals}
+                  </p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="extraStarters"
+                  label="Extra Starters*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Please enter data"
+                    value={stays.stayHousePolicyDetails.extraStarters}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        stayHousePolicyDetails: {
+                          ...stays.stayHousePolicyDetails,
+                          extraStarters: e.target.value,
+                        },
+                      })
+                    }
+                    isInvalid={!!addError.extraStarters}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.extraStarters}
+                  </p>
+                </FloatingLabel>
               </Col>
             </Row>
           </Container>
@@ -1507,10 +1768,13 @@ function AddStays() {
                     required
                     type="text"
                     placeholder="Please enter contact name"
-                    style={{ textTransform: "capitalize" }}
+                    className="text-capitalize"
                     value={stays.contactPersonName}
                     onChange={(e) =>
-                      setStays({ ...stays, contactPersonName: e.target.value })
+                      setStays({
+                        ...stays,
+                        contactPersonName: Capitalize(e.target.value),
+                      })
                     }
                     isInvalid={!!addError.contactPersonName}
                   />

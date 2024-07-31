@@ -4,7 +4,7 @@ export class LocationsService {
   static getAllLocations = (page = 1, limit = 10, pages = 1) => {
     return NetworkManager.getInstance().appRequest({
       method: "get",
-      url: ApiEndPoints.locations + "/getAll",
+      url: ApiEndPoints.getLocation,
       params: { page, pages, limit },
     });
   };
@@ -21,21 +21,21 @@ export class LocationsService {
   static deleteLocations = (id) => {
     return NetworkManager.getInstance().appRequest({
       method: "delete",
-      url: ApiEndPoints.locations + "/admin/delete/" + id,
+      url: ApiEndPoints.deleteLocation + id,
       data: { ...id },
     });
   };
   static getLocationsById = (id) => {
     return NetworkManager.getInstance().appRequest({
       method: "get",
-      url: ApiEndPoints.locationById + id,
+      url: ApiEndPoints.getLocationById + id,
       data: { ...id },
     });
   };
   static updateLocations = (id, location, imageUrl) => {
     return NetworkManager.getInstance().appRequest({
       method: "put",
-      url: ApiEndPoints.locations + "/admin/update",
+      url: ApiEndPoints.updateLocation,
       data: { ...id, ...location, ...imageUrl },
     });
   };
