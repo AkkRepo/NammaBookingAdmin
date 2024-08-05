@@ -127,8 +127,7 @@ function Categories() {
             <th style={{ color: "#051e3c" }}>Sl no</th>
             <th style={{ color: "#051e3c" }}>Categories</th>
             <th style={{ color: "#051e3c" }}>View Details</th>
-            {/*
-            <th style={{ color: "#051e3c" }}>Edit</th> */}
+            {/* <th style={{ color: "#051e3c" }}>Edit</th> */}
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
         </thead>
@@ -144,9 +143,12 @@ function Categories() {
                     onClick={() => navigateToCategory(i.id)}
                   />
                 </td>
-                {/*<td>
-                  <EditCategories category={i} onClose={()=>getCategories()} />
-                </td>  */}
+                {/* <td>
+                  <EditCategories
+                    category={i}
+                    onClose={() => getCategories()}
+                  />
+                </td> */}
                 <td>
                   <FontAwesomeIcon
                     icon={faTrash}

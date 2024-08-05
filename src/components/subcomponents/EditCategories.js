@@ -42,14 +42,14 @@ function EditCategoriesModal({ show, onHide, category }) {
       try {
         const res = await CategoriesService.updateCategories({
           ...categories,
-          imageUrl: image ? categories.imageUrl.slice(23) : "",
+          imageUrl: image ? categories.imageUrl.slice(23) : null,
         });
         if (res.status === 200) {
           alert(res.message);
           onHide();
           navigate("/categories");
         } else {
-          alert("Else Error");
+          alert("Else error");
         }
       } catch (error) {
         alert(" update Catch error");

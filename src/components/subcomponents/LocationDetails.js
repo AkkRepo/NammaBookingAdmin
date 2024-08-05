@@ -9,22 +9,18 @@ import { LocationsService } from "../../services/Locations";
 import { Capitalize } from "../../core/utils";
 
 function LocationDetailsModal({ show, onHide, location }) {
-  const { id } = useParams();
   const [locations, setLocations] = useState();
   const [loading, setLoading] = useState(false);
   const [openImage, setImage] = useState("");
 
-  const getLocations = async () => {
+  const getLocations = async (id) => {
     setLoading(true);
     try {
       const res = await LocationsService.getLocationsById(id);
-      console.log(res.data);
       if (res.status === 200) {
-        setLocations(res.data);
-        if (res.data?.images?.length > 0) {
-          setImage(res.data.images[0].imageUrl);
-          console.log(res.data.images[0].imageUrl);
-        }
+        setLocations(res.data.location);
+          setImage(res.data.imageUrl);
+         
         
       } else {
         alert(res.data.message);
@@ -37,13 +33,11 @@ function LocationDetailsModal({ show, onHide, location }) {
   };
   useEffect(() => {
     if (show) {
-      getLocations({
-        id: location.id,
-        location: location.location,
-        imageUrl: location.imageUrl,
-      });
+      getLocations(
+       location.id,
+      );
     }
-  }, []);
+  }, [show]);
 
   return (
     <>
@@ -56,9 +50,9 @@ function LocationDetailsModal({ show, onHide, location }) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            {location?.id && !loading && (
+            {locations && !loading && (
               <p className="brownbear view-details-heading-style heading-color">
-                {location.location}
+                {locations}
               </p>
             )}
           </Modal.Title>
@@ -67,12 +61,12 @@ function LocationDetailsModal({ show, onHide, location }) {
         <br />
 
         <div>
-          {location.imageUrl && (
+          {openImage && (
             <div style={{ textAlign: "center" }}>
               <Image
                 //rounded
                 className="view-details-image-style"
-                src={location.imageUrl}
+                src={openImage}
                 alt="Selected"
                 style={{ width: "25rem", height: "17rem" }}
                 loading="lazy"

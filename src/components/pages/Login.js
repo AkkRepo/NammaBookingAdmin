@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Container,
@@ -65,6 +65,11 @@ function Login() {
       }
     }
   };
+  useEffect(()=>{
+    if(AuthService.isLoggedin()){
+      navigate("/dashboard");
+    }
+  },[])
   return (
     <div className="bg ">
       <Container className="login-card-align">

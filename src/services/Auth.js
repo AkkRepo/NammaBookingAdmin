@@ -12,6 +12,13 @@ export class AuthService {
       data: { email, password },
     });
   };
+  static resetPassword = (email, password) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "put",
+      url: ApiEndPoints.forgotPassword,
+      data: { email, password },
+    });
+  };
   static setUser = (user) => {
     localStorage.setItem("user", JSON.stringify(user));
   };

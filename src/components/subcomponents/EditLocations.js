@@ -9,6 +9,7 @@ import { LocationsService } from "../../services/Locations";
 
 function EditLocationsModal({ show, onHide, location }) {
   const navigate = useNavigate();
+  const [loading,setLoading]=useState(false)
   const [locations, setLocations] = useState({
     id: undefined,
     location: "",
@@ -37,12 +38,12 @@ function EditLocationsModal({ show, onHide, location }) {
     return valid;
   };
 
-  const update = async () => {
+  const update = async (id) => {
     if (validation()) {
       try {
         const res = await LocationsService.updateLocations({
           ...locations,
-          imageUrl: image ? locations.imageUrl.slice(23) : locations.imageUrl,
+          imageUrl: image ? locations.imageUrl.slice(23) : null,
         });
         if (res.status === 200) {
           alert(res.message);
@@ -57,13 +58,30 @@ function EditLocationsModal({ show, onHide, location }) {
     }
   };
 
+  
+  const getLocations = async (id) => {
+    setLoading(true);
+    try {
+      const res = await LocationsService.getLocationsById(id);
+      if (res.status === 200) {
+        setLocations({
+          id:res.data.id,
+          location:res.data.location,
+          imageUrl:res.data.imageUrl
+        })        
+      } else {
+        alert(res.data.message);
+      }
+      setLoading(false);
+    } catch (error) {
+      alert(error.message);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (show) {
-      setLocations({
-        id: location.id,
-        location: location.location,
-        imageUrl: location.imageUrl,
-      });
+      getLocations(location.id);
     }
   }, [show]);
 

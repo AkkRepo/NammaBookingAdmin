@@ -1,5 +1,6 @@
 export const ApiEndPoints = {
   login: "api/login",
+  forgotPassword: "/api/users/updatePassword",
   amenities: "api/amenities",
   users: "/api/users",
   categories: "/api/categories",
