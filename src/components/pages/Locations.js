@@ -126,7 +126,7 @@ function Locations() {
             <th style={{ color: "#051e3c" }}>Sl no</th>
             <th style={{ color: "#051e3c" }}>Locations</th>
             <th style={{ color: "#051e3c" }}>View Details</th>
-            {/* <th style={{ color: "#051e3c" }}>Edit</th> */}
+            <th style={{ color: "#051e3c" }}>Edit</th>
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
         </thead>
@@ -142,9 +142,9 @@ function Locations() {
                     onClick={() => navigateToLocation(i.id)}
                   />
                 </td>
-                {/* <td>
+                <td>
                   <EditLocations location={i} onClose={() => getLocations()} />
-                </td> */}
+                </td>
                 <td>
                   <FontAwesomeIcon
                     icon={faTrash}

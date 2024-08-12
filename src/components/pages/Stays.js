@@ -73,6 +73,9 @@ function Stays(props) {
   const navigateToStay = (id) => {
     navigate("/stays/stayDetails/" + id);
   };
+  const navigateToEditStay = (id) => {
+    navigate("/stays/editStays/" + id);
+  };
   const changePage = (page) => {
     getStay(page);
   };
@@ -122,7 +125,7 @@ function Stays(props) {
             <th style={{ color: "#051e3c" }}>Contact name</th>
             <th style={{ color: "#051e3c" }}>Contact number</th>
             <th style={{ color: "#051e3c" }}>View Details</th>
-            {/* <th style={{ color: "#051e3c" }}>Edit</th>*/}
+            <th style={{ color: "#051e3c" }}>Edit</th>
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
         </thead>
@@ -141,6 +144,14 @@ function Stays(props) {
                     className="custom-icon"
                     style={{ marginLeft: "2.5rem" }}
                     onClick={() => navigateToStay(i.id)}
+                  />
+                </td>
+                <td>
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    size="lg"
+                    className="custom-icon"
+                    onClick={() => navigateToEditStay(i.id)}
                   />
                 </td>
                 <td>

@@ -1,6 +1,6 @@
 {
   "name": "nammabookingadmin",
-  "homepage": "https://admin.nammabooking.com/",
+  "homepage": "./",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

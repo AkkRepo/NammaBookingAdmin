@@ -1321,7 +1321,7 @@ function AddStays() {
                 <div style={{ display: "flex" }}>
                   <FloatingLabel
                     controlId="activities"
-                    label="Activities*"
+                    label="Activities"
                     className="mb-3"
                     style={{ marginRight: "1rem" }}
                   >
@@ -1373,7 +1373,7 @@ function AddStays() {
                 <div style={{ display: "flex" }}>
                   <FloatingLabel
                     controlId="facilities"
-                    label="Facilities*"
+                    label="Facilities"
                     className="mb-3"
                     style={{ marginRight: "1rem" }}
                   >
@@ -1423,7 +1423,7 @@ function AddStays() {
                 <div style={{ display: "flex" }}>
                   <FloatingLabel
                     controlId="nearByPlaces"
-                    label="Near by Places*"
+                    label="Near by Places"
                     className="mb-3"
                     style={{ marginRight: "1rem" }}
                   >

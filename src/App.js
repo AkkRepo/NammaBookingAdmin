@@ -40,6 +40,7 @@ function App() {
         <Route path="/stays" element={<Stays />} />
         <Route path="/stays/addStays" element={<AddStays />} />
         <Route path="/stays/stayDetails/:id" element={<StayDetails />} />
+        <Route path="/stays/editStays/:id" element={<EditStays />} />
         <Route
           path="/stays/categoryDetails/:id"
           element={<CategoriesDetails />}
