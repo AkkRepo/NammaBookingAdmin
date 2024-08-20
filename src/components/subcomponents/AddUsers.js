@@ -147,26 +147,26 @@ function AddUsers(props) {
             </Col>
           </Row>
         </div>
-
+        <hr style={{ color: "grey" }} />
         <Row style={{ paddingBottom: "1rem" }}>
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col>
+          <Col style={{ paddingLeft: "2rem" }}>
             <Button onClick={submitUsers} className="custom-btn">
               {" "}
               Add{" "}
             </Button>
           </Col>
-          <Col style={{ paddingRight: "2rem" }}>
+          <Col style={{ paddingRight: "2rem", marginLeft: "-1rem" }}>
             <Button onClick={props.onHide} className="custom-btn-reverse">
               Cancel
             </Button>
           </Col>
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
         </Row>
       </Modal>
       <LoadingModal show={loading} />

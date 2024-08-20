@@ -52,6 +52,7 @@ function Locations() {
   };
 
   const deleteLocations = async (id) => {
+    setLoading(true);
     try {
       const val = window.confirm("Do you want to delete?");
       if (val) {
@@ -62,9 +63,11 @@ function Locations() {
         } else {
           alert("Error while else");
         }
+        setLoading(false);
       }
     } catch (error) {
       alert("Error while catch");
+      setLoading(false);
     }
   };
 
@@ -109,7 +112,7 @@ function Locations() {
               className="custom-btn"
               onClick={() => setAddModalShow(true)}
             >
-              Add Locations
+              Add Location
             </Button>
             <AddLocations
               show={addModalShow}
@@ -124,7 +127,7 @@ function Locations() {
         <thead>
           <tr>
             <th style={{ color: "#051e3c" }}>Sl no</th>
-            <th style={{ color: "#051e3c" }}>Locations</th>
+            <th style={{ color: "#051e3c" }}>Location</th>
             <th style={{ color: "#051e3c" }}>View Details</th>
             <th style={{ color: "#051e3c" }}>Edit</th>
             <th style={{ color: "#051e3c" }}>Delete</th>

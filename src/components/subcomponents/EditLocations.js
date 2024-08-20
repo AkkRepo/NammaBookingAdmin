@@ -6,10 +6,11 @@ import { Row, Col, Form, FloatingLabel, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { LocationsService } from "../../services/Locations";
+import { LoadingModal } from "../pages/Others/Index";
 
 function EditLocationsModal({ show, onHide, location }) {
   const navigate = useNavigate();
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
   const [locations, setLocations] = useState({
     id: undefined,
     location: "",
@@ -40,6 +41,7 @@ function EditLocationsModal({ show, onHide, location }) {
 
   const update = async (id) => {
     if (validation()) {
+      setLoading(true);
       try {
         const res = await LocationsService.updateLocations({
           ...locations,
@@ -52,30 +54,28 @@ function EditLocationsModal({ show, onHide, location }) {
         } else {
           alert("Else Error");
         }
+        setLoading(false);
       } catch (error) {
         alert(" update Catch error");
+        setLoading(false);
       }
     }
   };
 
-  
   const getLocations = async (id) => {
-    setLoading(true);
     try {
       const res = await LocationsService.getLocationsById(id);
       if (res.status === 200) {
         setLocations({
-          id:res.data.id,
-          location:res.data.location,
-          imageUrl:res.data.imageUrl
-        })        
+          id: res.data.id,
+          location: res.data.location,
+          imageUrl: res.data.imageUrl,
+        });
       } else {
         alert(res.data.message);
       }
-      setLoading(false);
     } catch (error) {
       alert(error.message);
-      setLoading(false);
     }
   };
 
@@ -122,13 +122,13 @@ function EditLocationsModal({ show, onHide, location }) {
         <Modal.Body style={{ display: "flex" }}>
           <div style={{ padding: "1rem" }}>
             <FloatingLabel
-              controlId="addLocations"
-              label="Add Locations"
+              controlId="editLocations"
+              label="Edit Location"
               className="mb-3"
             >
               <Form.Control
                 type="text"
-                placeholder="Add Location"
+                placeholder="Edit Location"
                 value={locations.location}
                 onChange={(e) =>
                   setLocations({ ...locations, location: e.target.value })
@@ -152,36 +152,42 @@ function EditLocationsModal({ show, onHide, location }) {
               <p>{error.imageUrl}</p>
             </FloatingLabel>
           </div>
-          <div style={{ marginLeft: "5rem" }}>
+          <div style={{ marginLeft: "2rem" }}>
             {locations.imageUrl && (
               <div style={{ textAlign: "center" }}>
                 <Image
                   rounded
                   src={locations.imageUrl}
                   alt="Selected"
-                  style={{ width: "10rem", height: "12rem" }}
+                  style={{ width: "20rem", height: "12rem" }}
                   loading="lazy"
                 />
               </div>
             )}
           </div>
         </Modal.Body>
-
-        <Modal.Footer>
-          <Row>
-            <Col>
-              <Button onClick={update} className="custom-btn">
-                Update
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={onHide} className="custom-btn">
-                Cancel
-              </Button>
-            </Col>
-          </Row>
-        </Modal.Footer>
+        <hr style={{ color: "grey" }} />
+        <Row style={{ paddingBottom: "1rem" }}>
+          <Col style={{ paddingLeft: "2rem" }}>
+            <Button onClick={update} className="custom-btn">
+              Update
+            </Button>
+          </Col>
+          <Col style={{ paddingRight: "2rem", marginLeft: "-1rem" }}>
+            <Button onClick={onHide} className="custom-btn">
+              Cancel
+            </Button>
+          </Col>
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+        </Row>
       </Modal>
+      <LoadingModal show={loading} />
     </>
   );
 }

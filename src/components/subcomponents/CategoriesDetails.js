@@ -7,6 +7,7 @@ import { faPen, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { CategoriesService } from "../../services/Categories";
 import { Capitalize } from "../../core/utils";
+import { Loading } from "../pages/Others/Index";
 
 function CategoriesDetailsModal({ show, onHide, category }) {
   const { id } = useParams();
@@ -78,6 +79,7 @@ function CategoriesDetailsModal({ show, onHide, category }) {
           )}
         </div>
         <br />
+
         {/*
         <Modal.Footer>
           <Row>

@@ -245,22 +245,95 @@ html {
   margin-bottom: -1rem;
 }
 
-.view-details-image-style{
+.view-details-image-style {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.add-stays-categories-display{
+.add-stays-categories-display {
   color: #e77225;
   font-weight: bold;
 }
 
-.session-expired{
+.session-expired {
   text-align: center;
   color: red;
 }
 
-.text-capitalize{
+.text-capitalize {
   text-transform: capitalize;
+}
+
+.stay-edit-button {
+  background-color: #051e3c;
+  color: #fff;
+  border-color: #051e3c;
+  transition: background-color 0.3s ease;
+}
+
+.stay-edit-button:hover {
+  background-color: #e77225;
+  color: #fff;
+  border-color: #e77225;
+}
+
+.image-trash-button {
+  background-color: #e72525;
+  color: #fff;
+  border-color: #e72525;
+  transition: background-color 0.3s ease;
+}
+
+.image-trash-button:hover {
+  background-color: #051e3c;
+  color: #fff;
+  border-color: #051e3c;
+}
+
+.stay-trash-button {
+  color: #051e3c;
+  border-color: #051e3c;
+  transition: color 0.3s ease;
+}
+
+.stay-trash-button:hover {
+  color: #e77225;
+}
+
+.dashboard-location {
+  width: 15rem;
+  height: 20rem;
+}
+
+.dashboard-location-stays {
+  /* background-color: #e77225;
+  margin-left: 8rem;
+  margin-top: -3rem; */
+  position: absolute;
+  bottom: 20px;
+  right: 0;
+  display: inline-block;
+  background: #e77225;
+  padding: 4px 5px 4px 15px;
+  border-radius: 20px 0 0 20px;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.dashboard-location-card {
+  transition: box-shadow 0.3s ease;
+}
+
+.dashboard-location-card:hover {
+  box-shadow: 0 10px 20px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-location-name {
+  color: white;
+}
+
+.dashboard-location-padding {
+  padding-top: 2rem;
+  margin-left: -4rem;
 }
 
 @media only screen and (max-width: 768px) {

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { Row, Col, Form, FloatingLabel } from "react-bootstrap";
+import { Row, Col, Form, FloatingLabel, Image } from "react-bootstrap";
 import { LocationsService } from "../../services/Locations";
 import { useNavigate } from "react-router-dom";
 import { LoadingModal } from "../pages/Others/Index";
@@ -88,7 +88,7 @@ function AddLocations(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Add Locations
+            Add Location
           </Modal.Title>
         </Modal.Header>
         <div style={{ padding: "1rem" }}>
@@ -96,13 +96,13 @@ function AddLocations(props) {
             <Col>
               {" "}
               <FloatingLabel
-                controlId="addLocations"
-                label="Add Locations"
+                controlId="addLocation"
+                label="Add Location"
                 className="mb-3"
               >
                 <Form.Control
                   type="text"
-                  placeholder="Add Locations"
+                  placeholder="Add Location"
                   value={locations.location}
                   onChange={(e) =>
                     setLocations({ ...locations, location: e.target.value })
@@ -145,38 +145,41 @@ function AddLocations(props) {
               </p>
             </Col>
             <Col>
-              {locations.imageUrl && (
-                <div style={{ textAlign: "center", marginBottom: "1rem" }}>
-                  <img
-                    src={`data:image/jpeg;base64,${locations.imageUrl}`}
-                    alt="Uploaded"
-                    style={{ maxWidth: "100%", height: "auto" }}
-                    loading="lazy"
-                  />
-                </div>
-              )}
+              <div style={{ marginLeft: "2rem" }}>
+                {locations.imageUrl && (
+                  <div style={{ textAlign: "center", marginBottom: "1rem" }}>
+                    <Image
+                      rounded
+                      src={`data:image/jpeg;base64,${locations.imageUrl}`}
+                      alt="Uploaded"
+                      style={{ width: "20rem", height: "12rem" }}
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+              </div>
             </Col>
           </Row>
         </div>
-
+        <hr style={{ color: "grey" }} />
         <Row style={{ paddingBottom: "1rem" }}>
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col>
+          <Col style={{ paddingLeft: "2rem" }}>
             <Button onClick={submitLocations} className="custom-btn">
               Add
             </Button>
           </Col>
-          <Col style={{ paddingRight: "2rem" }}>
-            <Button onClick={props.onHide} className="custom-btn-reverse">
+          <Col style={{ paddingRight: "2rem", marginLeft: "-1rem" }}>
+            <Button onClick={props.onHide} className="custom-btn">
               Cancel
             </Button>
           </Col>
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
         </Row>
       </Modal>
       <LoadingModal show={loading} />

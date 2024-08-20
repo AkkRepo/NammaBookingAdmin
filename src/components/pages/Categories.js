@@ -50,6 +50,7 @@ function Categories() {
   };
 
   const deleteCategory = async (id) => {
+    setLoading(true);
     try {
       const val = window.confirm("Do you want to delete?");
       if (val) {
@@ -60,10 +61,12 @@ function Categories() {
         } else {
           alert("Error while else");
         }
+        setLoading(false);
       }
     } catch (error) {
       alert("Error while catch");
       console.log(id);
+      setLoading(false);
     }
   };
   const navigateToCategory = (id) => {
@@ -110,7 +113,7 @@ function Categories() {
               className="custom-btn"
               onClick={() => setAddModalShow(true)}
             >
-              Add Categories
+              Add Category
             </Button>
             <AddCategories
               show={addModalShow}
@@ -125,7 +128,7 @@ function Categories() {
         <thead>
           <tr>
             <th style={{ color: "#051e3c" }}>Sl no</th>
-            <th style={{ color: "#051e3c" }}>Categories</th>
+            <th style={{ color: "#051e3c" }}>Category</th>
             <th style={{ color: "#051e3c" }}>View Details</th>
             <th style={{ color: "#051e3c" }}>Edit</th>
             <th style={{ color: "#051e3c" }}>Delete</th>

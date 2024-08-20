@@ -17,15 +17,17 @@ import AddUsers from "../subcomponents/AddUsers";
 import DeleteUsers from "../subcomponents/DeleteUsers";
 import { UsersService } from "../../services/Users";
 import EditUsersCopy from "../subcomponents/EditUsersCopy";
+import { LoadingModal } from "../pages/Others/Index";
 
 function EditUsersModal({ show, onHide, user }) {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState({
     id: undefined,
     name: "",
     email: "",
     password: "",
-    roleId: 1,
+    //roleId: 1,
   });
   const [error, setError] = useState({
     name: "",
@@ -58,6 +60,7 @@ function EditUsersModal({ show, onHide, user }) {
 
   const update = async () => {
     if (validation()) {
+      setLoading(true);
       try {
         const res = await UsersService.updateUsers(users);
         if (res.status === 200) {
@@ -65,10 +68,12 @@ function EditUsersModal({ show, onHide, user }) {
           onHide();
           navigate("/users");
         } else {
-          alert("Else Error");
+          alert("Error while updating");
         }
+        setLoading(false);
       } catch (error) {
-        alert("Catch");
+        alert("Error while updating");
+        setLoading(false);
       }
     }
   };
@@ -80,58 +85,65 @@ function EditUsersModal({ show, onHide, user }) {
         name: user.name,
         email: user.email,
         password: user.password,
-        roleId: 1,
+        //roleId: 1,
       });
     }
   }, [show]);
 
   return (
-    <Modal
-      show={show}
-      onHide={onHide}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Update users
-        </Modal.Title>
-      </Modal.Header>
-      <div style={{ padding: "1rem" }}>
-        <Row>
-          <Col>
-            <FloatingLabel controlId="updateName" label="Name" className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder="Name"
-                value={users.name}
-                onChange={(e) => setUsers({ ...users, name: e.target.value })}
-                isInvalid={!!error.name}
-              />
-              <p>{error.name}</p>
-            </FloatingLabel>
-          </Col>
-        </Row>
+    <>
+      <Modal
+        show={show}
+        onHide={onHide}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Update users
+          </Modal.Title>
+        </Modal.Header>
+        <div style={{ padding: "1rem" }}>
+          <Row>
+            <Col>
+              <FloatingLabel
+                controlId="updateName"
+                label="Name*"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="text"
+                  placeholder="Name"
+                  value={users.name}
+                  onChange={(e) => setUsers({ ...users, name: e.target.value })}
+                  isInvalid={!!error.name}
+                />
+                <p>{error.name}</p>
+              </FloatingLabel>
+            </Col>
+          </Row>
 
-        <Row>
-          <Col>
-            <FloatingLabel
-              controlId="updateEmailId"
-              label="Email Id"
-              className="mb-3"
-            >
-              <Form.Control
-                type="email"
-                placeholder="Email Id"
-                value={users.email}
-                onChange={(e) => setUsers({ ...users, email: e.target.value })}
-                isInvalid={!!error.email}
-              />
-              <p>{error.email}</p>
-            </FloatingLabel>
-          </Col>
-          {/*<Col>
+          <Row>
+            <Col>
+              <FloatingLabel
+                controlId="updateEmailId"
+                label="Email Id*"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="email"
+                  placeholder="Email Id"
+                  value={users.email}
+                  onChange={(e) =>
+                    setUsers({ ...users, email: e.target.value })
+                  }
+                  isInvalid={!!error.email}
+                />
+                <p>{error.email}</p>
+              </FloatingLabel>
+            </Col>
+            {/*<Col>
             <FloatingLabel
               controlId="updatePassword"
               label="Password"
@@ -149,23 +161,31 @@ function EditUsersModal({ show, onHide, user }) {
               <p>{error.password}</p>
             </FloatingLabel>
           </Col> */}
-        </Row>
-      </div>
-      <Modal.Footer>
-        <Row>
-          <Col>
+          </Row>
+        </div>
+        <hr style={{ color: "grey" }} />
+        <Row style={{ paddingBottom: "1rem" }}>
+          <Col style={{ paddingLeft: "2rem" }}>
             <Button onClick={update} className="custom-btn">
               Update
             </Button>
           </Col>
-          <Col>
+          <Col style={{ paddingRight: "2rem", marginLeft: "-1rem" }}>
             <Button onClick={onHide} className="custom-btn-reverse">
               Cancel
             </Button>
           </Col>
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
         </Row>
-      </Modal.Footer>
-    </Modal>
+      </Modal>
+      <LoadingModal show={loading} />
+    </>
   );
 }
 
@@ -176,7 +196,7 @@ function EditUsers(props) {
     name: "",
     email: "",
     password: "",
-    roleId: 1,
+    //roleId: 1,
   });
   return (
     <>

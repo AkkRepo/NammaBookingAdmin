@@ -55,6 +55,7 @@ function Stays(props) {
     }
   };
   const deleteStays = async (id) => {
+    setLoading(true);
     try {
       const val = window.confirm("Do you want to delete?");
       if (val) {
@@ -65,9 +66,11 @@ function Stays(props) {
         } else {
           alert("Error while else");
         }
+        setLoading(false);
       }
     } catch (error) {
       alert(error.message);
+      setLoading(false);
     }
   };
   const navigateToStay = (id) => {

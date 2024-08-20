@@ -6,9 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { CategoriesService } from "../../services/Categories";
+import { LoadingModal } from "../pages/Others/Index";
 
 function EditCategoriesModal({ show, onHide, category }) {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState({
     id: undefined,
     category: "",
@@ -39,6 +41,7 @@ function EditCategoriesModal({ show, onHide, category }) {
 
   const update = async () => {
     if (validation()) {
+      setLoading(true);
       try {
         const res = await CategoriesService.updateCategories({
           ...categories,
@@ -51,8 +54,10 @@ function EditCategoriesModal({ show, onHide, category }) {
         } else {
           alert("Else error");
         }
+        setLoading(false);
       } catch (error) {
         alert(" update Catch error");
+        setLoading(false);
       }
     }
   };
@@ -104,13 +109,13 @@ function EditCategoriesModal({ show, onHide, category }) {
         <Modal.Body style={{ display: "flex" }}>
           <div style={{ padding: "1rem" }}>
             <FloatingLabel
-              controlId="addCategories"
-              label="Add Categories"
+              controlId="editCategories"
+              label="Edit Category*"
               className="mb-3"
             >
               <Form.Control
                 type="text"
-                placeholder="Add Categories"
+                placeholder="Edit Categories"
                 value={categories.category}
                 onChange={(e) =>
                   setCategories({ ...categories, category: e.target.value })
@@ -135,36 +140,42 @@ function EditCategoriesModal({ show, onHide, category }) {
               <p>{error.imageUrl}</p>
             </FloatingLabel>
           </div>
-          <div style={{ marginLeft: "5rem" }}>
+          <div style={{ marginLeft: "2rem" }}>
             {categories.imageUrl && (
               <div style={{ textAlign: "center" }}>
                 <Image
                   rounded
                   src={categories.imageUrl}
                   alt="Selected"
-                  style={{ width: "10rem", height: "12rem" }}
+                  style={{ width: "20rem", height: "12rem" }}
                   loading="lazy"
                 />
               </div>
             )}
           </div>
         </Modal.Body>
-
-        <Modal.Footer>
-          <Row>
-            <Col>
-              <Button onClick={update} className="custom-btn">
-                Update
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={onHide} className="custom-btn">
-                Cancel
-              </Button>
-            </Col>
-          </Row>
-        </Modal.Footer>
+        <hr style={{ color: "grey" }} />
+        <Row style={{ paddingBottom: "1rem" }}>
+          <Col style={{ paddingLeft: "2rem" }}>
+            <Button onClick={update} className="custom-btn">
+              Update
+            </Button>
+          </Col>
+          <Col style={{ paddingRight: "2rem", marginLeft: "-1rem" }}>
+            <Button onClick={onHide} className="custom-btn">
+              Cancel
+            </Button>
+          </Col>
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+        </Row>
       </Modal>
+      <LoadingModal show={loading} />
     </>
   );
 }

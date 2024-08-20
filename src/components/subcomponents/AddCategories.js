@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { Row, Col, Form, FloatingLabel } from "react-bootstrap";
+import { Row, Col, Form, FloatingLabel, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { CategoriesService } from "../../services/Categories";
 import { LoadingModal } from "../pages/Others/Index";
@@ -87,7 +87,7 @@ function AddCategories(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Add Categories
+            Add Category
           </Modal.Title>
         </Modal.Header>
         <div style={{ padding: "1rem" }}>
@@ -143,38 +143,41 @@ function AddCategories(props) {
               </p>
             </Col>
             <Col>
-              {categories.imageUrl && (
-                <div style={{ textAlign: "center", marginBottom: "1rem" }}>
-                  <img
-                    src={`data:image/jpeg;base64,${categories.imageUrl}`}
-                    alt="Uploaded"
-                    style={{ width: "25rem", height: "17rem" }}
-                    loading="lazy"
-                  />
-                </div>
-              )}
+              <div style={{ marginLeft: "2rem" }}>
+                {categories.imageUrl && (
+                  <div style={{ textAlign: "center", marginBottom: "1rem" }}>
+                    <Image
+                      rounded
+                      src={`data:image/jpeg;base64,${categories.imageUrl}`}
+                      alt="Uploaded"
+                      style={{ width: "20rem", height: "12rem" }}
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+              </div>
             </Col>
           </Row>
         </div>
-
+        <hr style={{ color: "grey" }} />
         <Row style={{ paddingBottom: "1rem" }}>
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col>
+          <Col style={{ paddingLeft: "2rem" }}>
             <Button onClick={submitCategories} className="custom-btn">
               Add
             </Button>
           </Col>
-          <Col style={{ paddingRight: "2rem" }}>
-            <Button onClick={props.onHide} className="custom-btn-reverse">
+          <Col style={{ paddingRight: "2rem", marginLeft: "-1rem" }}>
+            <Button onClick={props.onHide} className="custom-btn">
               Cancel
             </Button>
           </Col>
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
         </Row>
       </Modal>
       <LoadingModal show={loading} />

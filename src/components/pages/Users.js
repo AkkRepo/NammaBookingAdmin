@@ -57,6 +57,7 @@ function Users(props) {
     }
   };
   const deleteUsers = async (id) => {
+    setLoading(true);
     try {
       const val = window.confirm("Do you want to delete?");
       if (val) {
@@ -67,9 +68,11 @@ function Users(props) {
         } else {
           alert("Error while else");
         }
+        setLoading(false);
       }
     } catch (error) {
       alert("Error while catch");
+      setLoading(false);
     }
   };
 
@@ -127,7 +130,8 @@ function Users(props) {
         <thead>
           <tr>
             <th style={{ color: "#051e3c" }}>Sl no</th>
-            <th style={{ color: "#051e3c" }}>Users</th>
+            <th style={{ color: "#051e3c" }}>Name</th>
+            <th style={{ color: "#051e3c" }}>Email</th>
             <th style={{ color: "#051e3c" }}>Edit</th>
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
@@ -138,8 +142,9 @@ function Users(props) {
               <tr key={i.id}>
                 <td>{index + 1}</td>
                 <td>{i.name}</td>
+                <td>{i.email}</td>
                 <td>
-                  <EditUsers user={i} onClose={()=>getUser()}/>
+                  <EditUsers user={i} onClose={() => getUser()} />
 
                   {/*
                   <EditUsers />

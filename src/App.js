@@ -6,7 +6,7 @@ import Stays from "./components/pages/Stays";
 import Dashboard from "./components/pages/Dashboard";
 import AppNav from "./components/header/AppNav";
 import AddStays from "./components/subcomponents/AddStays";
-import EditStays from "./components/subcomponents/EditStays";
+import EditStays from "./components/subcomponents/editStays/EditStays";
 import Login from "./components/pages/Login";
 import ForgotPassword from "./components/pages/ForgotPassword";
 import Multiple from "./components/subcomponents/Multiple";
