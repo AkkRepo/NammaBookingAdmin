@@ -509,12 +509,14 @@ function AddStays() {
       tempError.accommodation = "Accommodation is required";
       valid = false;
     }
-    if (!stays.noOfRooms) {
-      tempError.noOfRooms = "Number of rooms is required";
+    if (!stays.noOfRooms || !stays.noOfRooms.match(/^\d+$/)) {
+      tempError.noOfRooms =
+        "Number of rooms is required and should contain only numbers";
       valid = false;
     }
-    if (!stays.noOfBeds) {
-      tempError.noOfBeds = "Number of Beds is required";
+    if (!stays.noOfBeds || !stays.noOfBeds.match(/^\d+$/)) {
+      tempError.noOfBeds =
+        "Number of Beds is required and should contain only numbers";
       valid = false;
     }
 
@@ -658,11 +660,11 @@ function AddStays() {
         alert(res.message);
         navigate("/stays");
       } else {
-        alert("Else error");
+        alert("Error while adding");
       }
       setLoading(false);
     } catch (error) {
-      alert("Catch error");
+      alert(error.message);
       console.log(error);
       setLoading(false);
     }

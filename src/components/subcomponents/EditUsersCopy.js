@@ -58,10 +58,10 @@ function EditUsersCopy(props) {
           alert("User Updated");
           navigate("/users" + id);
         } else {
-          alert("Error while uplading");
+          alert("Error while updating");
         }
       } catch (error) {
-        alert("Error while uplading");
+        alert(error.message);
       }
     }
   };
@@ -77,10 +77,10 @@ function EditUsersCopy(props) {
           password: d.password,
         });
       } else {
-        alert("getUserDetails if else issue");
+        alert("Error while updating");
       }
     } catch (error) {
-      alert("getUserDetails catch error");
+      alert(error.message);
     }
   };
 

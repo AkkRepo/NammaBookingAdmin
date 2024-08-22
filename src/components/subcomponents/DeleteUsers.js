@@ -16,11 +16,11 @@ function DeleteUsers(props) {
         if (res.status === 200) {
           alert("User delete");
         } else {
-          alert("Error while else");
+          alert("Error while deleting");
         }
       }
     } catch (error) {
-      alert("Error while catch");
+      alert(error.message);
     }
   };
   return (

@@ -52,11 +52,11 @@ function EditLocationsModal({ show, onHide, location }) {
           onHide();
           navigate("/locations");
         } else {
-          alert("Else Error");
+          alert("Error while updating");
         }
         setLoading(false);
       } catch (error) {
-        alert(" update Catch error");
+        alert(error.message);
         setLoading(false);
       }
     }

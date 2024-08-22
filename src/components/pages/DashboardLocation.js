@@ -29,29 +29,32 @@ function DashboardLocation() {
     getDashboardLocation();
   }, []);
   return (
-    <div>
-      <Row className="dashboard-location-padding">
-        <Col>
+    <Container>
+      <Row>
+        <div style={{ display: "contents" }}>
           {dashboardLocation.map((i, index) => (
-            <Container>
-              <Card
-                key={i.id}
-                className="dashboard-location-card dashboard-location"
-              >
-                <Card.Img src={i.imageUrl} alt="Card image" />
-                <Card.ImgOverlay>
-                  <Card.Title className="dashboard-location-name">
-                    {i.location}
-                  </Card.Title>
-                </Card.ImgOverlay>
-                <p className="dashboard-location-stays">{i.count} Stays</p>
-              </Card>
-            </Container>
+            <Card
+              key={i.id}
+              className="dashboard-location-card dashboard-location"
+            >
+              <Card.Img
+                src={i.imageUrl}
+                alt="Location"
+                className="dashboard-location-image"
+              />
+              <Card.ImgOverlay>
+                <Card.Title className="dashboard-location-name">
+                  {i.location}
+                </Card.Title>
+              </Card.ImgOverlay>
+              <p className="dashboard-location-stays">{i.count} Stays</p>
+            </Card>
           ))}
-        </Col>
+        </div>
       </Row>
+
       {loading && <Loading />}
-    </div>
+    </Container>
   );
 }
 

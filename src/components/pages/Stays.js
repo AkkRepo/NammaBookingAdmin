@@ -64,7 +64,7 @@ function Stays(props) {
           alert(res.message);
           getStay(paginations.cur);
         } else {
-          alert("Error while else");
+          alert("Error while deleting");
         }
         setLoading(false);
       }

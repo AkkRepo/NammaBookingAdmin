@@ -45,7 +45,7 @@ function AddAmenities(props) {
         alert("Error while adding");
       }
     } catch (error) {
-      alert("Error while registration");
+      alert(error.message);
     }
   };
   return (

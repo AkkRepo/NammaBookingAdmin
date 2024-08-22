@@ -310,7 +310,7 @@ html {
   margin-top: -3rem; */
   position: absolute;
   bottom: 20px;
-  right: 0;
+  right: -2px;
   display: inline-block;
   background: #e77225;
   padding: 4px 5px 4px 15px;
@@ -321,6 +321,14 @@ html {
 
 .dashboard-location-card {
   transition: box-shadow 0.3s ease;
+  margin: 20px;
+  width: 15rem;
+  height: 20rem;
+}
+
+.dashboard-location-image {
+  width: 15rem;
+  height: 20rem;
 }
 
 .dashboard-location-card:hover {
@@ -334,6 +342,12 @@ html {
 .dashboard-location-padding {
   padding-top: 2rem;
   margin-left: -4rem;
+}
+
+.edit-stays-accomodation-type {
+  color: rgb(5, 30, 60);
+  margin-right: 1rem;
+  margin-top: 4px;
 }
 
 @media only screen and (max-width: 768px) {

@@ -72,7 +72,7 @@ function EditUsersModal({ show, onHide, user }) {
         }
         setLoading(false);
       } catch (error) {
-        alert("Error while updating");
+        alert(error.message);
         setLoading(false);
       }
     }

@@ -11,6 +11,7 @@ import {
   Table,
   Image,
   Dropdown,
+  ButtonGroup,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -249,12 +250,14 @@ function EditBasicDetails(props) {
       tempError.accommodation = "Accommodation is required";
       valid = false;
     }
-    if (!stays.noOfRooms) {
-      tempError.noOfRooms = "Number of rooms is required";
+    if (!stays.noOfRooms || !stays.noOfRooms.match(/^\d+$/)) {
+      tempError.noOfRooms =
+        "Number of rooms is required and should contain only numbers";
       valid = false;
     }
-    if (!stays.noOfBeds) {
-      tempError.noOfBeds = "Number of Beds is required";
+    if (!stays.noOfBeds || !stays.noOfBeds.match(/^\d+$/)) {
+      tempError.noOfBeds =
+        "Number of Beds is required and should contain only numbers";
       valid = false;
     }
     if (!stays.contactPersonName) {
@@ -270,7 +273,7 @@ function EditBasicDetails(props) {
   };
 
   const submit = async () => {
-    setLoading(true);
+    //setLoading(true);
     if (validation()) {
       try {
         const res = await StaysService.updateBasicDetails({
@@ -298,12 +301,12 @@ function EditBasicDetails(props) {
           alert(res.message);
           props.onUpdateStay();
         } else {
-          alert("Error when updating stays details");
+          alert("Error while updating");
         }
-        setLoading(false);
+        //setLoading(false);
       } catch (error) {
         alert(error.message);
-        setLoading(false);
+        //setLoading(false);
       }
     }
   };
@@ -315,17 +318,6 @@ function EditBasicDetails(props) {
           <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
             Stay's Basic Details
           </h4>
-        </Col>
-        <Col>
-          <div className="stays-add-button">
-            <FontAwesomeIcon
-              icon={faPen}
-              size="lg"
-              className="stay-edit-button"
-              style={{ padding: "10px", borderRadius: "4rem" }}
-              onClick={submit}
-            />
-          </div>
         </Col>
       </Row>
       <Row>
@@ -726,6 +718,12 @@ function EditBasicDetails(props) {
           </FloatingLabel>
         </Col>
       </Row>
+      <br />
+      <div>
+        <Button className="custom-btn" onClick={submit}>
+          Update
+        </Button>
+      </div>
       <LoadingModal show={loading} />
     </div>
   );

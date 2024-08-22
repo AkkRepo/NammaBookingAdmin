@@ -51,7 +51,7 @@ function AddImage(props) {
         alert("All Fields are required");
       }
     } catch (error) {
-      alert("Error when adding Image");
+      alert(error.message);
     }
   };
   return (

@@ -70,11 +70,11 @@ function Multiple() {
         alert(res.message);
         navigate("/stays");
       } else {
-        alert("Else error");
+        alert("Error While updating");
       }
       setLoading(false);
     } catch (error) {
-      alert("Catch error");
+      alert(error.message);
       console.log(error);
       setLoading(false);
     }

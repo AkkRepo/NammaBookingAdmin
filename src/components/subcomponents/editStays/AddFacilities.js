@@ -53,11 +53,11 @@ function AddFacilities(props) {
           props.onUpdate();
           handleClose();
         } else {
-          alert("Else Error");
+          alert("Error while adding");
         }
         setLoading(false);
       } catch (error) {
-        alert("Catch error");
+        alert(error.message);
         setLoading(false);
       }
     }

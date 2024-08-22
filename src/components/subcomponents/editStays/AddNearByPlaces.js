@@ -53,11 +53,11 @@ function AddNearByPlaces(props) {
           props.onUpdate();
           handleClose();
         } else {
-          alert("Error while adding Near by Places");
+          alert("Error while adding");
         }
         setLoading(false);
       } catch (error) {
-        alert("Error while adding Near by Places");
+        alert(error.message);
         setLoading(false);
       }
     }

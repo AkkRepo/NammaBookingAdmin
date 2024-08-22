@@ -100,7 +100,7 @@ function AddAccomodationTypes(props) {
       }
       setLoading(false);
     } catch (error) {
-      alert("Error when adding accomodation");
+      alert(error.message);
       setLoading(false);
     }
     //}

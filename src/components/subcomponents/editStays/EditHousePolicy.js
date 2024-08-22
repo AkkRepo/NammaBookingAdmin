@@ -125,7 +125,7 @@ function EditHousePolicy(props) {
           alert(res.message);
           props.onUpdateStay();
         } else {
-          alert("Error when updating stays details");
+          alert("Error while updating");
         }
         setLoading(false);
       } catch (error) {
@@ -144,17 +144,6 @@ function EditHousePolicy(props) {
           <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
             House Policy
           </h4>
-        </Col>
-        <Col>
-          <div className="stays-add-button">
-            <FontAwesomeIcon
-              icon={faPen}
-              size="lg"
-              className="stay-edit-button"
-              style={{ padding: "10px", borderRadius: "4rem" }}
-              onClick={update}
-            />
-          </div>
         </Col>
       </Row>
       <Row>
@@ -364,6 +353,12 @@ function EditHousePolicy(props) {
           </FloatingLabel>
         </Col>
       </Row>
+      <br />
+      <div>
+        <Button className="custom-btn" onClick={update}>
+          Update
+        </Button>
+      </div>
       <LoadingModal show={loading} />
     </div>
   );

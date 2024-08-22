@@ -53,11 +53,11 @@ function AddAmenities(props) {
           props.onUpdate();
           handleClose();
         } else {
-          alert("Error when adding amenity");
+          alert("Error while adding");
         }
         setLoading(false);
       } catch (error) {
-        alert("Error when adding amenity");
+        alert(error.message);
         setLoading(false);
       }
     }

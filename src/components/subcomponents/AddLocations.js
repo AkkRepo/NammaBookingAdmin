@@ -69,11 +69,11 @@ function AddLocations(props) {
         props.onClose();
         navigate("/locations");
       } else {
-        alert("Error while Adding");
+        alert("Error while adding");
       }
       setLoading(false);
     } catch (error) {
-      alert("Error while adding category");
+      alert(error.message);
       setLoading(false);
     }
   };

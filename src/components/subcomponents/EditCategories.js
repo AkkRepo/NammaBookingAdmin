@@ -52,11 +52,11 @@ function EditCategoriesModal({ show, onHide, category }) {
           onHide();
           navigate("/categories");
         } else {
-          alert("Else error");
+          alert("Error while updating");
         }
         setLoading(false);
       } catch (error) {
-        alert(" update Catch error");
+        alert(error.message);
         setLoading(false);
       }
     }

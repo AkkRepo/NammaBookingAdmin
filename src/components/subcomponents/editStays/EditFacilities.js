@@ -60,7 +60,7 @@ function EditFacilities(props) {
           props.onUpdateStay();
           handleClose();
         } else {
-          alert("Error when updating amenities details");
+          alert("Error while updating");
         }
         setLoading(false);
       } catch (error) {

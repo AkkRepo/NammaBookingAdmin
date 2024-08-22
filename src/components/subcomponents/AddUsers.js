@@ -70,11 +70,11 @@ function AddUsers(props) {
         props.onClose();
         navigate("/users");
       } else {
-        alert("Error while Adding");
+        alert("Error while adding");
       }
       setLoading(false);
     } catch (error) {
-      alert("Error while registration");
+      alert(error.message);
       setLoading(false);
     }
   };

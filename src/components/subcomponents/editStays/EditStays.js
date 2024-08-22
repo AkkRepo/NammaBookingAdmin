@@ -119,12 +119,12 @@ function EditStays() {
           alert(res.message);
           getStay();
         } else {
-          alert("else error");
+          alert("Error while deleting");
         }
         setLoading(false);
       }
     } catch (error) {
-      alert("catch error");
+      alert(error.message);
       setLoading(false);
     }
   };
@@ -140,12 +140,12 @@ function EditStays() {
           alert(res.message);
           getStay();
         } else {
-          alert("else error");
+          alert("Error while deleting");
         }
         setLoading(false);
       }
     } catch (error) {
-      alert("catch error");
+      alert(error.message);
       setLoading(false);
     }
   };
@@ -161,12 +161,12 @@ function EditStays() {
           alert(res.message);
           getStay();
         } else {
-          alert("else error");
+          alert("Error while deleting");
         }
         setLoading(false);
       }
     } catch (error) {
-      alert("catch error");
+      alert(error.message);
       setLoading(false);
     }
   };
@@ -182,12 +182,12 @@ function EditStays() {
           alert(res.message);
           getStay();
         } else {
-          alert("else error");
+          alert("Error while deleting");
         }
         setLoading(false);
       }
     } catch (error) {
-      alert("catch error");
+      alert(error.message);
       setLoading(false);
     }
   };
@@ -203,12 +203,12 @@ function EditStays() {
           alert(res.message);
           getStay();
         } else {
-          alert("else error");
+          alert("Error while deleting");
         }
         setLoading(false);
       }
     } catch (error) {
-      alert("catch error");
+      alert(error.message);
       setLoading(false);
     }
   };
@@ -224,12 +224,12 @@ function EditStays() {
           alert(res.message);
           getStay();
         } else {
-          alert("else error");
+          alert("Error while deleting");
         }
         setLoading(false);
       }
     } catch (error) {
-      alert("catch error");
+      alert(error.message);
       setLoading(false);
     }
   };
@@ -266,20 +266,10 @@ function EditStays() {
           <br />
           <Container className="add-stay-group-border">
             <Row>
-              <Col>
-                <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
-                  Accomodation Types:{" "}
-                  {/* <p className="required-field-meassage">
-                    {addError.accommodationTypesDetails}
-                  </p> */}
+              <Col style={{ display: "flex" }}>
+                <h4 className="edit-stays-accomodation-type">
+                  Accomodation Types:
                 </h4>
-              </Col>
-              {/* <Col>
-                <div className="stays-add-button">
-                  <Button className="custom-btn">Edit</Button>
-                </div>
-              </Col> */}
-              <Col style={{ marginLeft: "52rem" }}>
                 <AddAccomodationTypes id={stays.id} onUpdate={getStay} />
               </Col>
               {/* <div className="d-flex align-items-center justify-content-between">
@@ -549,10 +539,10 @@ function EditStays() {
             <Row>
               <Col>
                 <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
-                  Stay Images
+                  Stay Images:
                 </h4>
               </Col>
-              <Col style={{ marginLeft: "57rem" }}>
+              <Col style={{ marginLeft: "-48rem", marginTop: "-3px" }}>
                 <AddImage id={stays.id} onUpdate={getStay} />
               </Col>
             </Row>

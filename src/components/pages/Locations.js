@@ -61,12 +61,12 @@ function Locations() {
           alert(res.message);
           getLocations(pagination.cur);
         } else {
-          alert("Error while else");
+          alert("Error while deleting");
         }
         setLoading(false);
       }
     } catch (error) {
-      alert("Error while catch");
+      alert(error.message);
       setLoading(false);
     }
   };

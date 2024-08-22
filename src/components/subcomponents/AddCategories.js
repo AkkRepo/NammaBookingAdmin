@@ -68,11 +68,11 @@ function AddCategories(props) {
         props.onClose();
         navigate("/categories");
       } else {
-        alert("Error while Adding");
+        alert("Error while adding");
       }
       setLoading(false);
     } catch (error) {
-      alert("Error while adding category");
+      alert(error.message);
       setLoading(false);
     }
   };
