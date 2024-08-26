@@ -32,7 +32,7 @@ function AddNearByPlaces(props) {
     let tempError = { nearByPlaces: "" };
     let valid = true;
     if (!nearByPlaces) {
-      tempError.nearByPlaces = "Required";
+      tempError.nearByPlaces = "Required Field";
       valid = false;
     }
     setError(tempError);
@@ -83,7 +83,7 @@ function AddNearByPlaces(props) {
                 onChange={(e) => setNearByPlaces(e.target.value)}
                 isInvalid={!!error.nearByPlaces}
               />
-              <p>{error.nearByPlaces}</p>
+              <p className="required-field-meassage">{error.nearByPlaces}</p>
             </FloatingLabel>
           </div>
         </Modal.Body>

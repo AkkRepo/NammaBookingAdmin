@@ -39,7 +39,7 @@ function EditAmenities(props) {
     };
     let valid = true;
     if (!amenities.amenity) {
-      tempError.amenity = "Required";
+      tempError.amenity = "Required Field";
       valid = false;
     }
     setError(tempError);
@@ -95,7 +95,7 @@ function EditAmenities(props) {
                 }
                 isInvalid={!!error.amenity}
               />
-              <p>{error.amenity}</p>
+              <p className="required-field-meassage">{error.amenity}</p>
             </FloatingLabel>
           </div>
         </Modal.Body>

@@ -39,7 +39,7 @@ function EditNearByePlaces(props) {
     };
     let valid = true;
     if (!nearByPlaces.placeName) {
-      tempError.placeName = "Required";
+      tempError.placeName = "Required Field";
       valid = false;
     }
     setError(tempError);
@@ -99,7 +99,7 @@ function EditNearByePlaces(props) {
                 }
                 isInvalid={!!error.placeName}
               />
-              <p>{error.placeName}</p>
+              <p className="required-field-meassage">{error.placeName}</p>
             </FloatingLabel>
           </div>
         </Modal.Body>

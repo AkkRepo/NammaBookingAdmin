@@ -135,7 +135,7 @@ function EditLocationsModal({ show, onHide, location }) {
                 }
                 isInvalid={!!error.location}
               />
-              <p>{error.location}</p>
+              <p className="required-field-meassage">{error.location}</p>
             </FloatingLabel>
             <FloatingLabel
               controlId="locationsImage"

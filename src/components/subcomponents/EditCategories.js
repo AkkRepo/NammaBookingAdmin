@@ -122,7 +122,7 @@ function EditCategoriesModal({ show, onHide, category }) {
                 }
                 isInvalid={!!error.category}
               />
-              <p>{error.category}</p>
+              <p className="required-field-meassage">{error.category}</p>
             </FloatingLabel>
             <FloatingLabel
               controlId="categoryImage"

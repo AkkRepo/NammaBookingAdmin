@@ -34,6 +34,7 @@ import EditFacilities from "./EditFacilities";
 import AddNearByPlaces from "./AddNearByPlaces";
 import EditNearByePlaces from "./EditNearByPlaces";
 import AddImage from "./AddImage";
+import AddPricing from "./AddPricing";
 
 function EditStays() {
   //View stay details start TEMP
@@ -85,6 +86,7 @@ function EditStays() {
     address: "",
     stayCategoriesDetails: [],
     accommodationTypesDetails: [],
+    stayPricingDetails: [],
     stayAmenitiesDetails: [
       {
         amenity: "",
@@ -213,6 +215,27 @@ function EditStays() {
     }
   };
 
+  //delete Pricing
+  const deletePricing = async (id) => {
+    setLoading(true);
+    try {
+      const val = window.confirm("Do you want to delete?");
+      if (val) {
+        const res = await StaysService.deletePricingDetails(id);
+        if (res.status === 200) {
+          alert(res.message);
+          getStay();
+        } else {
+          alert("Error while deleting");
+        }
+        setLoading(false);
+      }
+    } catch (error) {
+      alert(error.message);
+      setLoading(false);
+    }
+  };
+
   //delete Image
   const deleteImage = async (id) => {
     setLoading(true);
@@ -291,12 +314,9 @@ function EditStays() {
                     <tr>
                       <th>Sl no</th>
                       <th>Name</th>
-                      <th>Price</th>
-                      <th>Package Includes</th>
                       <th>No. Of Beds</th>
                       <th>Bed Type</th>
                       <th>No. of Rooms</th>
-                      <th>No. of Guests</th>
                       {/* <th>Edit</th> */}
                       <th>Remove</th>
                     </tr>
@@ -307,8 +327,6 @@ function EditStays() {
                         <tr>
                           <td>{index + 1}</td>
                           <td>{item.roomName}</td>
-                          <td>{item.price}</td>
-                          <td>{item.includedPackages}</td>
                           <td>
                             {item.bedDetails.map((x) => x.noOfBeds).join(",")}
                           </td>
@@ -317,7 +335,6 @@ function EditStays() {
                           </td>
 
                           <td>{item.noOfRooms}</td>
-                          <td>{item.noOfGuests}</td>
                           {/* <td>
                             <EditAccomodationTypes />
                           </td> */}
@@ -327,6 +344,55 @@ function EditStays() {
                               className="stay-trash-button"
                               onClick={(e) => {
                                 deleteAccomodationTypes(item.id);
+                              }}
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </Container>
+            </Row>
+          </Container>
+          <br />
+          <Container className="add-stay-group-border">
+            <Row>
+              <Col style={{ display: "flex" }}>
+                <h4 className="edit-stays-accomodation-type">Pricing:</h4>
+                <AddPricing id={stays.id} onUpdate={getStay} />
+              </Col>
+              <Container
+                style={{
+                  paddingLeft: "10px",
+                  paddingRight: "10px",
+                  paddingTop: "1rem",
+                }}
+              >
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Sl no</th>
+                      <th>Package Name</th>
+                      <th>Package Details</th>
+                      <th>Price</th>
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stays.stayPricingDetails.map((item, index) => {
+                      return (
+                        <tr>
+                          <td>{index + 1}</td>
+                          <td>{item.packageName}</td>
+                          <td>{item.packageDetails}</td>
+                          <td>{item.price}</td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              className="stay-trash-button"
+                              onClick={(e) => {
+                                deletePricing(item.id);
                               }}
                             />
                           </td>

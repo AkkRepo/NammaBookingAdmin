@@ -61,43 +61,43 @@ function EditHousePolicy(props) {
     };
     let valid = true;
     if (!stays.checkInTime) {
-      tempError.checkInTime = "Required";
+      tempError.checkInTime = "Required Field";
       valid = false;
     }
     if (!stays.checkOutTime) {
-      tempError.checkOutTime = "Required";
+      tempError.checkOutTime = "Required Field";
       valid = false;
     }
     if (!stays.smoking) {
-      tempError.smoking = "Required";
+      tempError.smoking = "Required Field";
       valid = false;
     }
     if (!stays.pets) {
-      tempError.pets = "Required";
+      tempError.pets = "Required Field";
       valid = false;
     }
     if (!stays.coupleFriendly) {
-      tempError.coupleFriendly = "Required";
+      tempError.coupleFriendly = "Required Field";
       valid = false;
     }
     if (!stays.childrenBelow5) {
-      tempError.childrenBelow5 = "Required";
+      tempError.childrenBelow5 = "Required Field";
       valid = false;
     }
     if (!stays.children5To10) {
-      tempError.children5To10 = "Required";
+      tempError.children5To10 = "Required Field";
       valid = false;
     }
     if (!stays.childrenAbove10) {
-      tempError.childrenAbove10 = "Required";
+      tempError.childrenAbove10 = "Required Field";
       valid = false;
     }
     if (!stays.includedMeals) {
-      tempError.includedMeals = "Required";
+      tempError.includedMeals = "Required Field";
       valid = false;
     }
     if (!stays.extraStarters) {
-      tempError.extraStarters = "Required";
+      tempError.extraStarters = "Required Field";
       valid = false;
     }
     setError(tempError);
@@ -164,7 +164,7 @@ function EditHousePolicy(props) {
               }
               isInvalid={!!error.checkInTime}
             />
-            <p>{error.checkInTime}</p>
+            <p className="required-field-meassage">{error.checkInTime}</p>
           </FloatingLabel>
         </Col>
         <Col>
@@ -183,7 +183,7 @@ function EditHousePolicy(props) {
               }
               isInvalid={!!error.checkOutTime}
             />
-            <p>{error.checkOutTime}</p>
+            <p className="required-field-meassage">{error.checkOutTime}</p>
           </FloatingLabel>
         </Col>
       </Row>
@@ -198,7 +198,7 @@ function EditHousePolicy(props) {
               onChange={(e) => setStays({ ...stays, smoking: e.target.value })}
               isInvalid={!!error.smoking}
             />
-            <p>{error.smoking}</p>
+            <p className="required-field-meassage">{error.smoking}</p>
           </FloatingLabel>
         </Col>
         <Col>
@@ -211,7 +211,7 @@ function EditHousePolicy(props) {
               onChange={(e) => setStays({ ...stays, pets: e.target.value })}
               isInvalid={!!error.pets}
             />
-            <p>{error.pets}</p>
+            <p className="required-field-meassage">{error.pets}</p>
           </FloatingLabel>
         </Col>
         <Col>
@@ -233,7 +233,7 @@ function EditHousePolicy(props) {
               }
               isInvalid={!!error.coupleFriendly}
             />
-            <p>{error.coupleFriendly}</p>
+            <p className="required-field-meassage">{error.coupleFriendly}</p>
           </FloatingLabel>
         </Col>
       </Row>
@@ -258,7 +258,7 @@ function EditHousePolicy(props) {
               }
               isInvalid={!!error.childrenBelow5}
             />
-            <p>{error.childrenBelow5}</p>
+            <p className="required-field-meassage">{error.childrenBelow5}</p>
           </FloatingLabel>
         </Col>
         <Col>
@@ -280,7 +280,7 @@ function EditHousePolicy(props) {
               }
               isInvalid={!!error.children5To10}
             />
-            <p>{error.children5To10}</p>
+            <p className="required-field-meassage">{error.children5To10}</p>
           </FloatingLabel>
         </Col>
         <Col>
@@ -302,7 +302,7 @@ function EditHousePolicy(props) {
               }
               isInvalid={!!error.childrenAbove10}
             />
-            <p>{error.childrenAbove10}</p>
+            <p className="required-field-meassage">{error.childrenAbove10}</p>
           </FloatingLabel>
         </Col>
       </Row>
@@ -327,7 +327,7 @@ function EditHousePolicy(props) {
               }
               isInvalid={!!error.includedMeals}
             />
-            <p>{error.includedMeals}</p>
+            <p className="required-field-meassage">{error.includedMeals}</p>
           </FloatingLabel>
         </Col>
         <Col>
@@ -349,7 +349,7 @@ function EditHousePolicy(props) {
               }
               isInvalid={!!error.extraStarters}
             />
-            <p>{error.extraStarters}</p>
+            <p className="required-field-meassage">{error.extraStarters}</p>
           </FloatingLabel>
         </Col>
       </Row>

@@ -56,14 +56,14 @@ function AddAccomodationTypes(props) {
     console.log(pricingInputData);
   };
   const [pricingInputData, setPricingInputData] = useState({
-    roomsName: "",
-    price: "",
-    packageIncludes: "",
+    roomName: "",
     bedDetails: [],
-    selectacc: "",
-    //roomType: [],
     noOfRooms: "",
-    noOfGuests: "",
+    //price: "",
+    //packageIncludes: "",
+    //selectacc: "",
+    //roomType: [],
+    //noOfGuests: "",
   });
   const addAccomodationDetails = async () => {
     setLoading(true);
@@ -71,10 +71,10 @@ function AddAccomodationTypes(props) {
     try {
       const res = await StaysService.addAccomodationTypes({
         stayId: props.id,
-        roomName: pricingInputData.roomsName,
-        price: pricingInputData.price + " " + pricingInputData.selectacc,
-        includedPackages: pricingInputData.packageIncludes,
-        noOfGuests: pricingInputData.noOfGuests,
+        roomName: pricingInputData.roomName,
+        //price: pricingInputData.price + " " + pricingInputData.selectacc,
+        //includedPackages: pricingInputData.packageIncludes,
+        //noOfGuests: pricingInputData.noOfGuests,
         noOfRooms: pricingInputData.noOfRooms,
         bedDetails: pricingInputData.bedDetails.map((x) => ({
           noOfBeds: x.noOfBeds,
@@ -83,14 +83,9 @@ function AddAccomodationTypes(props) {
       });
       if (res.status === 200) {
         setPricingInputData({
-          roomsName: "",
-          price: "",
-          packageIncludes: "",
+          roomName: "",
           bedDetails: [],
-          selectacc: "",
-          //roomType: [],
           noOfRooms: "",
-          noOfGuests: "",
         });
         alert("Accomodation added successfully");
         props.onUpdate();
@@ -114,7 +109,7 @@ function AddAccomodationTypes(props) {
     };
     let valid = true;
     if (!pricingInputData) {
-      tempError.roomsName = "required";
+      tempError.roomName = "required";
       valid = false;
     }
   };
@@ -129,7 +124,7 @@ function AddAccomodationTypes(props) {
           <Row>
             <Col>
               <FloatingLabel
-                controlId="roomsName"
+                controlId="roomName"
                 label="Room Name*"
                 className="mb-3"
               >
@@ -137,11 +132,11 @@ function AddAccomodationTypes(props) {
                   type="text"
                   placeholder="Name"
                   className="text-capitalize"
-                  value={pricingInputData.roomsName}
+                  value={pricingInputData.roomName}
                   onChange={(e) => {
                     setPricingInputData({
                       ...pricingInputData,
-                      roomsName: Capitalize(e.target.value),
+                      roomName: Capitalize(e.target.value),
                     });
                   }}
                   //isInvalid={!!addError.roomName}
@@ -150,6 +145,26 @@ function AddAccomodationTypes(props) {
               </FloatingLabel>
             </Col>
             <Col>
+              <FloatingLabel
+                controlId="noOfRooms"
+                label="Total no. of Rooms*"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="number"
+                  placeholder="No. of Rooms"
+                  style={{ textTransform: "capitalize" }}
+                  value={pricingInputData.noOfRooms}
+                  onChange={(e) => {
+                    setPricingInputData({
+                      ...pricingInputData,
+                      noOfRooms: e.target.value,
+                    });
+                  }}
+                />
+              </FloatingLabel>
+            </Col>
+            {/* <Col>
               <FloatingLabel controlId="price" label="Price" className="mb-3">
                 <Form.Control
                   type="number"
@@ -182,33 +197,13 @@ function AddAccomodationTypes(props) {
                   <option value="Price / Per Person">Price / Per Person</option>
                   <option value="Price / Per Room">Price / Per Room</option>
                 </Form.Select>
-                {/* <p className="required-field-meassage">
+                <p className="required-field-meassage">
                     {addError.selectacc}
-                  </p> */}
+                  </p> 
               </FloatingLabel>
-            </Col>
+            </Col> */}
             <Row>
-              <Col>
-                <FloatingLabel
-                  controlId="noOfRooms"
-                  label="Total no. of Rooms*"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="number"
-                    placeholder="No. of Rooms"
-                    style={{ textTransform: "capitalize" }}
-                    value={pricingInputData.noOfRooms}
-                    onChange={(e) => {
-                      setPricingInputData({
-                        ...pricingInputData,
-                        noOfRooms: e.target.value,
-                      });
-                    }}
-                  />
-                </FloatingLabel>
-              </Col>
-              <Col>
+              {/* <Col>
                 <FloatingLabel
                   controlId="noOfGuests*"
                   label="Total no. of Guests"
@@ -227,10 +222,10 @@ function AddAccomodationTypes(props) {
                     }}
                   />
                 </FloatingLabel>
-              </Col>
+              </Col> */}
             </Row>
             <Row>
-              <Col>
+              {/* <Col>
                 <FloatingLabel
                   controlId="packageIncludes"
                   label="Package Includes*"
@@ -249,7 +244,7 @@ function AddAccomodationTypes(props) {
                     }}
                   />
                 </FloatingLabel>
-              </Col>
+              </Col> */}
             </Row>
             <Row>
               <Col>
@@ -365,7 +360,7 @@ function AddAccomodationTypes(props) {
                   {pricingInputArr.map((info, i) => {
                     return (
                       <tr>
-                        <td>{info.roomsName}</td>
+                        <td>{info.roomName}</td>
                         
                           <td>{info.price + " " + info.selectacc}</td> 
                         <td>{info.price + " " + info.selectacc}</td>

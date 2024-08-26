@@ -40,7 +40,7 @@ function EditFacilities(props) {
     };
     let valid = true;
     if (!facilities.facility) {
-      tempError.facility = "Required";
+      tempError.facility = "Required Field";
       valid = false;
     }
     setError(tempError);
@@ -97,7 +97,7 @@ function EditFacilities(props) {
                 }
                 isInvalid={!!error.facility}
               />
-              <p>{error.facility}</p>
+              <p className="required-field-meassage">{error.facility}</p>
             </FloatingLabel>
           </div>
         </Modal.Body>

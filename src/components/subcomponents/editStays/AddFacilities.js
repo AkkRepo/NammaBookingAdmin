@@ -32,7 +32,7 @@ function AddFacilities(props) {
     let tempError = { facility: "" };
     let valid = true;
     if (!facility) {
-      tempError.facility = "Required";
+      tempError.facility = "Required Field";
       valid = false;
     }
     setError(tempError);
@@ -84,7 +84,7 @@ function AddFacilities(props) {
                 onChange={(e) => setFacility(e.target.value)}
                 isInvalid={!!error.facility}
               />
-              <p>{error.facility}</p>
+              <p className="required-field-meassage">{error.facility}</p>
             </FloatingLabel>
           </div>
         </Modal.Body>

@@ -119,7 +119,7 @@ function EditUsersModal({ show, onHide, user }) {
                   onChange={(e) => setUsers({ ...users, name: e.target.value })}
                   isInvalid={!!error.name}
                 />
-                <p>{error.name}</p>
+                <p className="required-field-meassage">{error.name}</p>
               </FloatingLabel>
             </Col>
           </Row>
@@ -140,7 +140,7 @@ function EditUsersModal({ show, onHide, user }) {
                   }
                   isInvalid={!!error.email}
                 />
-                <p>{error.email}</p>
+                <p className="required-field-meassage">{error.email}</p>
               </FloatingLabel>
             </Col>
             {/*<Col>

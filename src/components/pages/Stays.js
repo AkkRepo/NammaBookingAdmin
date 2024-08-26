@@ -127,8 +127,8 @@ function Stays(props) {
             <th style={{ color: "#051e3c" }}>Stay Name</th>
             <th style={{ color: "#051e3c" }}>Contact name</th>
             <th style={{ color: "#051e3c" }}>Contact number</th>
+            {/* <th style={{ color: "#051e3c" }}>View Details</th> */}
             <th style={{ color: "#051e3c" }}>View Details</th>
-            <th style={{ color: "#051e3c" }}>Edit</th>
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
         </thead>
@@ -140,7 +140,7 @@ function Stays(props) {
                 <td>{i.name}</td>
                 <td>{i.contactPersonName}</td>
                 <td>{i.contactPersonNumber}</td>
-                <td>
+                {/* <td>
                   <FontAwesomeIcon
                     icon={faCircleInfo}
                     size="lg"
@@ -148,12 +148,13 @@ function Stays(props) {
                     style={{ marginLeft: "2.5rem" }}
                     onClick={() => navigateToStay(i.id)}
                   />
-                </td>
+                </td> */}
                 <td>
                   <FontAwesomeIcon
-                    icon={faPen}
+                    icon={faCircleInfo}
                     size="lg"
                     className="custom-icon"
+                    style={{ marginLeft: "2.5rem" }}
                     onClick={() => navigateToEditStay(i.id)}
                   />
                 </td>

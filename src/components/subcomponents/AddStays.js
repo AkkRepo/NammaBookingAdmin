@@ -214,19 +214,12 @@ function AddStays() {
   };
   //near by places myltiple input end
 
-  //Pricing multiple input start
+  //Accomodation Type multiple input start
   const [newRoom, setRooms] = useState({
     noOfBeds: "",
     bedType: "",
   });
   const addNewBedDetails = () => {
-    // let list = pricingInputData.bedDetails;
-    // list.push(newRoom);
-    // setPricingInputData({
-    //   ...pricingInputData,
-    //   bedDetails: list,
-    // });
-
     if (newRoom.noOfBeds && newRoom.bedType) {
       let list = pricingInputData.bedDetails;
       list.push(newRoom);
@@ -251,37 +244,19 @@ function AddStays() {
     console.log(pricingInputData);
   };
   const [pricingInputData, setPricingInputData] = useState({
-    roomsName: "",
-    price: "",
-    packageIncludes: "",
+    roomName: "",
     bedDetails: [],
-    selectacc: "",
-    //roomType: [],
     noOfRooms: "",
-    noOfGuests: "",
   });
 
   const [pricingInputArr, setPricingInputArr] = useState([]);
-  let {
-    roomsName,
-    price,
-    packageIncludes,
-    bedDetails,
-    selectacc,
-    //roomType,
-    noOfGuests,
-    noOfRooms,
-  } = pricingInputData;
+  let { roomName, bedDetails, noOfRooms } = pricingInputData;
   function addData() {
     // Check if any of the fields are empty
     if (
-      !roomsName ||
-      !price ||
-      !packageIncludes ||
+      !roomName ||
       //!bedDetails ||
-      !noOfRooms ||
-      !noOfGuests ||
-      !selectacc
+      !noOfRooms
       //!(noOfRooms.length > 0) ||
       //!roomType ||
     ) {
@@ -293,27 +268,17 @@ function AddStays() {
     setPricingInputArr([
       ...pricingInputArr,
       {
-        roomsName,
-        price,
-        packageIncludes,
+        roomName,
         noOfRooms,
-        selectacc,
-        //roomType,
         bedDetails,
-        noOfGuests,
       },
     ]);
 
     // Reset input fields
     setPricingInputData({
-      roomsName: "",
-      price: "",
-      packageIncludes: "",
+      roomName: "",
       bedDetails: [],
-      selectacc: "",
-      //roomType: [],
       noOfRooms: "",
-      noOfGuests: "",
     });
   }
   function pricingDeleteData(i) {
@@ -322,7 +287,7 @@ function AddStays() {
     total1.splice(i, 1);
     setPricingInputArr(total1);
   }
-  //Pricing multiple input end
+  //Accomodation Type multiple input end
 
   //Categories start
   const [categoriesDropdown, setCategoriesDropdown] = useState([]);
@@ -373,6 +338,50 @@ function AddStays() {
   }, []);
   //location end
 
+  //Pricing multiple input start
+  const [newPricingInputData, setNewPricingInputData] = useState({
+    packageName: "",
+    price: "",
+    packageDetails: "",
+    selectacc: "",
+  });
+
+  const [newPricingInputArr, setNewPricingInputArr] = useState([]);
+  let { packageName, price, packageDetails, selectacc } = newPricingInputData;
+  function addPricingData() {
+    // Check if any of the fields are empty
+    if (!packageName || !price || !selectacc || !packageDetails) {
+      alert("All fields are required");
+      return;
+    }
+
+    // Add data to the array
+    setNewPricingInputArr([
+      ...newPricingInputArr,
+      {
+        packageName,
+        price,
+        packageDetails,
+        selectacc,
+      },
+    ]);
+
+    // Reset input fields
+    setNewPricingInputData({
+      packageName: "",
+      price: "",
+      packageDetails: "",
+      selectacc: "",
+    });
+  }
+  function newPricingDeleteData(i) {
+    console.log(i, "this index row wants to be deleted");
+    let total1 = [...newPricingInputArr];
+    total1.splice(i, 1);
+    setNewPricingInputArr(total1);
+  }
+  //Pricing multiple input end
+
   //post operation
   const navigate = useNavigate();
   const [stays, setStays] = useState({
@@ -393,6 +402,7 @@ function AddStays() {
     address: "",
     stayCategoriesDetails: [],
     accommodationTypesDetails: [],
+    stayPricingDetails: [],
     stayAmenitiesDetails: [],
     stayActivitiesDetails: [],
     otherFacilityDetails: [],
@@ -426,6 +436,7 @@ function AddStays() {
     noOfBeds: "",
     stayCategoriesDetails: "",
     accommodationTypesDetails: "",
+    stayPricingDetails: "",
     stayAmenitiesDetails: "",
     contactPersonName: "",
     contactPersonNumber: "",
@@ -458,6 +469,7 @@ function AddStays() {
       noOfBeds: "",
       stayCategoriesDetails: "",
       accommodationTypesDetails: "",
+      stayPricingDetails: "",
       stayAmenitiesDetails: "",
       contactPersonName: "",
       contactPersonNumber: "",
@@ -540,6 +552,10 @@ function AddStays() {
       tempError.accommodationTypesDetails = "Accomodation Type is required";
       valid = false;
     }
+    if (newPricingInputArr.length === 0) {
+      tempError.stayPricingDetails = "Price is required";
+      valid = false;
+    }
     if (!stays.stayHousePolicyDetails.checkInTime) {
       tempError.checkInTime = "Required Field";
       valid = false;
@@ -616,15 +632,20 @@ function AddStays() {
           categoryId: x.id,
         })),
         accommodationTypesDetails: pricingInputArr.map((x) => ({
-          roomName: x.roomsName,
-          price: x.price + " " + x.selectacc,
-          includedPackages: x.packageIncludes,
+          roomName: x.roomName,
+          //price: x.price + " " + x.selectacc,
+          //includedPackages: x.packageIncludes,
           noOfRooms: x.noOfRooms,
-          noOfGuests: x.noOfGuests,
+          //noOfGuests: x.noOfGuests,
           bedDetails: x.bedDetails.map((x) => ({
             noOfBeds: Number(x.noOfBeds),
             bedType: x.bedType,
           })),
+        })),
+        stayPricingDetails: newPricingInputArr.map((x) => ({
+          packageName: x.packageName,
+          price: x.price + " " + x.selectacc,
+          packageDetails: x.packageDetails,
         })),
         stayAmenitiesDetails: amenitiesArray.map((x) => ({
           amenity: x.amenities,
@@ -990,7 +1011,7 @@ function AddStays() {
           <br />
           <Container className="add-stay-group-border">
             <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
-              Accomodation Types
+              Accomodation Type
               <p className="required-field-meassage">
                 {addError.accommodationTypesDetails}
               </p>
@@ -998,7 +1019,7 @@ function AddStays() {
             <Row>
               <Col>
                 <FloatingLabel
-                  controlId="roomsName"
+                  controlId="roomName"
                   label="Room Name*"
                   className="mb-3"
                 >
@@ -1006,120 +1027,39 @@ function AddStays() {
                     type="text"
                     placeholder="Name"
                     className="text-capitalize"
-                    value={pricingInputData.roomsName}
+                    value={pricingInputData.roomName}
                     onChange={(e) => {
                       setPricingInputData({
                         ...pricingInputData,
-                        roomsName: Capitalize(e.target.value),
+                        roomName: Capitalize(e.target.value),
                       });
                     }}
                   />
                 </FloatingLabel>
               </Col>
               <Col>
-                <FloatingLabel controlId="price" label="Price" className="mb-3">
+                <FloatingLabel
+                  controlId="noOfRooms"
+                  label="Total no. of Rooms*"
+                  className="mb-3"
+                >
                   <Form.Control
                     type="number"
-                    placeholder="Price*"
+                    placeholder="No. of Rooms"
                     style={{ textTransform: "capitalize" }}
-                    value={pricingInputData.price}
+                    value={pricingInputData.noOfRooms}
                     onChange={(e) => {
                       setPricingInputData({
                         ...pricingInputData,
-                        price: e.target.value,
+                        noOfRooms: e.target.value,
                       });
                     }}
                   />
                 </FloatingLabel>
-              </Col>{" "}
-              <Col>
-                <FloatingLabel controlId="selectacc" label="Select*">
-                  <Form.Select
-                    aria-label="Select*"
-                    value={pricingInputData.selectacc}
-                    onChange={(e) =>
-                      setPricingInputData({
-                        ...pricingInputData,
-                        selectacc: e.target.value,
-                      })
-                    }
-                    //isInvalid={!!addError.selectacc}
-                  >
-                    <option>Select</option>
-                    <option value="Price / Per Person">
-                      Price / Per Person
-                    </option>
-                    <option value="Price / Per Room">Price / Per Room</option>
-                  </Form.Select>
-                  {/* <p className="required-field-meassage">
-                    {addError.selectacc}
-                  </p> */}
-                </FloatingLabel>
               </Col>
-              <Row>
-                <Col>
-                  <FloatingLabel
-                    controlId="noOfRooms"
-                    label="Total no. of Rooms*"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      type="number"
-                      placeholder="No. of Rooms"
-                      style={{ textTransform: "capitalize" }}
-                      value={pricingInputData.noOfRooms}
-                      onChange={(e) => {
-                        setPricingInputData({
-                          ...pricingInputData,
-                          noOfRooms: e.target.value,
-                        });
-                      }}
-                    />
-                  </FloatingLabel>
-                </Col>
-                <Col>
-                  <FloatingLabel
-                    controlId="noOfGuests*"
-                    label="Total no. of Guests"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      type="number"
-                      placeholder="No. of Guests"
-                      style={{ textTransform: "capitalize" }}
-                      value={pricingInputData.noOfGuests}
-                      onChange={(e) => {
-                        setPricingInputData({
-                          ...pricingInputData,
-                          noOfGuests: e.target.value,
-                        });
-                      }}
-                    />
-                  </FloatingLabel>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <FloatingLabel
-                    controlId="packageIncludes"
-                    label="Package Includes*"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      type="text"
-                      placeholder="Name"
-                      className="text-capitalize"
-                      value={pricingInputData.packageIncludes}
-                      onChange={(e) => {
-                        setPricingInputData({
-                          ...pricingInputData,
-                          packageIncludes: Capitalize(e.target.value),
-                        });
-                      }}
-                    />
-                  </FloatingLabel>
-                </Col>
-              </Row>
+
+              <Row></Row>
+              <Row></Row>
               <Row>
                 <Col>
                   <FloatingLabel
@@ -1222,25 +1162,18 @@ function AddStays() {
                   <thead>
                     <tr>
                       <th>Room Name</th>
-                      <th>Price</th>
                       <th>No. of Rooms</th>
-                      <th>No. of Guests</th>
-                      <th>Package Includes</th>
                       <th>No Of Beds</th>
                       <th>Bed Type</th>
+                      <th>Remove</th>
                     </tr>
                   </thead>
                   <tbody>
                     {pricingInputArr.map((info, i) => {
                       return (
                         <tr>
-                          <td>{info.roomsName}</td>
-                          {/*
-                          <td>{info.price + " " + info.selectacc}</td> */}
-                          <td>{info.price + " " + info.selectacc}</td>
+                          <td>{info.roomName}</td>
                           <td>{info.noOfRooms}</td>
-                          <td>{info.noOfGuests}</td>
-                          <td>{info.packageIncludes}</td>
                           <td>
                             {info.bedDetails.map((x) => x.noOfBeds).join(",")}
                           </td>
@@ -1262,7 +1195,148 @@ function AddStays() {
             </Row>
           </Container>
           <br />
-
+          <Container className="add-stay-group-border">
+            <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
+              Pricing
+              <p className="required-field-meassage">
+                {addError.stayPricingDetails}
+              </p>
+            </h4>
+            <Row>
+              <Col>
+                <FloatingLabel
+                  controlId="packageName"
+                  label="Package Name*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Name"
+                    className="text-capitalize"
+                    value={newPricingInputData.packageName}
+                    onChange={(e) => {
+                      setNewPricingInputData({
+                        ...newPricingInputData,
+                        packageName: Capitalize(e.target.value),
+                      });
+                    }}
+                  />
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="packageIncludes"
+                  label="Package Includes*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Name"
+                    className="text-capitalize"
+                    value={newPricingInputData.packageDetails}
+                    onChange={(e) => {
+                      setNewPricingInputData({
+                        ...newPricingInputData,
+                        packageDetails: Capitalize(e.target.value),
+                      });
+                    }}
+                  />
+                </FloatingLabel>
+              </Col>
+              <Row>
+                <Col>
+                  <FloatingLabel
+                    controlId="price"
+                    label="Price"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="number"
+                      placeholder="Price*"
+                      style={{ textTransform: "capitalize" }}
+                      value={newPricingInputData.price}
+                      onChange={(e) => {
+                        setNewPricingInputData({
+                          ...newPricingInputData,
+                          price: e.target.value,
+                        });
+                      }}
+                    />
+                  </FloatingLabel>
+                </Col>{" "}
+                <Col>
+                  <FloatingLabel controlId="selectacc" label="Select*">
+                    <Form.Select
+                      aria-label="Select*"
+                      value={newPricingInputData.selectacc}
+                      onChange={(e) =>
+                        setNewPricingInputData({
+                          ...newPricingInputData,
+                          selectacc: e.target.value,
+                        })
+                      }
+                      //isInvalid={!!addError.selectacc}
+                    >
+                      <option>Select</option>
+                      <option value="Price / Per Person">
+                        Price / Per Person
+                      </option>
+                      <option value="Price / Per Room">Price / Per Room</option>
+                    </Form.Select>
+                    {/* <p className="required-field-meassage">
+                    {addError.selectacc}
+                  </p> */}
+                  </FloatingLabel>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Button
+                    onClick={addPricingData}
+                    className="custom-btn-reverse"
+                  >
+                    Add Price
+                  </Button>
+                </Col>
+              </Row>
+              <Container
+                style={{
+                  paddingLeft: "10px",
+                  paddingRight: "10px",
+                  paddingTop: "1rem",
+                }}
+              >
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Package Name</th>
+                      <th>Package Details</th>
+                      <th>Price</th>
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {newPricingInputArr.map((info, i) => {
+                      return (
+                        <tr>
+                          <td>{info.packageName}</td>
+                          <td>{info.packageDetails}</td>
+                          <td>{info.price + " " + info.selectacc}</td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faX}
+                              onClick={() => newPricingDeleteData(i)}
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </Container>
+            </Row>
+          </Container>
+          <br />
           <Container className="add-stay-group-border">
             <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>Others</h4>
             <Row>

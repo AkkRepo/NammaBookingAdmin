@@ -2,7 +2,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import axios, { AxiosRequestConfig } from "axios";
 import { AuthService } from "../services/Auth";
 
-const DEFAULT_TIMEOUT = 25000;
+const DEFAULT_TIMEOUT = 30000;
 
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
@@ -33,7 +33,7 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response.data.error.message === "Invalid Token!") {
       AuthService.logout();
-      window.location.href = window.location.origin + '/login?session=true';
+      window.location.href = window.location.origin + "/login?session=true";
       return { ...error.response };
     } else {
       return { ...error.response };

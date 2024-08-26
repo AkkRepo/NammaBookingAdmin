@@ -39,7 +39,7 @@ function EditActivities(props) {
     };
     let valid = true;
     if (!activities.activity) {
-      tempError.activity = "Required";
+      tempError.activity = "Required Field";
       valid = false;
     }
     setError(tempError);
@@ -95,7 +95,7 @@ function EditActivities(props) {
                 }
                 isInvalid={!!error.activity}
               />
-              <p>{error.activity}</p>
+              <p className="required-field-meassage">{error.activity}</p>
             </FloatingLabel>
           </div>
         </Modal.Body>

@@ -18,6 +18,14 @@ export class StaysService {
       data: data,
     });
   };
+  static addPricingDetails = (data) => {
+    console.log(data);
+    return NetworkManager.getInstance().appRequest({
+      method: "post",
+      url: ApiEndPoints.addPricing,
+      data: data,
+    });
+  };
   static addAmenity = (data) => {
     console.log(data);
     return NetworkManager.getInstance().appRequest({
@@ -112,6 +120,14 @@ export class StaysService {
     return NetworkManager.getInstance().appRequest({
       method: "delete",
       url: ApiEndPoints.deleteAccomodationTypes + id,
+      data: { ...id },
+    });
+  };
+  static deletePricingDetails = (id) => {
+    console.log(id);
+    return NetworkManager.getInstance().appRequest({
+      method: "delete",
+      url: ApiEndPoints.deletePricing + id,
       data: { ...id },
     });
   };

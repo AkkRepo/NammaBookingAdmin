@@ -32,7 +32,7 @@ function AddActivities(props) {
     let tempError = { activity: "" };
     let valid = true;
     if (!activity) {
-      tempError.activity = "Required";
+      tempError.activity = "Required Field";
       valid = false;
     }
     setError(tempError);
@@ -82,7 +82,7 @@ function AddActivities(props) {
                 onChange={(e) => setActivity(e.target.value)}
                 isInvalid={!!error.activity}
               />
-              <p>{error.activity}</p>
+              <p className="required-field-meassage">{error.activity}</p>
             </FloatingLabel>
           </div>
         </Modal.Body>

@@ -32,7 +32,7 @@ function AddAmenities(props) {
     let tempError = { amenity: "" };
     let valid = true;
     if (!amenity) {
-      tempError.amenity = "Required";
+      tempError.amenity = "Required Field";
       valid = false;
     }
     setError(tempError);
@@ -84,7 +84,7 @@ function AddAmenities(props) {
                 onChange={(e) => setAmenity(e.target.value)}
                 isInvalid={!!error.amenity}
               />
-              <p>{error.amenity}</p>
+              <p className="required-field-meassage">{error.amenity}</p>
             </FloatingLabel>
           </div>
         </Modal.Body>
