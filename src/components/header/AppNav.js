@@ -19,10 +19,15 @@ const AppNav = () => {
     AuthService.logout();
     navigate("/login");
   };
-  const highlight=()=>{
-    const path = window.location.pathname
-    return path.includes('locations')||path.includes('categories')||path.includes('users')
-  }
+  const highlight = () => {
+    const path = window.location.pathname;
+    return (
+      path.includes("locations") ||
+      path.includes("categories") ||
+      path.includes("users") ||
+      path.includes("bedType")
+    );
+  };
   return (
     <Navbar expand="lg">
       <Container>
@@ -42,12 +47,27 @@ const AppNav = () => {
             <NavLink to="/stays" className="nav-link" activeClassName="active">
               Stays
             </NavLink>
-            <NavDropdown title="Master data" activeClassName="active" className={highlight()?'active':''}> 
+            <NavLink
+              to="/testimonies"
+              className="nav-link"
+              activeClassName="active"
+            >
+              Testimonies
+            </NavLink>
+            <NavDropdown
+              title="Master data"
+              activeClassName="active"
+              className={highlight() ? "active" : ""}
+            >
               <Link
                 to="/categories"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}
                 activeClassName="active"
-                className={window.location.pathname.includes('categories')?'active':''}
+                className={
+                  window.location.pathname.includes("categories")
+                    ? "active"
+                    : ""
+                }
               >
                 Categories
               </Link>
@@ -55,7 +75,9 @@ const AppNav = () => {
               <Link
                 to="/locations"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}
-                className={window.location.pathname.includes('locations')?'active':''}
+                className={
+                  window.location.pathname.includes("locations") ? "active" : ""
+                }
               >
                 Locations
               </Link>
@@ -63,13 +85,22 @@ const AppNav = () => {
               <Link
                 to="/users"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}
-                className={window.location.pathname.includes('users')?'active':''}
+                className={
+                  window.location.pathname.includes("users") ? "active" : ""
+                }
               >
                 Users
+              </Link>{" "}
+              <div style={{ padding: "5px" }} />
+              <Link
+                to="/bedType"
+                style={{ textDecoration: "none", paddingLeft: "10px" }}
+                className={
+                  window.location.pathname.includes("bedType") ? "active" : ""
+                }
+              >
+                Bed type
               </Link>
-              {/*<NavDropdown.Item to="/dashboard/amenities">Amenities</NavDropdown.Item>
-              <NavDropdown.Item to="/dashboard/amenities">Activities</NavDropdown.Item>
-              <NavDropdown.Item to="/dashboard/stays">Users</NavDropdown.Item> */}
             </NavDropdown>
             <Button
               className="nav-link"

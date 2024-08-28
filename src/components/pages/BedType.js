@@ -4,13 +4,12 @@ import { Table, Row, Col, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import AppNav from "../header/AppNav";
-import AddCategories from "../subcomponents/AddCategories";
-import { CategoriesService } from "../../services/Categories";
-import EditCategories from "../subcomponents/EditCategories";
+import AddBedType from "../subcomponents/AddBedType";
+import { BedTypeServices } from "../../services/BedType";
 import { Loading, AppPagination } from "./Others/Index";
-import ViewCategories from "../subcomponents/CategoriesDetails";
+import EditBedType from "../subcomponents/EditBedType";
 
-function Categories() {
+function BedType() {
   const navigate = useNavigate();
   const [addModalShow, setAddModalShow] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -19,20 +18,20 @@ function Categories() {
     max: 1,
   });
 
-  const [categories, setCategories] = useState([]);
+  const [bedType, setBedType] = useState([]);
 
-  const getCategories = async (page = 1) => {
+  const getBedType = async (page = 1) => {
     setLoading(true);
     try {
-      const res = await CategoriesService.getAllCategories(page);
+      const res = await BedTypeServices.getAllBedTypes(page);
       if (res.data?.length > 0) {
-        setCategories(res.data);
+        setBedType(res.data);
         setPagination({
           cur: res.pagination_data.page,
           max: res.pagination_data.pages,
         });
       } else {
-        setCategories([]);
+        setBedType([]);
         setPagination({
           cur: 1,
           max: 1,
@@ -45,15 +44,15 @@ function Categories() {
     }
   };
 
-  const deleteCategory = async (id) => {
+  const deleteBedType = async (id) => {
     setLoading(true);
     try {
       const val = window.confirm("Do you want to delete?");
       if (val) {
-        const res = await CategoriesService.deleteCategory(id);
+        const res = await BedTypeServices.deleteBedType(id);
         if (res.status === 200) {
           alert(res.message);
-          getCategories(pagination.cur);
+          getBedType(pagination.cur);
         } else {
           alert("Error while deleting");
         }
@@ -65,15 +64,12 @@ function Categories() {
       setLoading(false);
     }
   };
-  const navigateToCategory = (id) => {
-    navigate("/stays/categoryDetails/" + id);
-  };
   const changePage = (page) => {
-    getCategories(page);
+    getBedType(page);
   };
 
   useEffect(() => {
-    getCategories();
+    getBedType();
   }, []);
 
   return (
@@ -82,7 +78,7 @@ function Categories() {
         <AppNav />
       </header>
 
-      <h1 className="brownbear stays-h1 heading-color"> Categories</h1>
+      <h1 className="brownbear stays-h1 heading-color">Bed Types</h1>
 
       <Row>
         <Col>
@@ -91,12 +87,12 @@ function Categories() {
               className="custom-btn"
               onClick={() => setAddModalShow(true)}
             >
-              Add Category
+              Add BedType
             </Button>
-            <AddCategories
+            <AddBedType
               show={addModalShow}
               onHide={() => setAddModalShow(false)}
-              onClose={() => getCategories()}
+              onClose={() => getBedType()}
             />
           </div>
         </Col>
@@ -106,43 +102,33 @@ function Categories() {
         <thead>
           <tr>
             <th style={{ color: "#051e3c" }}>Sl no</th>
-            <th style={{ color: "#051e3c" }}>Category</th>
-            <th style={{ color: "#051e3c" }}>View Details</th>
+            <th style={{ color: "#051e3c" }}>Bed Type</th>
             <th style={{ color: "#051e3c" }}>Edit</th>
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
         </thead>
         <tbody>
           {!loading &&
-            categories.map((i, index) => (
+            bedType.map((i, index) => (
               <tr key={i.id}>
                 <td>{index + 1}</td>
-                <td>{i.category}</td>
-                <td style={{ paddingLeft: "3rem" }}>
-                  <ViewCategories
-                    category={i}
-                    onClick={() => navigateToCategory(i.id)}
-                  />
-                </td>
+                <td>{i.bedType}</td>
                 <td>
-                  <EditCategories
-                    category={i}
-                    onClose={() => getCategories()}
-                  />
+                  <EditBedType bedType={i} onClose={() => getBedType()} />
                 </td>
                 <td>
                   <FontAwesomeIcon
                     icon={faTrash}
                     size="lg"
                     className="custom-icon"
-                    onClick={(e) => deleteCategory(i.id)}
+                    onClick={(e) => deleteBedType(i.id)}
                   />
                 </td>
               </tr>
             ))}
         </tbody>
       </Table>
-      {categories.length < 1 && (
+      {bedType.length < 1 && (
         <h3 style={{ color: "#e77225", textAlign: "center" }}>List is empty</h3>
       )}
       {loading && <Loading />}
@@ -157,4 +143,4 @@ function Categories() {
   );
 }
 
-export default Categories;
+export default BedType;

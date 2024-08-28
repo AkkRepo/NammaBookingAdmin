@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -12,11 +12,11 @@ import {
   Modal,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Capitalize } from "../../../core/utils";
 import { StaysService } from "../../../services/Stays";
-import AddAmenities from "./AddAmenities";
 import { LoadingModal } from "../../pages/Others/Index";
+import { BedTypeServices } from "../../../services/BedType";
 
 function AddAccomodationTypes(props) {
   const [show, setShow] = useState(false);
@@ -29,19 +29,21 @@ function AddAccomodationTypes(props) {
   //Accomodation multiple input start
   const [newRoom, setRooms] = useState({
     noOfBeds: "",
-    bedType: "",
+    bedTypeId: "",
+    //bedType: "",
   });
   const addNewBedDetails = () => {
-    if (newRoom.noOfBeds && newRoom.bedType) {
+    if (newRoom.noOfBeds && newRoom.bedTypeId) {
       let list = pricingInputData.bedDetails;
       list.push(newRoom);
       setPricingInputData({
         ...pricingInputData,
         bedDetails: list,
       });
-      setRooms({ noOfBeds: "", bedType: "" });
+      setRooms({ noOfBeds: "", bedTypeId: "" });
       console.log(pricingInputData);
     } else {
+      console.log(newRoom);
       alert("No bed data provided. Please enter the bed details.");
     }
   };
@@ -57,40 +59,36 @@ function AddAccomodationTypes(props) {
   };
   const [pricingInputData, setPricingInputData] = useState({
     roomName: "",
+    roomType: "",
     bedDetails: [],
     noOfRooms: "",
-    //price: "",
-    //packageIncludes: "",
-    //selectacc: "",
-    //roomType: [],
-    //noOfGuests: "",
+    noOfGuests: "",
   });
   const addAccomodationDetails = async () => {
     setLoading(true);
-    //if (validation()) {
     try {
       const res = await StaysService.addAccomodationTypes({
         stayId: props.id,
         roomName: pricingInputData.roomName,
-        //price: pricingInputData.price + " " + pricingInputData.selectacc,
-        //includedPackages: pricingInputData.packageIncludes,
-        //noOfGuests: pricingInputData.noOfGuests,
+        roomType: pricingInputData.roomType,
         noOfRooms: pricingInputData.noOfRooms,
+        noOfGuests: pricingInputData.noOfGuests,
         bedDetails: pricingInputData.bedDetails.map((x) => ({
           noOfBeds: x.noOfBeds,
-          bedType: x.bedType,
+          bedTypeId: x.bedTypeId,
         })),
       });
       if (res.status === 200) {
         setPricingInputData({
           roomName: "",
-          bedDetails: [],
           noOfRooms: "",
+          noOfGuests: "",
         });
         alert("Accomodation added successfully");
         props.onUpdate();
         handleClose();
       } else {
+        console.log(pricingInputData);
         alert("All fields are required");
       }
       setLoading(false);
@@ -98,21 +96,27 @@ function AddAccomodationTypes(props) {
       alert(error.message);
       setLoading(false);
     }
-    //}
   };
-  const [addError, setAddError] = useState({
-    pricingInputData,
-  });
-  const validation = () => {
-    let tempError = {
-      pricingInputData,
-    };
-    let valid = true;
-    if (!pricingInputData) {
-      tempError.roomName = "required";
-      valid = false;
+
+  //Bed Type start
+  const [bedType, setBedType] = useState([]);
+  const getBedType = async () => {
+    try {
+      const res = await BedTypeServices.getAllBedTypes();
+      if (res.data?.length > 0) {
+        setBedType(res.data);
+      } else {
+        setBedType([]);
+      }
+    } catch (error) {
+      alert(error.message);
     }
   };
+
+  useEffect(() => {
+    getBedType();
+  }, []);
+  //Bed Type end
 
   return (
     <div>
@@ -139,74 +143,54 @@ function AddAccomodationTypes(props) {
                       roomName: Capitalize(e.target.value),
                     });
                   }}
-                  //isInvalid={!!addError.roomName}
-                />{" "}
-                {/* <p className="required-field-meassage">{addError.roomName}</p> */}
+                />
               </FloatingLabel>
             </Col>
             <Col>
               <FloatingLabel
-                controlId="noOfRooms"
-                label="Total no. of Rooms*"
+                controlId="roomType"
+                label="Room Type"
                 className="mb-3"
               >
                 <Form.Control
-                  type="number"
-                  placeholder="No. of Rooms"
-                  style={{ textTransform: "capitalize" }}
-                  value={pricingInputData.noOfRooms}
+                  type="text"
+                  placeholder="Room Type"
+                  className="text-capitalize"
+                  value={pricingInputData.roomType}
                   onChange={(e) => {
                     setPricingInputData({
                       ...pricingInputData,
-                      noOfRooms: e.target.value,
+                      roomType: Capitalize(e.target.value),
                     });
                   }}
-                />
+                />{" "}
               </FloatingLabel>
             </Col>
-            {/* <Col>
-              <FloatingLabel controlId="price" label="Price" className="mb-3">
-                <Form.Control
-                  type="number"
-                  placeholder="Price*"
-                  style={{ textTransform: "capitalize" }}
-                  value={pricingInputData.price}
-                  onChange={(e) => {
-                    setPricingInputData({
-                      ...pricingInputData,
-                      price: e.target.value,
-                    });
-                  }}
-                />
-              </FloatingLabel>
-            </Col>{" "}
-            <Col>
-              <FloatingLabel controlId="selectacc" label="Select*">
-                <Form.Select
-                  aria-label="Select*"
-                  value={pricingInputData.selectacc}
-                  onChange={(e) =>
-                    setPricingInputData({
-                      ...pricingInputData,
-                      selectacc: e.target.value,
-                    })
-                  }
-                  //isInvalid={!!addError.selectacc}
-                >
-                  <option>Select</option>
-                  <option value="Price / Per Person">Price / Per Person</option>
-                  <option value="Price / Per Room">Price / Per Room</option>
-                </Form.Select>
-                <p className="required-field-meassage">
-                    {addError.selectacc}
-                  </p> 
-              </FloatingLabel>
-            </Col> */}
             <Row>
-              {/* <Col>
+              <Col>
                 <FloatingLabel
-                  controlId="noOfGuests*"
-                  label="Total no. of Guests"
+                  controlId="noOfRooms"
+                  label="Total no. of Rooms*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="number"
+                    placeholder="No. of Rooms"
+                    style={{ textTransform: "capitalize" }}
+                    value={pricingInputData.noOfRooms}
+                    onChange={(e) => {
+                      setPricingInputData({
+                        ...pricingInputData,
+                        noOfRooms: e.target.value,
+                      });
+                    }}
+                  />
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="noOfGuests"
+                  label="Total no. of Guests*"
                   className="mb-3"
                 >
                   <Form.Control
@@ -222,50 +206,29 @@ function AddAccomodationTypes(props) {
                     }}
                   />
                 </FloatingLabel>
-              </Col> */}
-            </Row>
-            <Row>
-              {/* <Col>
-                <FloatingLabel
-                  controlId="packageIncludes"
-                  label="Package Includes*"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Name"
-                    className="text-capitalize"
-                    value={pricingInputData.packageIncludes}
-                    onChange={(e) => {
-                      setPricingInputData({
-                        ...pricingInputData,
-                        packageIncludes: Capitalize(e.target.value),
-                      });
-                    }}
-                  />
-                </FloatingLabel>
-              </Col> */}
+              </Col>
             </Row>
             <Row>
               <Col>
-                <FloatingLabel
-                  controlId="bedType"
-                  label="Bed Type*"
-                  className="mb-3"
-                  style={{ width: "20rem" }}
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Room type"
-                    className="text-capitalize"
-                    value={newRoom.bedType}
+                <FloatingLabel controlId="Bed Type" label="Bed Type*">
+                  <Form.Select
+                    required
+                    aria-label="Bed Type*"
+                    value={newRoom.bedTypeId}
                     onChange={(e) => {
                       setRooms({
                         ...newRoom,
-                        bedType: Capitalize(e.target.value),
+                        bedTypeId: Number(e.target.value),
                       });
                     }}
-                  />
+                  >
+                    <option>Select</option>
+                    {bedType.map((i) => (
+                      <option key={i.id} value={i.id}>
+                        {i.bedType}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </FloatingLabel>
               </Col>
               <Col style={{ display: "flex" }}>
@@ -315,68 +278,19 @@ function AddAccomodationTypes(props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {pricingInputData?.bedDetails?.map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.bedType}</td>
-                      <td>{item.noOfBeds}</td>
-                      <td>
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          onClick={() => deleteNewRoom(index)}
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Container>
-            {/* <Row>
-              <Col>
-                <Button onClick={addAccomodationDetails} className="custom-btn">
-                  Add Accomodation Types
-                </Button>
-              </Col>
-            </Row> */}
-            {/* <Container
-              style={{
-                paddingLeft: "10px",
-                paddingRight: "10px",
-                paddingTop: "1rem",
-              }}
-            >
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>Room Name</th>
-                    <th>Price</th>
-                    <th>No. of Rooms</th>
-                    <th>No. of Guests</th>
-                    <th>Package Includes</th>
-                    <th>No Of Beds</th>
-                    <th>Bed Type</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {pricingInputArr.map((info, i) => {
+                  {pricingInputData?.bedDetails?.map((item, index) => {
+                    const bedTypeName =
+                      bedType.find((type) => type.id === item.bedTypeId)
+                        ?.bedType || "Unknown";
+
                     return (
-                      <tr>
-                        <td>{info.roomName}</td>
-                        
-                          <td>{info.price + " " + info.selectacc}</td> 
-                        <td>{info.price + " " + info.selectacc}</td>
-                        <td>{info.noOfRooms}</td>
-                        <td>{info.noOfGuests}</td>
-                        <td>{info.packageIncludes}</td>
-                        <td>
-                          {info.bedDetails.map((x) => x.noOfBeds).join(",")}
-                        </td>
-                        <td>
-                          {info.bedDetails.map((x) => x.bedType).join(",")}
-                        </td>
+                      <tr key={index}>
+                        <td>{bedTypeName}</td>
+                        <td>{item.noOfBeds}</td>
                         <td>
                           <FontAwesomeIcon
                             icon={faTrash}
-                            onClick={() => pricingDeleteData(i)}
+                            onClick={() => deleteNewRoom(index)}
                           />
                         </td>
                       </tr>
@@ -384,7 +298,7 @@ function AddAccomodationTypes(props) {
                   })}
                 </tbody>
               </Table>
-            </Container> */}
+            </Container>
           </Row>
         </Modal.Body>
         <Modal.Footer>

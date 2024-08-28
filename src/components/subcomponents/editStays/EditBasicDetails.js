@@ -134,6 +134,7 @@ function EditBasicDetails(props) {
     noOfBeds: "",
     contactPersonName: "",
     contactPersonNumber: "",
+    contactPersonEmail: "",
     googleMapLink: "",
     instagramLink: "",
     facebookLink: "",
@@ -166,6 +167,7 @@ function EditBasicDetails(props) {
     noOfBeds: "",
     contactPersonName: "",
     contactPersonNumber: "",
+    contactPersonEmail: "",
     googleMapLink: "",
     instagramLink: "",
     facebookLink: "",
@@ -198,6 +200,7 @@ function EditBasicDetails(props) {
       noOfBeds: "",
       contactPersonName: "",
       contactPersonNumber: "",
+      contactPersonEmail: "",
       googleMapLink: "",
       instagramLink: "",
       facebookLink: "",
@@ -268,6 +271,16 @@ function EditBasicDetails(props) {
       tempError.contactPersonNumber = "Contact number is required";
       valid = false;
     }
+    if (
+      !stays.contactPersonEmail ||
+      !stays.contactPersonEmail.match(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      )
+    ) {
+      tempError.contactPersonEmail =
+        "Contact email is required or email is invalid";
+      valid = false;
+    }
     setValError(tempError);
     return valid;
   };
@@ -289,6 +302,7 @@ function EditBasicDetails(props) {
           noOfBeds: stays.noOfBeds,
           contactPersonName: stays.contactPersonName,
           contactPersonNumber: stays.contactPersonNumber,
+          contactPersonEmail: stays.contactPersonEmail,
           googleMapLink: stays.googleMapLink,
           instagramLink: stays.instagramLink,
           facebookLink: stays.facebookLink,
@@ -489,8 +503,8 @@ function EditBasicDetails(props) {
               onChange={(e) => setStays({ ...stays, select: e.target.value })}
             >
               <option>Select</option>
-              <option value="Price / Per Person">Price / Per Person</option>
-              <option value="Price / Per Room">Price / Per Room</option>
+              <option value="Price per Person">Price per Person</option>
+              <option value="Price per Room">Price per Room</option>
             </Form.Select>
           </FloatingLabel>
         </Col>
@@ -652,6 +666,27 @@ function EditBasicDetails(props) {
           </FloatingLabel>
           <p className="required-field-meassage">
             {valError.contactPersonNumber}
+          </p>
+        </Col>
+        <Col>
+          <FloatingLabel
+            controlId="contactEmail"
+            label="Contact Email*"
+            className="mb-3"
+          >
+            <Form.Control
+              required
+              type="text"
+              placeholder="Please enter contact Email"
+              value={stays.contactPersonEmail}
+              onChange={(e) =>
+                setStays({ ...stays, contactPersonEmail: e.target.value })
+              }
+              isInvalid={!!valError.contactPersonEmail}
+            />
+          </FloatingLabel>
+          <p className="required-field-meassage">
+            {valError.contactPersonEmail}
           </p>
         </Col>
       </Row>

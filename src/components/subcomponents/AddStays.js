@@ -21,13 +21,10 @@ import { LocationsService } from "../../services/Locations";
 import { Capitalize } from "../../core/utils";
 import { useNavigate } from "react-router-dom";
 import { StaysService } from "../../services/Stays";
+import { BedTypeServices } from "../../services/BedType";
 import { LoadingModal } from "../pages/Others/Index";
 
 function AddStays() {
-  //const [newRoomType, setNewRoomType] = useState("");
-  //const [newBed, setBed] = useState("");
-  //Rating single decimal implementation start
-
   const [loading, setLoading] = useState(false);
   const [rating, setRating] = useState("");
   const [error, setError] = useState("");
@@ -217,19 +214,21 @@ function AddStays() {
   //Accomodation Type multiple input start
   const [newRoom, setRooms] = useState({
     noOfBeds: "",
-    bedType: "",
+    bedTypeId: "",
+    //bedType: "",
   });
   const addNewBedDetails = () => {
-    if (newRoom.noOfBeds && newRoom.bedType) {
+    if (newRoom.noOfBeds && newRoom.bedTypeId) {
       let list = pricingInputData.bedDetails;
       list.push(newRoom);
       setPricingInputData({
         ...pricingInputData,
         bedDetails: list,
       });
-      setRooms({ noOfBeds: "", bedType: "" });
+      setRooms({ noOfBeds: "", bedTypeId: "" });
       console.log(pricingInputData);
     } else {
+      console.log(newRoom);
       alert("No bed data provided. Please enter the bed details.");
     }
   };
@@ -245,18 +244,22 @@ function AddStays() {
   };
   const [pricingInputData, setPricingInputData] = useState({
     roomName: "",
+    roomType: "",
     bedDetails: [],
     noOfRooms: "",
+    noOfGuests: "",
   });
 
   const [pricingInputArr, setPricingInputArr] = useState([]);
-  let { roomName, bedDetails, noOfRooms } = pricingInputData;
+  let { roomName, roomType, bedDetails, noOfRooms, noOfGuests } =
+    pricingInputData;
   function addData() {
     // Check if any of the fields are empty
     if (
       !roomName ||
       //!bedDetails ||
-      !noOfRooms
+      !noOfRooms ||
+      !noOfGuests
       //!(noOfRooms.length > 0) ||
       //!roomType ||
     ) {
@@ -269,16 +272,20 @@ function AddStays() {
       ...pricingInputArr,
       {
         roomName,
+        roomType,
         noOfRooms,
         bedDetails,
+        noOfGuests,
       },
     ]);
 
     // Reset input fields
     setPricingInputData({
       roomName: "",
+      roomType: "",
       bedDetails: [],
       noOfRooms: "",
+      noOfGuests: "",
     });
   }
   function pricingDeleteData(i) {
@@ -338,6 +345,26 @@ function AddStays() {
   }, []);
   //location end
 
+  //Bed Type start
+  const [bedType, setBedType] = useState([]);
+  const getBedType = async () => {
+    try {
+      const res = await BedTypeServices.getAllBedTypes();
+      if (res.data?.length > 0) {
+        setBedType(res.data);
+      } else {
+        setBedType([]);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getBedType();
+  }, []);
+  //Bed Type end
+
   //Pricing multiple input start
   const [newPricingInputData, setNewPricingInputData] = useState({
     packageName: "",
@@ -396,6 +423,7 @@ function AddStays() {
     noOfBeds: "",
     contactPersonName: "",
     contactPersonNumber: "",
+    contactPersonEmail: "",
     googleMapLink: "",
     instagramLink: "",
     facebookLink: "",
@@ -440,6 +468,7 @@ function AddStays() {
     stayAmenitiesDetails: "",
     contactPersonName: "",
     contactPersonNumber: "",
+    contactPersonEmail: "",
     googleMapLink: "",
     address: "",
     checkInTime: "",
@@ -473,6 +502,7 @@ function AddStays() {
       stayAmenitiesDetails: "",
       contactPersonName: "",
       contactPersonNumber: "",
+      contactPersonEmail: "",
       googleMapLink: "",
       address: "",
       checkInTime: "",
@@ -538,6 +568,16 @@ function AddStays() {
     }
     if (!stays.contactPersonNumber) {
       tempError.contactPersonNumber = "Contact number is required";
+      valid = false;
+    }
+    if (
+      !stays.contactPersonEmail ||
+      !stays.contactPersonEmail.match(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      )
+    ) {
+      tempError.contactPersonEmail =
+        "Contact email is required or email is invalid";
       valid = false;
     }
     if (selectedOptions.length === 0) {
@@ -624,6 +664,7 @@ function AddStays() {
         noOfBeds: stays.noOfBeds,
         contactPersonName: stays.contactPersonName,
         contactPersonNumber: stays.contactPersonNumber,
+        contactPersonEmail: stays.contactPersonEmail,
         googleMapLink: stays.googleMapLink,
         instagramLink: stays.instagramLink,
         facebookLink: stays.facebookLink,
@@ -635,11 +676,13 @@ function AddStays() {
           roomName: x.roomName,
           //price: x.price + " " + x.selectacc,
           //includedPackages: x.packageIncludes,
+          roomType: x.roomType,
           noOfRooms: x.noOfRooms,
+          noOfGuests: x.noOfGuests,
           //noOfGuests: x.noOfGuests,
           bedDetails: x.bedDetails.map((x) => ({
             noOfBeds: Number(x.noOfBeds),
-            bedType: x.bedType,
+            bedTypeId: Number(x.bedTypeId),
           })),
         })),
         stayPricingDetails: newPricingInputArr.map((x) => ({
@@ -872,10 +915,8 @@ function AddStays() {
                     isInvalid={!!addError.select}
                   >
                     <option>Select</option>
-                    <option value="Price / Per Person">
-                      Price / Per Person
-                    </option>
-                    <option value="Price / Per Room">Price / Per Room</option>
+                    <option value="Price per Person">Price per Person</option>
+                    <option value="Price per Room">Price per Room</option>
                   </Form.Select>
                   <p className="required-field-meassage">{addError.select}</p>
                 </FloatingLabel>
@@ -1039,6 +1080,26 @@ function AddStays() {
               </Col>
               <Col>
                 <FloatingLabel
+                  controlId="roomType"
+                  label="Room Type"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Name"
+                    className="text-capitalize"
+                    value={pricingInputData.roomType}
+                    onChange={(e) => {
+                      setPricingInputData({
+                        ...pricingInputData,
+                        roomType: Capitalize(e.target.value),
+                      });
+                    }}
+                  />
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
                   controlId="noOfRooms"
                   label="Total no. of Rooms*"
                   className="mb-3"
@@ -1057,29 +1118,48 @@ function AddStays() {
                   />
                 </FloatingLabel>
               </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="noOfGuests"
+                  label="Total no. of Guests*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="number"
+                    placeholder="No. of Guests"
+                    style={{ textTransform: "capitalize" }}
+                    value={pricingInputData.noOfGuests}
+                    onChange={(e) => {
+                      setPricingInputData({
+                        ...pricingInputData,
+                        noOfGuests: e.target.value,
+                      });
+                    }}
+                  />
+                </FloatingLabel>
+              </Col>
 
-              <Row></Row>
-              <Row></Row>
               <Row>
                 <Col>
-                  <FloatingLabel
-                    controlId="bedType"
-                    label="Bed Type*"
-                    className="mb-3"
-                    style={{ width: "32rem" }}
-                  >
-                    <Form.Control
-                      type="text"
-                      placeholder="Room type"
-                      className="text-capitalize"
-                      value={newRoom.bedType}
+                  <FloatingLabel controlId="Bed Type" label="Bed Type*">
+                    <Form.Select
+                      required
+                      aria-label="Bed Type*"
+                      value={newRoom.bedTypeId}
                       onChange={(e) => {
                         setRooms({
                           ...newRoom,
-                          bedType: Capitalize(e.target.value),
+                          bedTypeId: Number(e.target.value),
                         });
                       }}
-                    />
+                    >
+                      <option>Select</option>
+                      {bedType.map((i) => (
+                        <option key={i.id} value={i.id}>
+                          {i.bedType}
+                        </option>
+                      ))}
+                    </Form.Select>
                   </FloatingLabel>
                 </Col>
                 <Col style={{ display: "flex" }}>
@@ -1129,28 +1209,36 @@ function AddStays() {
                     </tr>
                   </thead>
                   <tbody>
-                    {pricingInputData?.bedDetails?.map((item, index) => (
-                      <tr key={index}>
-                        <td>{item.bedType}</td>
-                        <td>{item.noOfBeds}</td>
-                        <td>
-                          <FontAwesomeIcon
-                            icon={faX}
-                            onClick={() => deleteNewRoom(index)}
-                          />
-                        </td>
-                      </tr>
-                    ))}
+                    {pricingInputData?.bedDetails?.map((item, index) => {
+                      const bedTypeName =
+                        bedType.find((type) => type.id === item.bedTypeId)
+                          ?.bedType || "Unknown";
+
+                      return (
+                        <tr key={index}>
+                          <td>{bedTypeName}</td>
+                          <td>{item.noOfBeds}</td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faX}
+                              onClick={() => deleteNewRoom(index)}
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </Table>
               </Container>
+
               <Row>
                 <Col>
                   <Button onClick={addData} className="custom-btn-reverse">
-                    Add Accomodation Types
+                    Add Accommodation Types
                   </Button>
                 </Col>
               </Row>
+
               <Container
                 style={{
                   paddingLeft: "10px",
@@ -1171,14 +1259,22 @@ function AddStays() {
                   <tbody>
                     {pricingInputArr.map((info, i) => {
                       return (
-                        <tr>
+                        <tr key={i}>
                           <td>{info.roomName}</td>
                           <td>{info.noOfRooms}</td>
                           <td>
                             {info.bedDetails.map((x) => x.noOfBeds).join(",")}
                           </td>
                           <td>
-                            {info.bedDetails.map((x) => x.bedType).join(",")}
+                            {info.bedDetails
+                              .map((x) => {
+                                const bedTypeName =
+                                  bedType.find(
+                                    (type) => type.id === x.bedTypeId
+                                  )?.bedType || "Unknown";
+                                return bedTypeName;
+                              })
+                              .join(",")}
                           </td>
                           <td>
                             <FontAwesomeIcon
@@ -1278,10 +1374,8 @@ function AddStays() {
                       //isInvalid={!!addError.selectacc}
                     >
                       <option>Select</option>
-                      <option value="Price / Per Person">
-                        Price / Per Person
-                      </option>
-                      <option value="Price / Per Room">Price / Per Room</option>
+                      <option value="Price per Person">Price per Person</option>
+                      <option value="Price per Room">Price per Room</option>
                     </Form.Select>
                     {/* <p className="required-field-meassage">
                     {addError.selectacc}
@@ -1880,6 +1974,30 @@ function AddStays() {
                   />
                   <p className="required-field-meassage">
                     {addError.contactPersonNumber}
+                  </p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="contactEmail"
+                  label="Contact Email*"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Please enter contact email"
+                    value={stays.contactPersonEmail}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        contactPersonEmail: e.target.value,
+                      })
+                    }
+                    isInvalid={!!addError.contactPersonEmail}
+                  />
+                  <p className="required-field-meassage">
+                    {addError.contactPersonEmail}
                   </p>
                 </FloatingLabel>
               </Col>

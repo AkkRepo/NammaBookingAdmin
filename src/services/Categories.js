@@ -19,14 +19,6 @@ export class CategoriesService {
     });
   };
 
-  static deleteCategory = (id) => {
-    return NetworkManager.getInstance().appRequest({
-      method: "delete",
-      url: ApiEndPoints.categoriesDelete + "/" + id,
-      data: { ...id },
-    });
-  };
-
   static getCategoriesById = (id) => {
     return NetworkManager.getInstance().appRequest({
       method: "get",

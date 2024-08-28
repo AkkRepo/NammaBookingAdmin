@@ -163,8 +163,8 @@ function AddPricing(props) {
                   isInvalid={!!addError.selectacc}
                 >
                   <option>Select</option>
-                  <option value="Price / Per Person">Price / Per Person</option>
-                  <option value="Price / Per Room">Price / Per Room</option>
+                  <option value="Price per Person">Price per Person</option>
+                  <option value="Price per Room">Price per Room</option>
                 </Form.Select>
                 {/* <p className="required-field-meassage">
                     {addError.selectacc}

@@ -9,12 +9,14 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 //pages
 import AppNav from "../header/AppNav";
 import AddLocations from "../subcomponents/AddLocations";
-import EditLocations from "../subcomponents/EditLocations";
-import { LocationsService } from "../../services/Locations";
+import { TestimoniesServices } from "../../services/Testimonies";
 import { AppPagination, Loading } from "./Others/Index";
 import LocationDetails from "../subcomponents/LocationDetails";
+import TestimoniesDetails from "../subcomponents/TestimoniesDetails";
+import AddTestimonies from "../subcomponents/AddTestimonies";
+import EditTestimonies from "../subcomponents/EditTestimonies";
 
-function Locations() {
+function Testimonies() {
   const navigate = useNavigate();
   const [addModalShow, setAddModalShow] = React.useState(false);
   const [loading, setLoading] = useState(false);
@@ -23,19 +25,19 @@ function Locations() {
     max: 1,
   });
 
-  const [locations, setLocations] = useState([]);
-  const getLocations = async (page = 1) => {
+  const [testimonies, setTestimonies] = useState([]);
+  const getTestimonies = async (page = 1) => {
     setLoading(true);
     try {
-      const res = await LocationsService.getAllLocations(page);
+      const res = await TestimoniesServices.getAllTestimonies(page);
       if (res.data?.length > 0) {
-        setLocations(res.data);
+        setTestimonies(res.data);
         setPagination({
           cur: res.pagination_data.page,
           max: res.pagination_data.pages,
         });
       } else {
-        setLocations([]);
+        setTestimonies([]);
         setPagination({
           cur: 1,
           max: 1,
@@ -48,15 +50,15 @@ function Locations() {
     }
   };
 
-  const deleteLocations = async (id) => {
+  const deleteTestimonies = async (id) => {
     setLoading(true);
     try {
       const val = window.confirm("Do you want to delete?");
       if (val) {
-        const res = await LocationsService.deleteLocations(id);
+        const res = await TestimoniesServices.deleteTestimonies(id);
         if (res.status === 200) {
           alert(res.message);
-          getLocations(pagination.cur);
+          getTestimonies(pagination.cur);
         } else {
           alert("Error while deleting");
         }
@@ -68,14 +70,14 @@ function Locations() {
     }
   };
 
-  const navigateToLocation = (id) => {
-    navigate("/stays/locationDetails/" + id);
+  const navigateToTesimonies = (id) => {
+    navigate("/testimoniesDetails" + id);
   };
   const changePage = (page) => {
-    getLocations(page);
+    getTestimonies(page);
   };
   useEffect(() => {
-    getLocations();
+    getTestimonies();
   }, []);
   return (
     <div style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
@@ -83,38 +85,21 @@ function Locations() {
         <AppNav />
       </header>
 
-      <h1 className="brownbear stays-h1 heading-color"> Locations</h1>
+      <h1 className="brownbear stays-h1 heading-color">Testimonies</h1>
 
       <Row>
-        {/*<Col>
-          <Form>
-            <Form.Group
-              className="mb-3"
-              controlId="formBasicEmail"
-              //value={searchQuery}
-              //onChange={handleChange}
-              style={{ width: "15rem" }}
-            >
-              <Form.Control
-                type="text"
-                //onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search"
-              />
-            </Form.Group>
-          </Form>
-        </Col> */}
         <Col>
           <div className="stays-add-button">
             <Button
               className="custom-btn"
               onClick={() => setAddModalShow(true)}
             >
-              Add Location
+              Add Testimony
             </Button>
-            <AddLocations
+            <AddTestimonies
               show={addModalShow}
               onHide={() => setAddModalShow(false)}
-              onClose={() => getLocations()}
+              onClose={() => getTestimonies()}
             />
           </div>
         </Col>
@@ -124,7 +109,7 @@ function Locations() {
         <thead>
           <tr>
             <th style={{ color: "#051e3c" }}>Sl no</th>
-            <th style={{ color: "#051e3c" }}>Location</th>
+            <th style={{ color: "#051e3c" }}>Name</th>
             <th style={{ color: "#051e3c" }}>View Details</th>
             <th style={{ color: "#051e3c" }}>Edit</th>
             <th style={{ color: "#051e3c" }}>Delete</th>
@@ -132,25 +117,28 @@ function Locations() {
         </thead>
         <tbody>
           {!loading &&
-            locations.map((i, index) => (
+            testimonies.map((i, index) => (
               <tr key={i.id}>
                 <td>{index + 1}</td>
-                <td>{i.location}</td>
+                <td>{i.name}</td>
                 <td style={{ paddingLeft: "3rem" }}>
-                  <LocationDetails
-                    location={i}
-                    onClick={() => navigateToLocation(i.id)}
+                  <TestimoniesDetails
+                    testimony={i}
+                    onClick={() => navigateToTesimonies(i.id)}
                   />
                 </td>
                 <td>
-                  <EditLocations location={i} onClose={() => getLocations()} />
+                  <EditTestimonies
+                    testimony={i}
+                    onClose={() => getTestimonies()}
+                  />
                 </td>
                 <td>
                   <FontAwesomeIcon
                     icon={faTrash}
                     size="lg"
                     className="custom-icon"
-                    onClick={(e) => deleteLocations(i.id)}
+                    onClick={(e) => deleteTestimonies(i.id)}
                   />
                 </td>
               </tr>
@@ -190,7 +178,7 @@ function Locations() {
           ))}
         </tbody> */}
       </Table>
-      {locations.length < 1 && (
+      {testimonies.length < 1 && (
         <h3 style={{ color: "#e77225", textAlign: "center" }}>List is empty</h3>
       )}
       {loading && <Loading />}
@@ -205,4 +193,4 @@ function Locations() {
   );
 }
 
-export default Locations;
+export default Testimonies;

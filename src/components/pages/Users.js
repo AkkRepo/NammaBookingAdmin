@@ -8,14 +8,9 @@ import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 //pages
 import AppNav from "../header/AppNav";
-import amenitiesData from "./amenitiesData.json";
 import AddUsers from "../subcomponents/AddUsers";
 import EditUsers from "../subcomponents/EditUsers";
-import DeleteUsers from "../subcomponents/DeleteUsers";
 import { UsersService } from "../../services/Users";
-import EditUsersCopy from "../subcomponents/EditUsersCopy";
-import MultipleInputField from "../subcomponents/StayDetails";
-import TestingFile from "../subcomponents/TestingFile";
 import { Loading, AppPagination } from "./Others/Index";
 
 function Users(props) {
@@ -193,52 +188,6 @@ function Users(props) {
                 </td>
               </tr>
             ))}
-          {/*{records
-            .filter((s) => {
-              return search == ""
-                ? s
-                : s.stayName.toLowerCase().includes(search);
-            })
-            .map((s, i) => (
-              <tr>
-                <td>
-                  <div key={i}>{s.id}</div>
-                </td>
-                <td>
-                  <div key={i}>{s.stayName}</div>
-                </td>
-                <td>
-                  <div key={i}>{s.stayLocation}</div>
-                </td>
-                <td>
-                  <div key={i}>{s.contactName}</div>
-                </td>
-                <td>
-                  <div key={i}>{s.contactNumber}</div>
-                </td>
-                <td>
-                  <Link to="/dashboard/editStays">
-                    <FontAwesomeIcon
-                      icon={faPen}
-                      size="lg"
-                      className="custom-icon"
-                    />
-                  </Link>
-                </td>
-                <td>
-                  <FontAwesomeIcon
-                    icon={faTrash}
-                    size="lg"
-                    className="custom-icon"
-                    onClick={() => setDeleteModalShow(true)}
-                  />
-                  <DeleteActivities
-                    show={deleteModalShow}
-                    onHide={() => setDeleteModalShow(false)}
-                  />
-                </td>
-              </tr>
-            ))} */}
         </tbody>
       </Table>
       {user.length < 1 && (

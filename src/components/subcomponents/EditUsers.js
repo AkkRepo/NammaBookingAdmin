@@ -10,13 +10,8 @@ import {
   Modal,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
-
-import AppNav from "../header/AppNav";
-import AddUsers from "../subcomponents/AddUsers";
-import DeleteUsers from "../subcomponents/DeleteUsers";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { UsersService } from "../../services/Users";
-import EditUsersCopy from "../subcomponents/EditUsersCopy";
 import { LoadingModal } from "../pages/Others/Index";
 
 function EditUsersModal({ show, onHide, user }) {

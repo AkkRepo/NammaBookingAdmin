@@ -313,11 +313,12 @@ function EditStays() {
                   <thead>
                     <tr>
                       <th>Sl no</th>
-                      <th>Name</th>
-                      <th>No. Of Beds</th>
-                      <th>Bed Type</th>
+                      <th>Room Name</th>
+                      <th>Room Type</th>
                       <th>No. of Rooms</th>
-                      {/* <th>Edit</th> */}
+                      <th>No. Of Guests</th>
+                      <th>Bed Type</th>
+                      <th>No. Of Beds</th>
                       <th>Remove</th>
                     </tr>
                   </thead>
@@ -327,17 +328,17 @@ function EditStays() {
                         <tr>
                           <td>{index + 1}</td>
                           <td>{item.roomName}</td>
+                          <td>{item.roomType}</td>
+                          <td>{item.noOfRooms}</td>
+                          <td>{item.noOfGuests}</td>
                           <td>
                             {item.bedDetails.map((x) => x.noOfBeds).join(",")}
                           </td>
                           <td>
-                            {item.bedDetails.map((x) => x.bedType).join(",")}
+                            {item.bedDetails
+                              .map((x) => x.bedTypeDetails.bedType)
+                              .join(",")}
                           </td>
-
-                          <td>{item.noOfRooms}</td>
-                          {/* <td>
-                            <EditAccomodationTypes />
-                          </td> */}
                           <td>
                             <FontAwesomeIcon
                               icon={faTrash}

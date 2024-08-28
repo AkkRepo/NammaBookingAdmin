@@ -4,16 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 //css
 import { Table, Row, Col, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPen,
-  faTrash,
-  faCircleInfo,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 
 //pages
 import AppNav from "../header/AppNav";
 import { Loading, AppPagination } from "./Others/Index";
-import DeleteStays from "../subcomponents/DeleteStays";
 import { StaysService } from "../../services/Stays";
 
 function Stays(props) {
@@ -167,59 +162,9 @@ function Stays(props) {
                       deleteStays(i.id);
                     }}
                   />
-                  {/*<DeleteStays
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                  /> */}
                 </td>
               </tr>
             ))}
-          {/*{records
-            .filter((s) => {
-              return search == ""
-                ? s
-                : s.stayName.toLowerCase().includes(search);
-            })
-            .map((s, i) => (
-              <tr>
-                <td>
-                  <div key={i}>{s.id}</div>
-                </td>
-                <td>
-                  <div key={i}>{s.stayName}</div>
-                </td>
-                <td>
-                  <div key={i}>{s.stayLocation}</div>
-                </td>
-                <td>
-                  <div key={i}>{s.contactName}</div>
-                </td>
-                <td>
-                  <div key={i}>{s.contactNumber}</div>
-                </td>
-                <td>
-                  <Link to="/dashboard/editStays">
-                    <FontAwesomeIcon
-                      icon={faPen}
-                      size="lg"
-                      className="custom-icon"
-                    />
-                  </Link>
-                </td>
-                <td>
-                  <FontAwesomeIcon
-                    icon={faTrash}
-                    size="lg"
-                    className="custom-icon"
-                    onClick={() => setDeleteModalShow(true)}
-                  />
-                  <DeleteActivities
-                    show={deleteModalShow}
-                    onHide={() => setDeleteModalShow(false)}
-                  />
-                </td>
-              </tr>
-            ))} */}
         </tbody>
       </Table>
       {stay.length < 1 && (
