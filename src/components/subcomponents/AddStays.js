@@ -1250,6 +1250,7 @@ function AddStays() {
                   <thead>
                     <tr>
                       <th>Room Name</th>
+                      <th>Room Type</th>
                       <th>No. of Rooms</th>
                       <th>No Of Beds</th>
                       <th>Bed Type</th>
@@ -1261,6 +1262,7 @@ function AddStays() {
                       return (
                         <tr key={i}>
                           <td>{info.roomName}</td>
+                          <td>{info.roomType}</td>
                           <td>{info.noOfRooms}</td>
                           <td>
                             {info.bedDetails.map((x) => x.noOfBeds).join(",")}
