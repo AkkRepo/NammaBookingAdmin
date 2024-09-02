@@ -286,7 +286,7 @@ function EditHousePolicy(props) {
         <Col>
           <FloatingLabel
             controlId="childrenAbove10"
-            label="Children above 5 year*"
+            label="Children above 10 year*"
             className="mb-3"
           >
             <Form.Control

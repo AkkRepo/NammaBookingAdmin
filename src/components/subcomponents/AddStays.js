@@ -46,6 +46,14 @@ function AddStays() {
 
   const handleImageUpload = (event) => {
     const files = event.target.files;
+    const selectedFiles = files.size < 300 * 1024; // Filter files less than 300 KB
+    if (selectedFiles.length !== files.length) {
+      alert("Some files are larger than 300 KB and were not selected.");
+      event.target.value = null;
+      event.target.files = null;
+      //setError({ ...error, image: "Image cannot be more than 300KB" });
+      return;
+    }
     const promises = Array.from(files).map((file) => {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -571,13 +579,12 @@ function AddStays() {
       valid = false;
     }
     if (
-      !stays.contactPersonEmail ||
+      stays.contactPersonEmail &&
       !stays.contactPersonEmail.match(
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
       )
     ) {
-      tempError.contactPersonEmail =
-        "Contact email is required or email is invalid";
+      tempError.contactPersonEmail = "Please provide valid email id";
       valid = false;
     }
     if (selectedOptions.length === 0) {
@@ -1840,7 +1847,7 @@ function AddStays() {
               <Col>
                 <FloatingLabel
                   controlId="childrenAbove10"
-                  label="Children above 5 year*"
+                  label="Children above 10 year*"
                   className="mb-3"
                 >
                   <Form.Control
@@ -1982,12 +1989,12 @@ function AddStays() {
               <Col>
                 <FloatingLabel
                   controlId="contactEmail"
-                  label="Contact Email*"
+                  label="Contact Email"
                   className="mb-3"
                 >
                   <Form.Control
                     required
-                    type="text"
+                    type="email"
                     placeholder="Please enter contact email"
                     value={stays.contactPersonEmail}
                     onChange={(e) =>

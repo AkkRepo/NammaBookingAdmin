@@ -272,13 +272,12 @@ function EditBasicDetails(props) {
       valid = false;
     }
     if (
-      !stays.contactPersonEmail ||
+      stays.contactPersonEmail &&
       !stays.contactPersonEmail.match(
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
       )
     ) {
-      tempError.contactPersonEmail =
-        "Contact email is required or email is invalid";
+      tempError.contactPersonEmail = "Please provide valid email id";
       valid = false;
     }
     setValError(tempError);
@@ -671,7 +670,7 @@ function EditBasicDetails(props) {
         <Col>
           <FloatingLabel
             controlId="contactEmail"
-            label="Contact Email*"
+            label="Contact Email"
             className="mb-3"
           >
             <Form.Control

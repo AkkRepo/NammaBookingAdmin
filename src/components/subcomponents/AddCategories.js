@@ -41,6 +41,12 @@ function AddCategories(props) {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    if (file.size > 300 * 1024) {
+      // Convert KB to bytes
+      alert("File size exceeds 300KB limit. Please select a smaller file.");
+      e.target.files = null;
+      return;
+    }
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {

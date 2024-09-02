@@ -25,7 +25,12 @@ function AddImage(props) {
   const handleShow = () => setShow(true);
   const handleImageBase64 = (e) => {
     const file = e.target.files[0];
-
+    if (file.size > 300 * 1024) {
+      // Convert KB to bytes
+      alert("File size exceeds 300KB limit. Please select a smaller file.");
+      e.target.files = null;
+      return;
+    }
     if (file) {
       setFile(file);
       const reader = new FileReader();

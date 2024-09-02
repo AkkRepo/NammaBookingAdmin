@@ -33,7 +33,7 @@ function AddLocations(props) {
       valid = false;
     }
     if (!locations.imageUrl) {
-      tempError.imageUrl = "Image is required";
+      tempError.imageUrl = "Image is required or invalid size";
       valid = false;
     }
     setError(tempError);
@@ -42,6 +42,12 @@ function AddLocations(props) {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    if (file.size > 300 * 1024) {
+      // Convert KB to bytes
+      alert("File size exceeds 300KB limit. Please select a smaller file.");
+      e.target.files = null;
+      return;
+    }
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
