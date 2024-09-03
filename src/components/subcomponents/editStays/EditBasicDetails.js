@@ -502,8 +502,8 @@ function EditBasicDetails(props) {
               onChange={(e) => setStays({ ...stays, select: e.target.value })}
             >
               <option>Select</option>
-              <option value="Price per Person">Price per Person</option>
-              <option value="Price per Room">Price per Room</option>
+              <option value="Per Person">Per Person</option>
+              <option value="Per Room">Per Room</option>
             </Form.Select>
           </FloatingLabel>
         </Col>

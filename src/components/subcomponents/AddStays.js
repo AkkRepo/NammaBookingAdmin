@@ -922,8 +922,8 @@ function AddStays() {
                     isInvalid={!!addError.select}
                   >
                     <option>Select</option>
-                    <option value="Price per Person">Price per Person</option>
-                    <option value="Price per Room">Price per Room</option>
+                    <option value="Per Person">Per Person</option>
+                    <option value="Per Room">Per Room</option>
                   </Form.Select>
                   <p className="required-field-meassage">{addError.select}</p>
                 </FloatingLabel>
@@ -1383,8 +1383,8 @@ function AddStays() {
                       //isInvalid={!!addError.selectacc}
                     >
                       <option>Select</option>
-                      <option value="Price per Person">Price per Person</option>
-                      <option value="Price per Room">Price per Room</option>
+                      <option value="Per Person">Per Person</option>
+                      <option value="Per Room">Per Room</option>
                     </Form.Select>
                     {/* <p className="required-field-meassage">
                     {addError.selectacc}
