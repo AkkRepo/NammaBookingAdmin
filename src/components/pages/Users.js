@@ -63,8 +63,8 @@ function Users(props) {
         } else {
           alert("Error while deleting");
         }
-        setLoading(false);
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
       setLoading(false);

@@ -56,8 +56,8 @@ function BedType() {
         } else {
           alert("Error while deleting");
         }
-        setLoading(false);
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
       console.log(id);

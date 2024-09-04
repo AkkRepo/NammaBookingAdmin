@@ -123,8 +123,8 @@ function EditStays() {
         } else {
           alert("Error while deleting");
         }
-        setLoading(false);
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
       setLoading(false);
@@ -144,8 +144,8 @@ function EditStays() {
         } else {
           alert("Error while deleting");
         }
-        setLoading(false);
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
       setLoading(false);
@@ -165,8 +165,8 @@ function EditStays() {
         } else {
           alert("Error while deleting");
         }
-        setLoading(false);
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
       setLoading(false);
@@ -186,8 +186,8 @@ function EditStays() {
         } else {
           alert("Error while deleting");
         }
-        setLoading(false);
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
       setLoading(false);
@@ -207,8 +207,8 @@ function EditStays() {
         } else {
           alert("Error while deleting");
         }
-        setLoading(false);
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
       setLoading(false);
@@ -228,8 +228,8 @@ function EditStays() {
         } else {
           alert("Error while deleting");
         }
-        setLoading(false);
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
       setLoading(false);
@@ -249,8 +249,8 @@ function EditStays() {
         } else {
           alert("Error while deleting");
         }
-        setLoading(false);
       }
+      setLoading(false);
     } catch (error) {
       alert(error.message);
       setLoading(false);
