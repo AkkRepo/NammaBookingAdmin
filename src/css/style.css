@@ -366,6 +366,19 @@ html {
   padding: 10px;
 }
 
+.add-image-trash-style {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  padding: 10px;
+}
+
+.add-edit-image-size {
+  width: 18rem;
+  height: 17rem;
+  padding: 8px;
+}
+
 .cp-table-styling {
   padding-right: 8rem;
   margin-left: -1rem;

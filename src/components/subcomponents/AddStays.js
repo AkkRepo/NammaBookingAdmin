@@ -13,7 +13,7 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faX } from "@fortawesome/free-solid-svg-icons";
 //page
 import AppNav from "../header/AppNav";
 import { CategoriesService } from "../../services/Categories";
@@ -1982,7 +1982,7 @@ function AddStays() {
                   </FloatingLabel>
                   <FloatingLabel
                     controlId="details"
-                    label="Value*"
+                    label="Details*"
                     className="mb-3"
                     style={{ marginRight: "1rem" }}
                   >
@@ -2238,11 +2238,16 @@ function AddStays() {
                     <Image
                       src={`data:image/jpeg;base64,${base64Image}`}
                       alt={`Uploaded ${index}`}
-                      style={{ width: "200px", height: "auto" }}
+                      className="add-edit-image-size"
                       thumbnail
                       loading="lazy"
                     />
-                    <Button
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      className="image-trash-button add-image-trash-style"
+                      onClick={() => handleRemoveImage(index)}
+                    />
+                    {/* <Button
                       variant="danger"
                       size="sm"
                       style={{
@@ -2253,7 +2258,7 @@ function AddStays() {
                       onClick={() => handleRemoveImage(index)}
                     >
                       Cancel
-                    </Button>
+                    </Button> */}
                   </div>
                 ))}
               </div>
