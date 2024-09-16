@@ -28,9 +28,9 @@ function EditHousePolicy(props) {
     smoking: "",
     pets: "",
     coupleFriendly: "",
-    childrenBelow5: "",
-    children5To10: "",
-    childrenAbove10: "",
+    // childrenBelow5: "",
+    // children5To10: "",
+    // childrenAbove10: "",
     includedMeals: "",
     extraStarters: "",
   });
@@ -40,9 +40,9 @@ function EditHousePolicy(props) {
     smoking: "",
     pets: "",
     coupleFriendly: "",
-    childrenBelow5: "",
-    children5To10: "",
-    childrenAbove10: "",
+    // childrenBelow5: "",
+    // children5To10: "",
+    // childrenAbove10: "",
     includedMeals: "",
     extraStarters: "",
   });
@@ -53,9 +53,9 @@ function EditHousePolicy(props) {
       smoking: "",
       pets: "",
       coupleFriendly: "",
-      childrenBelow5: "",
-      children5To10: "",
-      childrenAbove10: "",
+      // childrenBelow5: "",
+      // children5To10: "",
+      // childrenAbove10: "",
       includedMeals: "",
       extraStarters: "",
     };
@@ -80,18 +80,18 @@ function EditHousePolicy(props) {
       tempError.coupleFriendly = "Required Field";
       valid = false;
     }
-    if (!stays.childrenBelow5) {
-      tempError.childrenBelow5 = "Required Field";
-      valid = false;
-    }
-    if (!stays.children5To10) {
-      tempError.children5To10 = "Required Field";
-      valid = false;
-    }
-    if (!stays.childrenAbove10) {
-      tempError.childrenAbove10 = "Required Field";
-      valid = false;
-    }
+    // if (!stays.childrenBelow5) {
+    //   tempError.childrenBelow5 = "Required Field";
+    //   valid = false;
+    // }
+    // if (!stays.children5To10) {
+    //   tempError.children5To10 = "Required Field";
+    //   valid = false;
+    // }
+    // if (!stays.childrenAbove10) {
+    //   tempError.childrenAbove10 = "Required Field";
+    //   valid = false;
+    // }
     if (!stays.includedMeals) {
       tempError.includedMeals = "Required Field";
       valid = false;
@@ -115,9 +115,9 @@ function EditHousePolicy(props) {
           smoking: stays.smoking,
           pets: stays.pets,
           coupleFriendly: stays.coupleFriendly,
-          childrenBelow5: stays.childrenBelow5,
-          children5To10: stays.children5To10,
-          childrenAbove10: stays.childrenAbove10,
+          // childrenBelow5: stays.childrenBelow5,
+          // children5To10: stays.children5To10,
+          // childrenAbove10: stays.childrenAbove10,
           includedMeals: stays.includedMeals,
           extraStarters: stays.extraStarters,
         });
@@ -237,7 +237,7 @@ function EditHousePolicy(props) {
           </FloatingLabel>
         </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <h5>Children's Payment</h5>
         <Col>
           <FloatingLabel
@@ -305,7 +305,7 @@ function EditHousePolicy(props) {
             <p className="required-field-meassage">{error.childrenAbove10}</p>
           </FloatingLabel>
         </Col>
-      </Row>
+      </Row> */}
       <Row>
         <h5>Food Policy</h5>
         <Col>

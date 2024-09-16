@@ -46,7 +46,7 @@ function AddStays() {
 
   const handleImageUpload = (event) => {
     const files = event.target.files;
-    const selectedFiles = files.size < 300 * 1024; // Filter files less than 300 KB
+    const selectedFiles = Array.from(files).filter((f) => f.size < 300 * 1024); // Filter files less than 300 KB
     if (selectedFiles.length !== files.length) {
       alert("Some files are larger than 300 KB and were not selected.");
       event.target.value = null;
@@ -58,9 +58,6 @@ function AddStays() {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
-          // const base64String = reader.result;
-          // const slicedBase64String = base64String.slice(27); // Example length
-          // resolve(slicedBase64String);
           const base64String = reader.result.split(",")[1];
           resolve(base64String);
         };
@@ -219,6 +216,47 @@ function AddStays() {
   };
   //near by places myltiple input end
 
+  // Children's Paymentmultiple input start
+  const [childrensPaymentArray, setChildrensPaymentArray] = useState([]);
+  const [childrensPaymentInputData, setChildrensPaymentInputData] = useState({
+    label: "",
+    details: "",
+  });
+
+  // Function to handle input change
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setChildrensPaymentInputData({
+      ...childrensPaymentInputData,
+      [name]: name === "amenities" ? Capitalize(value) : value,
+    });
+  };
+
+  // Function to add input data
+  const addChildrensPaymentInputData = () => {
+    if (
+      childrensPaymentInputData.label.trim() !== "" &&
+      childrensPaymentInputData.details.trim() !== ""
+    ) {
+      console.log(childrensPaymentArray);
+      setChildrensPaymentArray([
+        ...childrensPaymentArray,
+        childrensPaymentInputData,
+      ]);
+      setChildrensPaymentInputData({ label: "", details: "" });
+    } else {
+      // Notify user that the input fields should not be empty
+      alert("Label and Value should not be empty");
+    }
+  };
+
+  // Function to delete data
+  const deleteChildrensPaymentData = (index) => {
+    const updatedArray = childrensPaymentArray.filter((item, i) => i !== index);
+    setChildrensPaymentArray(updatedArray);
+  };
+  // Children's Payment multiple input end
+
   //Accomodation Type multiple input start
   const [newRoom, setRooms] = useState({
     noOfBeds: "",
@@ -226,7 +264,7 @@ function AddStays() {
     //bedType: "",
   });
   const addNewBedDetails = () => {
-    if (newRoom.noOfBeds && newRoom.bedTypeId) {
+    if (newRoom.noOfBeds && newRoom.noOfBeds > 0 && newRoom.bedTypeId) {
       let list = pricingInputData.bedDetails;
       list.push(newRoom);
       setPricingInputData({
@@ -237,7 +275,7 @@ function AddStays() {
       console.log(pricingInputData);
     } else {
       console.log(newRoom);
-      alert("No bed data provided. Please enter the bed details.");
+      alert("No bed data provided. Please enter valid bed details.");
     }
   };
   const deleteNewRoom = (ind) => {
@@ -265,13 +303,12 @@ function AddStays() {
     // Check if any of the fields are empty
     if (
       !roomName ||
-      //!bedDetails ||
       !noOfRooms ||
-      !noOfGuests
-      //!(noOfRooms.length > 0) ||
-      //!roomType ||
+      !noOfRooms.match(/^\d+$/) ||
+      !noOfGuests ||
+      !noOfGuests.match(/^\d+$/)
     ) {
-      alert("All fields are required");
+      alert("All fields are required. Please enter valid details");
       return;
     }
 
@@ -385,8 +422,14 @@ function AddStays() {
   let { packageName, price, packageDetails, selectacc } = newPricingInputData;
   function addPricingData() {
     // Check if any of the fields are empty
-    if (!packageName || !price || !selectacc || !packageDetails) {
-      alert("All fields are required");
+    if (
+      !packageName ||
+      !price ||
+      !price.match(/^\d+$/) ||
+      !selectacc ||
+      !packageDetails
+    ) {
+      alert("All fields are required. Please enter valid details");
       return;
     }
 
@@ -440,6 +483,7 @@ function AddStays() {
     accommodationTypesDetails: [],
     stayPricingDetails: [],
     stayAmenitiesDetails: [],
+    childrenPaymentsDetails: [],
     stayActivitiesDetails: [],
     otherFacilityDetails: [],
     nearByPlacesDetails: [],
@@ -449,9 +493,6 @@ function AddStays() {
       smoking: "",
       pets: "",
       coupleFriendly: "",
-      childrenBelow5: "",
-      children5To10: "",
-      childrenAbove10: "",
       includedMeals: "",
       extraStarters: "",
     },
@@ -474,6 +515,7 @@ function AddStays() {
     accommodationTypesDetails: "",
     stayPricingDetails: "",
     stayAmenitiesDetails: "",
+    childrenPaymentsDetails: "",
     contactPersonName: "",
     contactPersonNumber: "",
     contactPersonEmail: "",
@@ -484,9 +526,6 @@ function AddStays() {
     smoking: "",
     pets: "",
     coupleFriendly: "",
-    childrenBelow5: "",
-    children5To10: "",
-    childrenAbove10: "",
     includedMeals: "",
     extraStarters: "",
     images: "",
@@ -508,6 +547,7 @@ function AddStays() {
       accommodationTypesDetails: "",
       stayPricingDetails: "",
       stayAmenitiesDetails: "",
+      childrenPaymentsDetails: "",
       contactPersonName: "",
       contactPersonNumber: "",
       contactPersonEmail: "",
@@ -518,9 +558,6 @@ function AddStays() {
       smoking: "",
       pets: "",
       coupleFriendly: "",
-      childrenBelow5: "",
-      children5To10: "",
-      childrenAbove10: "",
       includedMeals: "",
       extraStarters: "",
       images: "",
@@ -538,7 +575,7 @@ function AddStays() {
       tempError.rating = "Rating is required";
       valid = false;
     }
-    if (!stays.priceStartsFrom) {
+    if (!stays.priceStartsFrom || !stays.priceStartsFrom.match(/^\d+$/)) {
       tempError.priceStartsFrom = "Price Starts From is required";
       valid = false;
     }
@@ -595,6 +632,10 @@ function AddStays() {
       tempError.stayAmenitiesDetails = "Amenity is required";
       valid = false;
     }
+    if (childrensPaymentArray.length === 0) {
+      tempError.childrenPaymentsDetails = "Childern's Payment is required";
+      valid = false;
+    }
     if (pricingInputArr.length === 0) {
       tempError.accommodationTypesDetails = "Accomodation Type is required";
       valid = false;
@@ -623,18 +664,6 @@ function AddStays() {
       tempError.coupleFriendly = "Required Field";
       valid = false;
     }
-    if (!stays.stayHousePolicyDetails.childrenBelow5) {
-      tempError.childrenBelow5 = "Required Field";
-      valid = false;
-    }
-    if (!stays.stayHousePolicyDetails.children5To10) {
-      tempError.children5To10 = "Required Field";
-      valid = false;
-    }
-    if (!stays.stayHousePolicyDetails.childrenAbove10) {
-      tempError.childrenAbove10 = "Required Field";
-      valid = false;
-    }
     if (!stays.stayHousePolicyDetails.includedMeals) {
       tempError.includedMeals = "Required Field";
       valid = false;
@@ -658,6 +687,7 @@ function AddStays() {
   };
   const addStays = async () => {
     setLoading(true);
+    console.log(stays);
     try {
       const res = await StaysService.addStays({
         ...stays,
@@ -700,6 +730,10 @@ function AddStays() {
         stayAmenitiesDetails: amenitiesArray.map((x) => ({
           amenity: x.amenities,
         })),
+        childrenPaymentsDetails: childrensPaymentArray.map((x) => ({
+          label: x.label,
+          details: x.details,
+        })),
         stayActivitiesDetails: activitiesArray.map((x) => ({
           activity: x.activities,
         })),
@@ -719,9 +753,6 @@ function AddStays() {
         smoking: stays.stayHousePolicyDetails.smoking,
         pets: stays.stayHousePolicyDetails.pets,
         coupleFriendly: stays.stayHousePolicyDetails.coupleFriendly,
-        childrenBelow5: stays.stayHousePolicyDetails.childrenBelow5,
-        children5To10: stays.stayHousePolicyDetails.children5To10,
-        childrenAbove10: stays.stayHousePolicyDetails.childrenAbove10,
         includedMeals: stays.stayHousePolicyDetails.includedMeals,
         extraStarters: stays.stayHousePolicyDetails.extraStarters,
 
@@ -1112,7 +1143,7 @@ function AddStays() {
                   className="mb-3"
                 >
                   <Form.Control
-                    type="number"
+                    type="text"
                     placeholder="No. of Rooms"
                     style={{ textTransform: "capitalize" }}
                     value={pricingInputData.noOfRooms}
@@ -1132,7 +1163,7 @@ function AddStays() {
                   className="mb-3"
                 >
                   <Form.Control
-                    type="number"
+                    type="text"
                     placeholder="No. of Guests"
                     style={{ textTransform: "capitalize" }}
                     value={pricingInputData.noOfGuests}
@@ -1178,7 +1209,8 @@ function AddStays() {
                   >
                     <Form.Control
                       type="number"
-                      placeholder="No. of Rooms"
+                      min={"0"}
+                      placeholder="noOfBeds"
                       style={{ textTransform: "capitalize" }}
                       value={newRoom.noOfBeds}
                       onChange={(e) => {
@@ -1356,7 +1388,7 @@ function AddStays() {
                     className="mb-3"
                   >
                     <Form.Control
-                      type="number"
+                      type="text"
                       placeholder="Price*"
                       style={{ textTransform: "capitalize" }}
                       value={newPricingInputData.price}
@@ -1788,7 +1820,7 @@ function AddStays() {
                 </FloatingLabel>
               </Col>
             </Row>
-            <Row>
+            {/* <Row>
               <h5>Children's Payment</h5>
               <Col>
                 <FloatingLabel
@@ -1871,7 +1903,7 @@ function AddStays() {
                   </p>
                 </FloatingLabel>
               </Col>
-            </Row>
+            </Row> */}
             <Row>
               <h5>Food Policy</h5>
               <Col>
@@ -1927,6 +1959,78 @@ function AddStays() {
                     {addError.extraStarters}
                   </p>
                 </FloatingLabel>
+              </Col>
+            </Row>
+            <Row>
+              <h5>Children's Payment</h5>
+              <Col>
+                <div style={{ display: "flex", marginBottom: "1rem" }}>
+                  <FloatingLabel
+                    controlId="label"
+                    label="Label*"
+                    className="mb-3"
+                    style={{ marginRight: "1rem" }}
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Please enter Label"
+                      className="text-capitalize"
+                      name="label"
+                      value={childrensPaymentInputData.label}
+                      onChange={handleInputChange}
+                    />
+                  </FloatingLabel>
+                  <FloatingLabel
+                    controlId="details"
+                    label="Value*"
+                    className="mb-3"
+                    style={{ marginRight: "1rem" }}
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Please enter Value"
+                      className="text-capitalize"
+                      name="details"
+                      value={childrensPaymentInputData.details}
+                      onChange={handleInputChange}
+                    />
+                  </FloatingLabel>
+                  <Button
+                    onClick={addChildrensPaymentInputData}
+                    style={{ height: "40px" }}
+                    className="custom-btn-reverse"
+                  >
+                    Add
+                  </Button>
+                </div>
+                <Container className="cp-table-styling">
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Sl no.</th>
+                        <th>Label</th>
+                        <th>Details</th>
+                        <th>Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {childrensPaymentArray.map((item, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{item.label}</td>
+                          <td>{item.details}</td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faX}
+                              onClick={() => deleteChildrensPaymentData(index)}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </Container>
               </Col>
             </Row>
           </Container>

@@ -26,6 +26,14 @@ export class StaysService {
       data: data,
     });
   };
+  static addChildrensPayment = (data) => {
+    console.log(data);
+    return NetworkManager.getInstance().appRequest({
+      method: "post",
+      url: ApiEndPoints.addChildrensPayment,
+      data: data,
+    });
+  };
   static addAmenity = (data) => {
     console.log(data);
     return NetworkManager.getInstance().appRequest({
@@ -139,6 +147,13 @@ export class StaysService {
     });
   };
 
+  static deleteBedDetails = (id) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "delete",
+      url: ApiEndPoints.deletebedDetails + id,
+      data: { ...id },
+    });
+  };
   static updateBasicDetails = (data) => {
     return NetworkManager.getInstance().appRequest({
       method: "put",
@@ -179,6 +194,56 @@ export class StaysService {
       method: "put",
       url: ApiEndPoints.editNearByPlaces,
       data: data,
+    });
+  };
+  static updateAccomodationType = (data) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "put",
+      url: ApiEndPoints.editAccomodationType,
+      data: data,
+    });
+  };
+  static updateBedDetails = (data) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "put",
+      url: ApiEndPoints.editbedDetails,
+      data: data,
+    });
+  };
+  static updatePricing = (data) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "put",
+      url: ApiEndPoints.updatePricing,
+      data: data,
+    });
+  };
+  static updateChildrensPayment = (data) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "put",
+      url: ApiEndPoints.editChildrensPayment,
+      data: data,
+    });
+  };
+  static deleteChildrensPayment = (id) => {
+    console.log(id);
+    return NetworkManager.getInstance().appRequest({
+      method: "delete",
+      url: ApiEndPoints.deleteChildrensPayment + id,
+      data: { ...id },
+    });
+  };
+  static addBedDetails = (data) => {
+    console.log(data);
+    return NetworkManager.getInstance().appRequest({
+      method: "post",
+      url: ApiEndPoints.addBedDetails,
+      data: data,
+    });
+  };
+  static setDefaultImage = (stay, image) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "put",
+      url: `${ApiEndPoints.setDefaultImage}/${stay}/${image}`,
     });
   };
 }

@@ -277,9 +277,9 @@ html {
 }
 
 .image-trash-button {
-  background-color: #e72525;
+  background-color: #e77225;
   color: #fff;
-  border-color: #e72525;
+  border-color: #e77225;
   transition: background-color 0.3s ease;
 }
 
@@ -354,6 +354,23 @@ html {
   font-size: 13px;
 }
 
+.set-as-default-style {
+  position: absolute;
+  right: 77px;
+}
+
+.edit-image-trash-style {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 10px;
+}
+
+.cp-table-styling {
+  padding-right: 8rem;
+  margin-left: -1rem;
+  margin-top: -1rem;
+}
 @media only screen and (max-width: 768px) {
   .login-card-align {
     z-index: 10;

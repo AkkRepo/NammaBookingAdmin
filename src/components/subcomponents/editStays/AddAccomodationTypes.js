@@ -33,7 +33,7 @@ function AddAccomodationTypes(props) {
     //bedType: "",
   });
   const addNewBedDetails = () => {
-    if (newRoom.noOfBeds && newRoom.bedTypeId) {
+    if (newRoom.noOfBeds && newRoom.noOfBeds > 0 && newRoom.bedTypeId) {
       let list = pricingInputData.bedDetails;
       list.push(newRoom);
       setPricingInputData({
@@ -44,7 +44,7 @@ function AddAccomodationTypes(props) {
       console.log(pricingInputData);
     } else {
       console.log(newRoom);
-      alert("No bed data provided. Please enter the bed details.");
+      alert("No bed data provided. Please enter valid bed details.");
     }
   };
   const deleteNewRoom = (ind) => {
@@ -175,6 +175,7 @@ function AddAccomodationTypes(props) {
                 >
                   <Form.Control
                     type="number"
+                    min={"0"}
                     placeholder="No. of Rooms"
                     style={{ textTransform: "capitalize" }}
                     value={pricingInputData.noOfRooms}
@@ -195,6 +196,7 @@ function AddAccomodationTypes(props) {
                 >
                   <Form.Control
                     type="number"
+                    min={"0"}
                     placeholder="No. of Guests"
                     style={{ textTransform: "capitalize" }}
                     value={pricingInputData.noOfGuests}
@@ -240,7 +242,8 @@ function AddAccomodationTypes(props) {
                 >
                   <Form.Control
                     type="number"
-                    placeholder="No. of Rooms"
+                    min={"0"}
+                    placeholder="noOfBeds"
                     style={{ textTransform: "capitalize" }}
                     value={newRoom.noOfBeds}
                     onChange={(e) => {

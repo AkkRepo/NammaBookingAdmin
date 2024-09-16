@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Row,
   Col,
@@ -6,150 +6,126 @@ import {
   Form,
   FloatingLabel,
   Button,
+  Table,
 } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import AppNav from "../header/AppNav";
-import { StaysService } from "../../services/Stays";
-import { LoadingModal } from "../pages/Others/Index";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
+import { Capitalize } from "../../core/utils";
 
 function Multiple() {
-  const [loading, setLoading] = useState(false);
-  const [rating, setRating] = useState("");
-  const [error, setError] = useState("");
-
-  const navigate = useNavigate();
-  const [stays, setStays] = useState({
-    rating: undefined,
+  // Children's Paymentmultiple input start
+  const [childrensPaymentArray, setChildrensPaymentArray] = useState([]);
+  const [childrensPaymentInputData, setChildrensPaymentInputData] = useState({
+    cpLabel: "",
+    cpValue: "",
   });
 
-  const [addError, setAddError] = useState({
-    rating: "",
-  });
+  // Function to handle input change
+  const handleInputChange = (e) => {
+    setChildrensPaymentInputData({
+      ...childrensPaymentInputData,
+      [e.target.name]: e.target.value, // dynamically update fields based on input name
+    });
+  };
 
-  const handleRatingChange = (e) => {
-    const value = e.target.value;
-    const regex = /^\d*\.?\d{0,1}$/; // Allows numbers with up to one decimal place
-
-    if (regex.test(value) || value === "") {
-      setRating(value);
-      setStays({ ...stays, rating: value });
-      setError("");
+  // Function to add input data
+  const addChildrensPaymentInputData = () => {
+    if (
+      childrensPaymentInputData.cpLabel.trim() !== "" &&
+      childrensPaymentInputData.cpValue.trim() !== ""
+    ) {
+      console.log(childrensPaymentArray);
+      setChildrensPaymentArray([
+        ...childrensPaymentArray,
+        childrensPaymentInputData,
+      ]);
+      setChildrensPaymentInputData({ cpLabel: "", cpValue: "" });
     } else {
-      setError("Please enter a valid rating with one decimal place.");
+      // Notify user that the input fields should not be empty
+      alert("Label and Value should not be empty");
     }
   };
 
-  const validation = () => {
-    let tempError = {
-      rating: "",
-    };
-    let valid = true;
-    if (!stays.rating || stays.rating <= 0) {
-      tempError.rating = "Rating is required";
-      valid = false;
-    }
-
-    setAddError(tempError);
-    return valid;
+  // Function to delete data
+  const deleteChildrensPaymentData = (index) => {
+    const updatedArray = childrensPaymentArray.filter((item, i) => i !== index);
+    setChildrensPaymentArray(updatedArray);
   };
-
-  const submitStays = () => {
-    if (validation()) {
-      addStays();
-    }
-  };
-
-  const addStays = async () => {
-    setLoading(true);
-    try {
-      const res = await StaysService.addStays({
-        ...stays,
-        rating: Number(stays.rating),
-      });
-      if (res.status === 200) {
-        alert(res.message);
-        navigate("/stays");
-      } else {
-        alert("Error While updating");
-      }
-      setLoading(false);
-    } catch (error) {
-      alert(error.message);
-      console.log(error);
-      setLoading(false);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    submitStays();
-  };
+  // Children's Payment multiple input end
 
   return (
-    <div>
-      <header id="header">
-        <AppNav />
-      </header>
-
-      <h1 className="brownbear stays-h1 heading-color">Add New Stay</h1>
-
-      <Form onSubmit={handleSubmit}>
-        <p
-          style={{
-            fontSize: "13px",
-            paddingLeft: "63rem",
-          }}
-        >
-          (*) marked fields are compulsory
-        </p>
-        <Container>
-          <Container className="add-stay-group-border">
-            <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
-              Stay's Basic Details
-            </h4>
-            <Row>
-              <Col>
-                <FloatingLabel
-                  controlId="rating"
-                  label="Rating*"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder="Rating"
-                    value={rating}
-                    onChange={handleRatingChange}
-                    isInvalid={!!error || !!addError.rating}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {error ? error : addError.rating}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-              </Col>
-            </Row>
-          </Container>
-          <br />
-          <Row>
-            <Col>
-              <br />
-              <Button
-                type="submit"
-                className="custom-btn"
-                style={{ marginRight: "1rem" }}
-              >
-                Submit
-              </Button>
-              <Button className="custom-btn" type="reset">
-                Clear
-              </Button>
-            </Col>
-          </Row>
+    <Row>
+      <h5>Children's Payment</h5>
+      <Col>
+        <div style={{ display: "flex", marginBottom: "1rem" }}>
+          <FloatingLabel
+            controlId="cpLabel"
+            label="Label*"
+            className="mb-3"
+            style={{ marginRight: "1rem" }}
+          >
+            <Form.Control
+              type="text"
+              placeholder="Please enter Label"
+              className="text-capitalize"
+              name="cpLabel"
+              value={childrensPaymentInputData.cpLabel}
+              onChange={handleInputChange}
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="cpValue"
+            label="Value*"
+            className="mb-3"
+            style={{ marginRight: "1rem" }}
+          >
+            <Form.Control
+              type="text"
+              placeholder="Please enter Value"
+              className="text-capitalize"
+              name="cpValue"
+              value={childrensPaymentInputData.cpValue}
+              onChange={handleInputChange}
+            />
+          </FloatingLabel>
+          <Button
+            onClick={addChildrensPaymentInputData}
+            style={{ height: "40px" }}
+            className="custom-btn-reverse"
+          >
+            Add
+          </Button>
+        </div>
+        <Container style={{ paddingRight: "8rem", marginLeft: "-1rem" }}>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Sl no.</th>
+                <th>Label</th>
+                <th>Value</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              {childrensPaymentArray.map((item, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{item.cpLabel}</td>
+                  <td>{item.cpValue}</td>
+                  <td>
+                    <FontAwesomeIcon
+                      icon={faX}
+                      onClick={() => deleteChildrensPaymentData(index)}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </Container>
-        <br />
-      </Form>
-      <LoadingModal show={loading} />
-    </div>
+      </Col>
+    </Row>
   );
 }
 

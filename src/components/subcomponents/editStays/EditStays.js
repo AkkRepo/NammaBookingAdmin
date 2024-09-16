@@ -12,9 +12,15 @@ import {
   Table,
   Image,
   Dropdown,
+  Modal,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX, faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import {
+  faX,
+  faTrash,
+  faPen,
+  faCircleInfo,
+} from "@fortawesome/free-solid-svg-icons";
 //page
 import AppNav from "../../header/AppNav";
 import { Capitalize } from "../../../core/utils";
@@ -35,8 +41,30 @@ import AddNearByPlaces from "./AddNearByPlaces";
 import EditNearByePlaces from "./EditNearByPlaces";
 import AddImage from "./AddImage";
 import AddPricing from "./AddPricing";
+import EditBedDetails from "./EditBedDetails";
+import EditPricing from "./EditPricing";
+import AddChildrensPayment from "./AddChildrensPayment";
+import EditChildrensPayment from "./EditChildrensPayment";
+import AddBedDetails from "./AddBedDetails";
 
 function EditStays() {
+  //View BedDtails
+
+  const [showM, set_Show_M] = useState(false);
+  const [modalData, setModalData] = useState();
+  const modalShow = () => {
+    set_Show_M(true);
+  };
+  const closeModal = () => {
+    setModalData();
+    set_Show_M(false);
+  };
+  const openModalHandle = (bedDetails) => {
+    setModalData(bedDetails);
+    //console.log(modalData);
+    modalShow();
+  };
+
   //View stay details start TEMP
   const { id } = useParams();
   // const [stays, setStay] = useState();
@@ -46,7 +74,6 @@ function EditStays() {
     setLoading(true);
     try {
       const res = await StaysService.getStaysById(id);
-      console.log(res.data);
       if (res.status === 200) {
         //console.log(res.data);
         setStays(res.data);
@@ -66,6 +93,7 @@ function EditStays() {
   useEffect(() => {
     getStay();
   }, []);
+
   //View stay details end TEMP
 
   const [stays, setStays] = useState({
@@ -85,13 +113,18 @@ function EditStays() {
     facebookLink: "",
     address: "",
     stayCategoriesDetails: [],
-    accommodationTypesDetails: [],
+    accommodationTypesDetails: [
+      {
+        id: undefined,
+      },
+    ],
     stayPricingDetails: [],
     stayAmenitiesDetails: [
       {
         amenity: "",
       },
     ],
+    childrenPaymentsDetails: [],
     stayActivitiesDetails: [],
     otherFacilityDetails: [],
     nearByPlacesDetails: [],
@@ -101,9 +134,9 @@ function EditStays() {
       smoking: "",
       pets: "",
       coupleFriendly: "",
-      childrenBelow5: "",
-      children5To10: "",
-      childrenAbove10: "",
+      // childrenBelow5: "",
+      // children5To10: "",
+      // childrenAbove10: "",
       includedMeals: "",
       extraStarters: "",
     },
@@ -236,6 +269,27 @@ function EditStays() {
     }
   };
 
+  //delete Pricing
+  const deleteChildrensPayment = async (id) => {
+    setLoading(true);
+    try {
+      const val = window.confirm("Do you want to delete?");
+      if (val) {
+        const res = await StaysService.deleteChildrensPayment(id);
+        if (res.status === 200) {
+          alert(res.message);
+          getStay();
+        } else {
+          alert("Error while deleting");
+        }
+      }
+      setLoading(false);
+    } catch (error) {
+      alert(error.message);
+      setLoading(false);
+    }
+  };
+
   //delete Image
   const deleteImage = async (id) => {
     setLoading(true);
@@ -257,6 +311,51 @@ function EditStays() {
     }
   };
 
+  //delete BedDetails
+  const deleteBedDetails = async (id) => {
+    setLoading(true);
+    try {
+      const val = window.confirm("Do you want to delete?");
+      if (val) {
+        const res = await StaysService.deleteBedDetails(id);
+        if (res.status === 200) {
+          alert(res.message);
+          getStay();
+        } else {
+          alert("Error while deleting");
+        }
+      }
+      setLoading(false);
+    } catch (error) {
+      alert(error.message);
+      setLoading(false);
+    }
+  };
+
+  const setDefaultImage = async (image) => {
+    setLoading(true);
+    try {
+      const res = await StaysService.setDefaultImage(id, image);
+      if (res.status === 200) {
+        alert(res.message);
+        getStay();
+      } else {
+        alert("Error while setting default image");
+      }
+      setLoading(false);
+    } catch (error) {
+      alert(error.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (modalData) {
+      setModalData(
+        stays.accommodationTypesDetails.find((x) => x.id === modalData.id)
+      );
+    }
+  }, [stays]);
   return (
     <div>
       <header id="header">
@@ -285,6 +384,61 @@ function EditStays() {
 
           <Container className="add-stay-group-border">
             <EditHousePolicy stays={stays} onUpdateStay={() => getStay()} />
+            <br />
+            <Row>
+              <Col>
+                <div style={{ display: "flex" }}>
+                  <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
+                    Children's Payment
+                  </h4>
+                  <div style={{ marginTop: "-2px", paddingLeft: "17px" }}>
+                    <AddChildrensPayment
+                      id={stays.id}
+                      onUpdate={() => getStay()}
+                    />
+                  </div>
+                </div>
+                <Container
+                  style={{ paddingRight: "8rem", marginLeft: "-1rem" }}
+                >
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Sl no</th>
+                        <th>Label</th>
+                        <th>Details</th>
+                        <th>Edit</th>
+                        <th>Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {stays.childrenPaymentsDetails.map((item, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{item.label}</td>
+                          <td>{item.details}</td>
+                          <td>
+                            <EditChildrensPayment
+                              childrensPayment={item}
+                              onUpdateStay={() => getStay()}
+                            />
+                          </td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              className="stay-trash-button"
+                              onClick={(e) => {
+                                deleteChildrensPayment(item.id);
+                              }}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </Container>
+              </Col>
+            </Row>
           </Container>
           <br />
           <Container className="add-stay-group-border">
@@ -317,8 +471,8 @@ function EditStays() {
                       <th>Room Type</th>
                       <th>No. of Rooms</th>
                       <th>No. Of Guests</th>
-                      <th>Bed Type</th>
-                      <th>No. Of Beds</th>
+                      <th>Bed Details</th>
+                      <th>Edit</th>
                       <th>Remove</th>
                     </tr>
                   </thead>
@@ -331,13 +485,29 @@ function EditStays() {
                           <td>{item.roomType}</td>
                           <td>{item.noOfRooms}</td>
                           <td>{item.noOfGuests}</td>
+
                           <td>
+                            <FontAwesomeIcon
+                              icon={faCircleInfo}
+                              size="lg"
+                              className="custom-icon"
+                              onClick={() => openModalHandle(item)}
+                              style={{ paddingLeft: "4rem" }}
+                            />
+                          </td>
+                          {/* <td>
                             {item.bedDetails.map((x) => x.noOfBeds).join(",")}
                           </td>
                           <td>
                             {item.bedDetails
                               .map((x) => x.bedTypeDetails.bedType)
                               .join(",")}
+                          </td> */}
+                          <td>
+                            <EditAccomodationTypes
+                              accomodation={item}
+                              onUpdateStay={() => getStay()}
+                            />
                           </td>
                           <td>
                             <FontAwesomeIcon
@@ -357,6 +527,56 @@ function EditStays() {
             </Row>
           </Container>
           <br />
+          <Modal show={showM} onHide={closeModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Bed Details</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div>
+                <AddBedDetails id={modalData?.id} onUpdate={() => getStay()} />
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Sl no.</th>
+                      <th>No of Beds</th>
+                      <th>Bed Type</th>
+                      <th>Edit</th>
+                      <th>Delete</th>
+                    </tr>
+                  </thead>
+                  {modalData?.bedDetails?.map((item, index) => {
+                    return (
+                      <tbody>
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td style={{ paddingLeft: "2rem" }}>
+                            {item.noOfBeds}
+                          </td>
+                          <td>{item.bedTypeDetails.bedType}</td>
+                          <td>
+                            <EditBedDetails
+                              bedDetails={item}
+                              onUpdateStay={() => getStay()}
+                            />
+                          </td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              className="stay-trash-button"
+                              onClick={(e) => {
+                                deleteBedDetails(item.id);
+                              }}
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    );
+                  })}
+                </Table>
+              </div>
+            </Modal.Body>
+          </Modal>
+
           <Container className="add-stay-group-border">
             <Row>
               <Col style={{ display: "flex" }}>
@@ -377,6 +597,7 @@ function EditStays() {
                       <th>Package Name</th>
                       <th>Package Details</th>
                       <th>Price</th>
+                      <th>Edit</th>
                       <th>Remove</th>
                     </tr>
                   </thead>
@@ -388,6 +609,12 @@ function EditStays() {
                           <td>{item.packageName}</td>
                           <td>{item.packageDetails}</td>
                           <td>{item.price}</td>
+                          <td>
+                            <EditPricing
+                              price={item}
+                              onUpdateStay={() => getStay()}
+                            />
+                          </td>
                           <td>
                             <FontAwesomeIcon
                               icon={faTrash}
@@ -625,40 +852,43 @@ function EditStays() {
                       margin: "10px",
                     }}
                   >
-                    <Image
-                      key={i.id}
-                      rounded
-                      src={i.imageUrl}
-                      alt="Selected"
-                      style={{
-                        width: "15rem",
-                        height: "17rem",
-                        padding: "20px",
-                      }}
-                      loading={lazy}
-                    />
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      style={{
-                        position: "absolute",
-                        top: "20px",
-                        right: "20px",
-                        padding: "10px",
-                      }}
-                      className="image-trash-button"
-                      onClick={(e) => {
-                        deleteImage(i.id);
-                      }}
-                    />
+                    <div style={{ display: "flex" }}>
+                      <Image
+                        key={i.id}
+                        rounded
+                        src={i.imageUrl}
+                        alt="Selected"
+                        style={{
+                          width: "18rem",
+                          height: "17rem",
+                          padding: "8px",
+                        }}
+                        loading={lazy}
+                      />
+                    </div>
+                    {!i.default && (
+                      <FontAwesomeIcon
+                        icon={faTrash}
+                        className="image-trash-button edit-image-trash-style"
+                        onClick={(e) => {
+                          deleteImage(i.id);
+                        }}
+                      />
+                    )}
+                    {!i.default && (
+                      <Button
+                        className="set-as-default-style custom-btn"
+                        onClick={() => setDefaultImage(i.id)}
+                        size="sm"
+                      >
+                        Set as Default
+                      </Button>
+                    )}
                   </div>
                 ))}
               </div>
-              {/* <div>
-                {images.map((base64Image, index) => (
-                  
-                ))}
-              </div> */}
             </Row>
+            <br />
           </Container>
         </Container>
         <br />

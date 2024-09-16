@@ -46,6 +46,7 @@ function EditBasicDetails(props) {
   useEffect(() => {
     getLocations();
   }, []);
+  //location end
   useEffect(() => {
     setStays({
       ...props.stays,
@@ -59,7 +60,6 @@ function EditBasicDetails(props) {
     );
     console.log(selectedOptions);
   }, [props.stays]);
-  //location end
 
   //Categories start
   const [categoriesDropdown, setCategoriesDropdown] = useState([]);
@@ -234,7 +234,8 @@ function EditBasicDetails(props) {
       valid = false;
     }
     if (!stays.priceStartsFrom) {
-      tempError.priceStartsFrom = "Required field";
+      tempError.priceStartsFrom = "Price Starts From is required";
+      //alert("Price Starts From is required");
       valid = false;
     }
     if (!stays.price) {

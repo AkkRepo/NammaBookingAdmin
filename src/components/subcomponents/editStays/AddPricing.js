@@ -51,7 +51,10 @@ function AddPricing(props) {
       tempError.packageName = "Required field";
       valid = false;
     }
-    if (!newPricingInputData.price) {
+    if (
+      !newPricingInputData.price ||
+      !newPricingInputData.price.match(/^\d+$/)
+    ) {
       tempError.price = "Required field";
       valid = false;
     }
