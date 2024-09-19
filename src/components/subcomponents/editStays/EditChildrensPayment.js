@@ -82,9 +82,9 @@ function EditChildrensPayment(props) {
   }, [props.childrensPayment]);
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
-          <h5>Edit Children'S Payment data</h5>
+          <h5>Edit Children's Payment </h5>
         </Modal.Header>
         <Modal.Body>
           <FloatingLabel controlId="Label" label="Label*" className="mb-3">

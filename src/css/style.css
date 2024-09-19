@@ -382,7 +382,7 @@ html {
 .cp-table-styling {
   padding-right: 8rem;
   margin-left: -1rem;
-  margin-top: -1rem;
+  margin-top: 1rem;
 }
 @media only screen and (max-width: 768px) {
   .login-card-align {

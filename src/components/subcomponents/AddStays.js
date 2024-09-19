@@ -1964,7 +1964,7 @@ function AddStays() {
             <Row>
               <h5>Children's Payment</h5>
               <Col>
-                <div style={{ display: "flex", marginBottom: "1rem" }}>
+                <div style={{ marginBottom: "1rem" }}>
                   <FloatingLabel
                     controlId="label"
                     label="Label*"
