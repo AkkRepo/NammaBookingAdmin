@@ -28,34 +28,35 @@ function EditAccomodationType(props) {
     id: 0,
     roomName: "",
     roomType: "",
-    noOfRooms: undefined,
-    noOfGuests: undefined,
+    noOfRooms: "",
+    noOfGuests: "",
   });
 
   const [error, setError] = useState({
     roomName: "",
     roomType: "",
-    noOfRooms: undefined,
-    noOfGuests: undefined,
+    noOfRooms: "",
+    noOfGuests: "",
   });
 
   const validation = () => {
     let tempError = {
       roomName: "",
       roomType: "",
-      noOfRooms: undefined,
-      noOfGuests: undefined,
+      noOfRooms: "",
+      noOfGuests: "",
     };
     let valid = true;
     if (!accomodation.roomName) {
       tempError.roomName = "Required Field";
       valid = false;
     }
-    if (!accomodation.noOfRooms || !accomodation.noOfRooms.match(/^\d+$/)) {
+   
+    if (!accomodation.noOfRooms || !String(accomodation.noOfRooms).match(/^\d+$/)) {
       tempError.noOfRooms = "Required Field";
       valid = false;
     }
-    if (!accomodation.noOfGuests || !accomodation.noOfGuests.match(/^\d+$/)) {
+    if (!accomodation.noOfGuests || !String(accomodation.noOfGuests).match(/^\d+$/)) {
       tempError.noOfGuests = "Required Field";
       valid = false;
     }
