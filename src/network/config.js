@@ -56,4 +56,7 @@ export const ApiEndPoints = {
   editChildrensPayment: "/api/stays/admin/updateChildrenPaymentDetails",
   deleteChildrensPayment: "/api/stays/admin/deleteChildrenPayment/",
   setDefaultImage: "/api/stays/admin/setDefaultImage",
+  addNewReadMoreDetails: "/api/stays/admin/addNewReadMoreDetails",
+  updateReadMoreDetails: "/api/stays/admin/updateReadMoreDetails",
+  deleteReadMore: "/api/stays/admin/deleteReadMore/",
 };

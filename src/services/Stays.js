@@ -34,6 +34,14 @@ export class StaysService {
       data: data,
     });
   };
+  static addAddMoreInfoData = (data) => {
+    console.log(data);
+    return NetworkManager.getInstance().appRequest({
+      method: "post",
+      url: ApiEndPoints.addNewReadMoreDetails,
+      data: data,
+    });
+  };
   static addAmenity = (data) => {
     console.log(data);
     return NetworkManager.getInstance().appRequest({
@@ -100,6 +108,13 @@ export class StaysService {
     return NetworkManager.getInstance().appRequest({
       method: "delete",
       url: ApiEndPoints.deleteAmenity + id,
+      data: { ...id },
+    });
+  };
+  static deleteReadMore = (id) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "delete",
+      url: ApiEndPoints.deleteReadMore + id,
       data: { ...id },
     });
   };
@@ -221,6 +236,13 @@ export class StaysService {
     return NetworkManager.getInstance().appRequest({
       method: "put",
       url: ApiEndPoints.editChildrensPayment,
+      data: data,
+    });
+  };
+  static updateReadMoreDetails = (data) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "put",
+      url: ApiEndPoints.updateReadMoreDetails,
       data: data,
     });
   };

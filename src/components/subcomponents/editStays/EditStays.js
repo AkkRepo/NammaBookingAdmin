@@ -46,6 +46,8 @@ import EditPricing from "./EditPricing";
 import AddChildrensPayment from "./AddChildrensPayment";
 import EditChildrensPayment from "./EditChildrensPayment";
 import AddBedDetails from "./AddBedDetails";
+import AddMoreInfo from "./AddMoreInfo";
+import EditMoreInfo from "./EditMoreInfo";
 
 function EditStays() {
   //View BedDtails
@@ -125,6 +127,7 @@ function EditStays() {
       },
     ],
     childrenPaymentsDetails: [],
+    readMoreDetails: [],
     stayActivitiesDetails: [],
     otherFacilityDetails: [],
     nearByPlacesDetails: [],
@@ -134,9 +137,6 @@ function EditStays() {
       smoking: "",
       pets: "",
       coupleFriendly: "",
-      // childrenBelow5: "",
-      // children5To10: "",
-      // childrenAbove10: "",
       includedMeals: "",
       extraStarters: "",
     },
@@ -150,6 +150,27 @@ function EditStays() {
       const val = window.confirm("Do you want to delete?");
       if (val) {
         const res = await StaysService.deleteAmenity(id);
+        if (res.status === 200) {
+          alert(res.message);
+          getStay();
+        } else {
+          alert("Error while deleting");
+        }
+      }
+      setLoading(false);
+    } catch (error) {
+      alert(error.message);
+      setLoading(false);
+    }
+  };
+
+  //delete ReadMore
+  const deleteReadMore = async (id) => {
+    setLoading(true);
+    try {
+      const val = window.confirm("Do you want to delete?");
+      if (val) {
+        const res = await StaysService.deleteReadMore(id);
         if (res.status === 200) {
           alert(res.message);
           getStay();
@@ -889,6 +910,62 @@ function EditStays() {
               </div>
             </Row>
             <br />
+          </Container>
+          <br />
+          <Container className="add-stay-group-border">
+            <Row>
+              <Col style={{ display: "flex" }}>
+                <h4 className="edit-stays-accomodation-type">
+                  More Information:
+                </h4>
+                <AddMoreInfo id={stays.id} onUpdate={() => getStay()} />
+              </Col>
+              <Container
+                style={{
+                  paddingLeft: "10px",
+                  paddingRight: "10px",
+                  paddingTop: "1rem",
+                }}
+              >
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Sl no</th>
+                      <th>Package Name</th>
+                      <th>Package Details</th>
+                      <th>Edit</th>
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stays.readMoreDetails.map((item, index) => {
+                      return (
+                        <tr>
+                          <td>{index + 1}</td>
+                          <td>{item.label}</td>
+                          <td>{item.details}</td>
+                          <td>
+                            <EditMoreInfo
+                              readMoreInfo={item}
+                              onUpdateStay={() => getStay()}
+                            />
+                          </td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              className="stay-trash-button"
+                              onClick={(e) => {
+                                deleteReadMore(item.id);
+                              }}
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </Container>
+            </Row>
           </Container>
         </Container>
         <br />
