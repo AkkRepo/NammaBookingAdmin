@@ -12,7 +12,6 @@ function DashboardLocation() {
     setLoading(true);
     try {
       const res = await DashboardService.getDashboardLocation();
-      console.log(res);
       if (res.data?.length > 0) {
         setDashboardLocation(res.data);
       } else {

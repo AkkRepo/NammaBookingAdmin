@@ -17,7 +17,6 @@ export class TestimoniesServices {
   };
 
   static addTestimonies = (name, testimony) => {
-    console.log(name + " " + testimony);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.addTestimonies,

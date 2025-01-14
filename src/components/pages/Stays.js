@@ -25,7 +25,6 @@ function Stays(props) {
     setLoading(true);
     try {
       const res = await StaysService.getAllStays(page);
-      console.log(res);
       if (res.data?.length > 0) {
         setStay(res.data);
         setPaginations({

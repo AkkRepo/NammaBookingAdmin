@@ -11,7 +11,6 @@ export class CategoriesService {
   };
 
   static addCategories = (category, imageUrl) => {
-    console.log(category + " " + imageUrl);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.categoriesAdd,
@@ -32,6 +31,13 @@ export class CategoriesService {
       method: "put",
       url: ApiEndPoints.categories + "/admin/update",
       data: { ...id, ...category, ...imageUrl },
+    });
+  };
+  static deleteCategory = (id) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "delete",
+      url: ApiEndPoints.categoriesDelete + id,
+      data: { ...id },
     });
   };
 }

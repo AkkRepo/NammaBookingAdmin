@@ -51,12 +51,18 @@ function EditAccomodationType(props) {
       tempError.roomName = "Required Field";
       valid = false;
     }
-   
-    if (!accomodation.noOfRooms || !String(accomodation.noOfRooms).match(/^\d+$/)) {
+
+    if (
+      !accomodation.noOfRooms ||
+      !String(accomodation.noOfRooms).match(/^\d+$/)
+    ) {
       tempError.noOfRooms = "Required Field";
       valid = false;
     }
-    if (!accomodation.noOfGuests || !String(accomodation.noOfGuests).match(/^\d+$/)) {
+    if (
+      !accomodation.noOfGuests ||
+      !String(accomodation.noOfGuests).match(/^\d+$/)
+    ) {
       tempError.noOfGuests = "Required Field";
       valid = false;
     }
@@ -91,7 +97,6 @@ function EditAccomodationType(props) {
   };
   useEffect(() => {
     setAccomodation({ ...props.accomodation });
-    console.log(props.accomodation);
   }, [props.accomodation]);
   return (
     <div>

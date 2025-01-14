@@ -107,7 +107,6 @@ function EditBedDetails(props) {
   };
   useEffect(() => {
     setBedDetails({ ...props.bedDetails });
-    console.log(props.bedDetails);
   }, [props.bedDetails]);
   return (
     <div>

@@ -40,7 +40,6 @@ function AddBedType(props) {
   const addBedType = async () => {
     setLoading(true);
     try {
-      console.log();
       const res = await BedTypeServices.addBedType(bedType);
       if (res.status === 200) {
         alert(res.message);

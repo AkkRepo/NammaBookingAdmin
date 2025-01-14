@@ -87,10 +87,7 @@ function EditCategoriesModal({ show, onHide, category }) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result;
-        //console.log("Base64 String:", base64String);
         const slicedString = base64String.slice(23);
-        console.log(base64String);
-        console.log("Sliced String:", slicedString);
         setCategories({ ...categories, imageUrl: base64String });
         setImage(true);
       };

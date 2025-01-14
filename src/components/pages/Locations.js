@@ -13,6 +13,7 @@ import EditLocations from "../subcomponents/EditLocations";
 import { LocationsService } from "../../services/Locations";
 import { AppPagination, Loading } from "./Others/Index";
 import LocationDetails from "../subcomponents/LocationDetails";
+import LocationReadMore from "../subcomponents/LocationReadMore";
 
 function Locations() {
   const navigate = useNavigate();
@@ -125,8 +126,8 @@ function Locations() {
           <tr>
             <th style={{ color: "#051e3c" }}>Sl no</th>
             <th style={{ color: "#051e3c" }}>Location</th>
-            <th style={{ color: "#051e3c" }}>View Details</th>
-            <th style={{ color: "#051e3c" }}>Edit</th>
+            <th style={{ color: "#051e3c" }}>Edit Location</th>
+            <th style={{ color: "#051e3c" }}>Edit More Info</th>
             <th style={{ color: "#051e3c" }}>Delete</th>
           </tr>
         </thead>
@@ -137,13 +138,13 @@ function Locations() {
                 <td>{index + 1}</td>
                 <td>{i.location}</td>
                 <td style={{ paddingLeft: "3rem" }}>
-                  <LocationDetails
-                    location={i}
-                    onClick={() => navigateToLocation(i.id)}
-                  />
+                  <EditLocations location={i} onClose={() => getLocations()} />
                 </td>
                 <td>
-                  <EditLocations location={i} onClose={() => getLocations()} />
+                  <LocationReadMore
+                    location={i}
+                    onClose={() => getLocations()}
+                  />
                 </td>
                 <td>
                   <FontAwesomeIcon

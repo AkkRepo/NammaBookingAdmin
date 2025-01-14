@@ -70,7 +70,6 @@ function EditAmenities(props) {
   };
   useEffect(() => {
     setAmenities({ ...props.amenity });
-    console.log(props.amenity);
   }, [props.amenity]);
   return (
     <div>

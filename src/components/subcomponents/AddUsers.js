@@ -60,7 +60,6 @@ function AddUsers(props) {
   const addUsers = async () => {
     setLoading(true);
     try {
-      console.log();
       const res = await UsersService.addUsers(users);
       if (res.status === 200) {
         alert(res.data.message);

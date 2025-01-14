@@ -8,7 +8,6 @@ export class AmenitiesService {
     });
   };
   static addAmenities = (amenity) => {
-    console.log(amenity);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.amenities + "/add",

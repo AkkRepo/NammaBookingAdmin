@@ -2,8 +2,6 @@ import { ApiEndPoints, NetworkManager } from "../network";
 
 export class StaysService {
   static addStays = (data) => {
-    console.log(data);
-    //console.log(name + " " + email + " " + password + " " + roleId);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.stays,
@@ -11,7 +9,6 @@ export class StaysService {
     });
   };
   static addAccomodationTypes = (data) => {
-    console.log(data);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.addAccomodationTypes,
@@ -19,7 +16,6 @@ export class StaysService {
     });
   };
   static addPricingDetails = (data) => {
-    console.log(data);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.addPricing,
@@ -27,23 +23,13 @@ export class StaysService {
     });
   };
   static addChildrensPayment = (data) => {
-    console.log(data);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.addChildrensPayment,
       data: data,
     });
   };
-  static addAddMoreInfoData = (data) => {
-    console.log(data);
-    return NetworkManager.getInstance().appRequest({
-      method: "post",
-      url: ApiEndPoints.addNewReadMoreDetails,
-      data: data,
-    });
-  };
   static addAmenity = (data) => {
-    console.log(data);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.addAmenity,
@@ -51,7 +37,6 @@ export class StaysService {
     });
   };
   static addActivity = (data) => {
-    console.log(data);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.addActivity,
@@ -59,7 +44,6 @@ export class StaysService {
     });
   };
   static addFacility = (data) => {
-    console.log(data);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.addFacility,
@@ -67,7 +51,6 @@ export class StaysService {
     });
   };
   static addNearByPlaces = (data) => {
-    console.log(data);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.addNearByPlaces,
@@ -75,7 +58,6 @@ export class StaysService {
     });
   };
   static addImage = (data) => {
-    console.log(data);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.addImage,
@@ -90,7 +72,6 @@ export class StaysService {
     });
   };
   static getStaysById = (id) => {
-    //console.log("Im here");
     return NetworkManager.getInstance().appRequest({
       method: "get",
       url: ApiEndPoints.stayById + "/" + id,
@@ -108,13 +89,6 @@ export class StaysService {
     return NetworkManager.getInstance().appRequest({
       method: "delete",
       url: ApiEndPoints.deleteAmenity + id,
-      data: { ...id },
-    });
-  };
-  static deleteReadMore = (id) => {
-    return NetworkManager.getInstance().appRequest({
-      method: "delete",
-      url: ApiEndPoints.deleteReadMore + id,
       data: { ...id },
     });
   };
@@ -147,7 +121,6 @@ export class StaysService {
     });
   };
   static deletePricingDetails = (id) => {
-    console.log(id);
     return NetworkManager.getInstance().appRequest({
       method: "delete",
       url: ApiEndPoints.deletePricing + id,
@@ -239,15 +212,7 @@ export class StaysService {
       data: data,
     });
   };
-  static updateReadMoreDetails = (data) => {
-    return NetworkManager.getInstance().appRequest({
-      method: "put",
-      url: ApiEndPoints.updateReadMoreDetails,
-      data: data,
-    });
-  };
   static deleteChildrensPayment = (id) => {
-    console.log(id);
     return NetworkManager.getInstance().appRequest({
       method: "delete",
       url: ApiEndPoints.deleteChildrensPayment + id,
@@ -255,7 +220,6 @@ export class StaysService {
     });
   };
   static addBedDetails = (data) => {
-    console.log(data);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.addBedDetails,

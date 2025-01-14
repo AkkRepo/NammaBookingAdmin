@@ -68,13 +68,11 @@ function AddStays() {
     });
 
     Promise.all(promises).then((base64Images) => {
-      console.log(base64Images); // Display the base64 images in the console
       setImages((prevImages) => [...prevImages, ...base64Images]);
     });
   };
 
   const handleRemoveImage = (index) => {
-    console.log(`Removing image at index ${index}:`, images[index]);
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
   const handleImageBase64 = (e) => {
@@ -217,101 +215,6 @@ function AddStays() {
   };
   //near by places myltiple input end
 
-  // More Info multiple input start
-  const [tableData, setTableData] = useState([]);
-  const [headers, setHeaders] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("ExcelSheet");
-
-  const [moreInfoArray, setMoreInfoArray] = useState([]);
-  const [moreInfoInputData, setMoreInfoInputData] = useState({
-    label: "",
-    details: "",
-  });
-
-  // Function to handle input change
-  const moreInfoHandleInputChange = (e) => {
-    const { name, value } = e.target;
-    setMoreInfoInputData({
-      ...moreInfoInputData,
-      [name]: name === "amenities" ? Capitalize(value) : value,
-    });
-  };
-
-  // Function to add input data
-  const addMoreInfoInputData = () => {
-    if (
-      moreInfoInputData.label.trim() !== "" &&
-      moreInfoInputData.details.trim() !== ""
-    ) {
-      setMoreInfoArray([...moreInfoArray, moreInfoInputData]);
-      setMoreInfoInputData({ label: "", details: "" });
-    } else {
-      alert("Label and Value should not be empty");
-    }
-  };
-
-  // Function to delete data
-  const deleteMoreInfoData = (index) => {
-    const updatedArray = moreInfoArray.filter((item, i) => i !== index);
-    setMoreInfoArray(updatedArray);
-  };
-
-  // Function to handle file upload
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        const binaryStr = event.target.result;
-        const workbook = XLSX.read(binaryStr, { type: "binary" });
-
-        const sheetName = workbook.SheetNames[0]; // Get the first sheet name
-        const sheet = workbook.Sheets[sheetName]; // Get the first sheet
-        const data = XLSX.utils.sheet_to_json(sheet, { header: 1 }); // Convert sheet to array of arrays
-
-        const dataWithoutHeaders = data.slice(1); // Omit the first row (headers)
-
-        // Validate the number of columns in the data
-        if (data[0].length !== 2) {
-          alert("The uploaded Excel sheet must contain exactly 2 columns.");
-          return;
-        }
-
-        // Map data to moreInfoArray format
-        const formattedData = dataWithoutHeaders.map((row) => ({
-          label: row[0] ? row[0] : "", // Default to empty string if no value
-          details: row[1] ? row[1] : "",
-        }));
-
-        setTableData(dataWithoutHeaders); // Set table data for display
-        setMoreInfoArray([...moreInfoArray, ...formattedData]); // Update moreInfoArray
-      };
-
-      reader.readAsBinaryString(file);
-    }
-  };
-  const handleOptionChange = (e) => {
-    const newValue = e.target.value;
-
-    if (tableData.length > 0 || moreInfoArray.length > 0) {
-      const confirmChange = window.confirm(
-        "Switching options will clear the current data. Do you want to proceed?"
-      );
-
-      if (!confirmChange) {
-        return; // Do not change the selected option
-      }
-
-      // Clear the stored data
-      setTableData([]);
-      setMoreInfoArray([]);
-    }
-
-    setSelectedOption(newValue); // Change the selected option
-  };
-  //More Info end
-
   // Children's Payment multiple input start
   const [childrensPaymentArray, setChildrensPaymentArray] = useState([]);
   const [childrensPaymentInputData, setChildrensPaymentInputData] = useState({
@@ -334,7 +237,6 @@ function AddStays() {
       childrensPaymentInputData.label.trim() !== "" &&
       childrensPaymentInputData.details.trim() !== ""
     ) {
-      console.log(childrensPaymentArray);
       setChildrensPaymentArray([
         ...childrensPaymentArray,
         childrensPaymentInputData,
@@ -368,9 +270,7 @@ function AddStays() {
         bedDetails: list,
       });
       setRooms({ noOfBeds: "", bedTypeId: "" });
-      console.log(pricingInputData);
     } else {
-      console.log(newRoom);
       alert("No bed data provided. Please enter valid bed details.");
     }
   };
@@ -381,8 +281,6 @@ function AddStays() {
       ...pricingInputData,
       bedDetails: list,
     });
-
-    console.log(pricingInputData);
   };
   const [pricingInputData, setPricingInputData] = useState({
     roomName: "",
@@ -430,7 +328,6 @@ function AddStays() {
     });
   }
   function pricingDeleteData(i) {
-    console.log(i, "this index row wants to be deleted");
     let total1 = [...pricingInputArr];
     total1.splice(i, 1);
     setPricingInputArr(total1);
@@ -549,7 +446,6 @@ function AddStays() {
     });
   }
   function newPricingDeleteData(i) {
-    console.log(i, "this index row wants to be deleted");
     let total1 = [...newPricingInputArr];
     total1.splice(i, 1);
     setNewPricingInputArr(total1);
@@ -735,10 +631,6 @@ function AddStays() {
       tempError.childrenPaymentsDetails = "Childern's Payment is required";
       valid = false;
     }
-    if (moreInfoArray.length === 0) {
-      tempError.readMoreDetails = "Field is required";
-      valid = false;
-    }
     if (pricingInputArr.length === 0) {
       tempError.accommodationTypesDetails = "Accomodation Type is required";
       valid = false;
@@ -790,7 +682,6 @@ function AddStays() {
   };
   const addStays = async () => {
     setLoading(true);
-    console.log(stays);
     try {
       const res = await StaysService.addStays({
         ...stays,
@@ -837,10 +728,6 @@ function AddStays() {
           label: x.label,
           details: x.details,
         })),
-        readMoreDetails: moreInfoArray.map((x) => ({
-          label: x.label,
-          details: x.details,
-        })),
         stayActivitiesDetails: activitiesArray.map((x) => ({
           activity: x.activities,
         })),
@@ -874,7 +761,6 @@ function AddStays() {
       setLoading(false);
     } catch (error) {
       alert(error.message);
-      console.log(error);
       setLoading(false);
     }
   };
@@ -1073,8 +959,8 @@ function AddStays() {
                   <Form.Control
                     required
                     as="textarea"
-                    style={{ height: "100px" }}
                     placeholder="Leave a comment here"
+                    style={{ height: "100px" }}
                     value={stays.about}
                     onChange={(e) =>
                       setStays({
@@ -1090,6 +976,7 @@ function AddStays() {
             </Row>
           </Container>
           <br />
+
           <Container className="add-stay-group-border">
             <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
               Accomodation Details
@@ -1789,6 +1676,7 @@ function AddStays() {
             </Row>
           </Container>
           <br />
+
           <Container className="add-stay-group-border">
             <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
               House Policy
@@ -2140,6 +2028,7 @@ function AddStays() {
             </Row>
           </Container>
           <br />
+
           <Container className="add-stay-group-border">
             <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
               Stay Contact Details
@@ -2307,6 +2196,7 @@ function AddStays() {
             </Row>
           </Container>
           <br />
+
           <Container className="add-stay-group-border">
             <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
               Stay Images
@@ -2368,172 +2258,6 @@ function AddStays() {
             </Row>
           </Container>
           <br />
-          <Container className="add-stay-group-border">
-            <Row>
-              <h4 style={{ paddingBottom: "15px", color: "#051e3c" }}>
-                More Information
-              </h4>
-
-              <div>
-                <Form.Check
-                  type="radio"
-                  label="Add details through Excel sheet"
-                  name="options"
-                  value="ExcelSheet"
-                  checked={selectedOption === "ExcelSheet"}
-                  onChange={(e) => handleOptionChange(e)}
-                />
-                <Form.Check
-                  type="radio"
-                  label="Add details through Form"
-                  name="options"
-                  value="FormSheet"
-                  checked={selectedOption === "FormSheet"}
-                  onChange={(e) => handleOptionChange(e)}
-                />
-                <br />
-              </div>
-              {selectedOption === "ExcelSheet" && (
-                <>
-                  <div style={{ display: "flex" }}>
-                    <h6>Please refer Sample Excel Sheet: </h6>
-                    <a
-                      href="https://docs.google.com/spreadsheets/d/1C16sPzYuq48cEpYniOIzduyvfm4O2XLr/edit?usp=sharing&ouid=105674993332905168572&rtpof=true&sd=true"
-                      style={{
-                        textDecoration: "underline",
-                        color: "black",
-                      }}
-                      target="_blank"
-                    >
-                      Sample Data
-                    </a>
-                  </div>
-                  <FloatingLabel
-                    controlId="uploadFile"
-                    label="Upload File*"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      type="file"
-                      accept=".xls,.xlsx"
-                      onChange={handleFileUpload}
-                    />
-                  </FloatingLabel>
-                </>
-              )}
-
-              {/* {tableData.length > 0 && selectedOption === "ExcelSheet" && (
-                <table
-                  border="1"
-                  style={{ borderCollapse: "collapse", marginTop: "20px" }}
-                >
-                  <thead>
-                    <tr>
-                      {headers.map((header, index) => (
-                        <th
-                          key={index}
-                          style={{ padding: "8px", backgroundColor: "#f2f2f2" }}
-                        >
-                          {header}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableData.map((row, rowIndex) => (
-                      <tr key={rowIndex}>
-                        {row.map((cell, cellIndex) => (
-                          <td
-                            key={cellIndex}
-                            style={{ padding: "8px", textAlign: "left" }}
-                          >
-                            {cell}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )} */}
-
-              {selectedOption === "FormSheet" && (
-                <>
-                  <Row>
-                    <Col>
-                      <div style={{ marginBottom: "1rem" }}>
-                        <FloatingLabel
-                          controlId="label"
-                          label="Label*"
-                          className="mb-3"
-                          style={{ marginRight: "1rem" }}
-                        >
-                          <Form.Control
-                            type="text"
-                            placeholder="Please enter Label"
-                            className="text-capitalize"
-                            name="label"
-                            value={moreInfoInputData.label}
-                            onChange={moreInfoHandleInputChange}
-                          />
-                        </FloatingLabel>
-                        <FloatingLabel
-                          controlId="details"
-                          label="Details*"
-                          className="mb-3"
-                          style={{ marginRight: "1rem" }}
-                        >
-                          <Form.Control
-                            as="textarea"
-                            style={{ height: "100px" }}
-                            placeholder="Please enter Value"
-                            className="text-capitalize"
-                            name="details"
-                            value={moreInfoInputData.details}
-                            onChange={moreInfoHandleInputChange}
-                          />
-                        </FloatingLabel>
-                        <Button
-                          onClick={addMoreInfoInputData}
-                          style={{ height: "40px" }}
-                          className="custom-btn-reverse"
-                        >
-                          Add
-                        </Button>
-                      </div>
-                      <Container className="cp-table-styling">
-                        <Table striped bordered hover>
-                          <thead>
-                            <tr>
-                              <th>Sl no.</th>
-                              <th>Label</th>
-                              <th>Details</th>
-                              <th>Remove</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {moreInfoArray.map((item, index) => (
-                              <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{item.label}</td>
-                                <td>{item.details}</td>
-                                <td>
-                                  <FontAwesomeIcon
-                                    icon={faX}
-                                    onClick={() => deleteMoreInfoData(index)}
-                                    style={{ cursor: "pointer" }}
-                                  />
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </Table>
-                      </Container>
-                    </Col>
-                  </Row>
-                </>
-              )}
-            </Row>
-          </Container>
           <Row>
             <Col>
               <br />

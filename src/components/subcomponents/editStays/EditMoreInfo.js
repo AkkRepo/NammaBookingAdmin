@@ -17,7 +17,7 @@ import { Capitalize } from "../../../core/utils";
 import { StaysService } from "../../../services/Stays";
 import { LoadingModal } from "../../pages/Others/Index";
 
-function EditMoreInfo(props) {
+function EditMoreInfoE(props) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -78,7 +78,6 @@ function EditMoreInfo(props) {
   };
   useEffect(() => {
     setMoreInfo({ ...props.readMoreInfo });
-    console.log(props.readMoreInfo);
   }, [props.readMoreInfo]);
   return (
     <div>
@@ -139,4 +138,4 @@ function EditMoreInfo(props) {
   );
 }
 
-export default EditMoreInfo;
+export default EditMoreInfoE;

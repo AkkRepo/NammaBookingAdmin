@@ -35,9 +35,7 @@ function StayDetails() {
     set_Show_M(false);
   };
   const openModalHandle = (bedDetails) => {
-    console.log(bedDetails);
     setModalData(bedDetails);
-    //console.log(modalData);
     modalShow();
   };
 
@@ -49,9 +47,7 @@ function StayDetails() {
     setLoading(true);
     try {
       const res = await StaysService.getStaysById(id);
-      console.log(res.data);
       if (res.status === 200) {
-        //console.log(res.data);
         setStay(res.data);
         if (res.data?.images?.length > 0) {
           setImage(res.data.images[0].imageUrl);

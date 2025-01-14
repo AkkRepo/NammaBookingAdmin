@@ -86,7 +86,6 @@ function EditPricing(props) {
   };
   useEffect(() => {
     setPricing({ ...props.price });
-    console.log(props.price);
   }, [props.price]);
   return (
     <div>

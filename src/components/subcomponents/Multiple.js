@@ -34,7 +34,6 @@ function Multiple() {
       childrensPaymentInputData.cpLabel.trim() !== "" &&
       childrensPaymentInputData.cpValue.trim() !== ""
     ) {
-      console.log(childrensPaymentArray);
       setChildrensPaymentArray([
         ...childrensPaymentArray,
         childrensPaymentInputData,

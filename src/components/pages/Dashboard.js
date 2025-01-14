@@ -22,7 +22,6 @@ function Dashboard() {
     setLoading(true);
     try {
       const res = await DashboardService.getDashboardCount();
-      console.log(res.data);
       setDashboardData(res.data);
       // if (res.data) {
 

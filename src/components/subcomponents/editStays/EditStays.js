@@ -46,7 +46,7 @@ import EditPricing from "./EditPricing";
 import AddChildrensPayment from "./AddChildrensPayment";
 import EditChildrensPayment from "./EditChildrensPayment";
 import AddBedDetails from "./AddBedDetails";
-import AddMoreInfo from "./AddMoreInfo";
+import AddMoreInfo from "../AddLocationMoreInfo";
 import EditMoreInfo from "./EditMoreInfo";
 
 function EditStays() {
@@ -63,7 +63,6 @@ function EditStays() {
   };
   const openModalHandle = (bedDetails) => {
     setModalData(bedDetails);
-    //console.log(modalData);
     modalShow();
   };
 
@@ -77,7 +76,6 @@ function EditStays() {
     try {
       const res = await StaysService.getStaysById(id);
       if (res.status === 200) {
-        //console.log(res.data);
         setStays(res.data);
         if (res.data?.images?.length > 0) {
           setImage(res.data.images[0].imageUrl);
@@ -127,7 +125,7 @@ function EditStays() {
       },
     ],
     childrenPaymentsDetails: [],
-    readMoreDetails: [],
+    // readMoreDetails: [],
     stayActivitiesDetails: [],
     otherFacilityDetails: [],
     nearByPlacesDetails: [],
@@ -150,27 +148,6 @@ function EditStays() {
       const val = window.confirm("Do you want to delete?");
       if (val) {
         const res = await StaysService.deleteAmenity(id);
-        if (res.status === 200) {
-          alert(res.message);
-          getStay();
-        } else {
-          alert("Error while deleting");
-        }
-      }
-      setLoading(false);
-    } catch (error) {
-      alert(error.message);
-      setLoading(false);
-    }
-  };
-
-  //delete ReadMore
-  const deleteReadMore = async (id) => {
-    setLoading(true);
-    try {
-      const val = window.confirm("Do you want to delete?");
-      if (val) {
-        const res = await StaysService.deleteReadMore(id);
         if (res.status === 200) {
           alert(res.message);
           getStay();
@@ -912,7 +889,7 @@ function EditStays() {
             <br />
           </Container>
           <br />
-          <Container className="add-stay-group-border">
+          {/* <Container className="add-stay-group-border">
             <Row>
               <Col style={{ display: "flex" }}>
                 <h4 className="edit-stays-accomodation-type">
@@ -966,7 +943,7 @@ function EditStays() {
                 </Table>
               </Container>
             </Row>
-          </Container>
+          </Container> */}
         </Container>
         <br />
       </Form>

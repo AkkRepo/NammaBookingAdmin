@@ -71,7 +71,6 @@ function EditFacilities(props) {
   };
   useEffect(() => {
     setFacilities({ ...props.facility });
-    console.log(props.facilities);
   }, [props.facilities]);
 
   return (

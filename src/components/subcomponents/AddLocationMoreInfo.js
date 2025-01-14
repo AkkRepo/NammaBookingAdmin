@@ -12,10 +12,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import * as XLSX from "xlsx"; // Import library to handle Excel files
-import { StaysService } from "../../../services/Stays";
-import { LoadingModal } from "../../pages/Others/Index";
+import { LoadingModal } from "../pages/Others/Index";
+import { LocationsService } from "../../services/Locations";
 
-function AddMoreInfo(props) {
+function AddLocationMoreInfo(props) {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [viewMode, setViewMode] = useState("Form"); // State to toggle between "Form" and "ExcelSheet"
@@ -57,8 +57,8 @@ function AddMoreInfo(props) {
     if (validation()) {
       setLoading(true);
       try {
-        const res = await StaysService.addAddMoreInfoData({
-          stayId: props.id,
+        const res = await LocationsService.addAddMoreInfoData({
+          locationId: props.id,
           readMoreDetails: [
             {
               label: newMoreInfoData.label,
@@ -71,8 +71,8 @@ function AddMoreInfo(props) {
             label: "",
             details: "",
           });
-          alert("Data added successfully");
-          props.onUpdate();
+          alert(res.message);
+          props.onUpdateStay();
           handleClose();
         } else {
           alert("All fields are required");
@@ -93,13 +93,13 @@ function AddMoreInfo(props) {
           label: row[Object.keys(row)[0]],
           details: row[Object.keys(row)[1]],
         }));
-        const res = await StaysService.addAddMoreInfoData({
-          stayId: props.id,
+        const res = await LocationsService.addAddMoreInfoData({
+          locationId: props.id,
           readMoreDetails: formattedData,
         });
         if (res.status === 200) {
           alert("Excel data added successfully");
-          props.onUpdate();
+          props.onUpdateStay();
           handleClose();
         } else {
           alert("Failed to add data from Excel");
@@ -233,31 +233,6 @@ function AddMoreInfo(props) {
                 <Form.Label>Upload Excel File</Form.Label>
                 <Form.Control type="file" onChange={handleExcelUpload} />
               </Form.Group>
-              {/* {excelData.length > 0 && (
-                <>
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr>
-                        {Object.keys(excelData[0]).map((key, index) => (
-                          <th key={index}>{key}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {excelData.map((row, index) => (
-                        <tr key={index}>
-                          {Object.values(row).map((value, idx) => (
-                            <td key={idx}>{value}</td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                  <Button className="custom-btn" onClick={addExcelData}>
-                    ExcelAdd
-                  </Button>
-                </>
-              )} */}
             </>
           )}
         </Modal.Body>
@@ -290,4 +265,4 @@ function AddMoreInfo(props) {
   );
 }
 
-export default AddMoreInfo;
+export default AddLocationMoreInfo;

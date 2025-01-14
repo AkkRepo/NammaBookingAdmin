@@ -10,7 +10,6 @@ export class LocationsService {
   };
 
   static addLocations = (location, imageUrl) => {
-    console.log(location + " " + imageUrl);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.adminAddLocation,
@@ -37,6 +36,27 @@ export class LocationsService {
       method: "put",
       url: ApiEndPoints.updateLocation,
       data: { ...id, ...location, ...imageUrl },
+    });
+  };
+  static addAddMoreInfoData = (data) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "post",
+      url: ApiEndPoints.addNewReadMoreDetails,
+      data: data,
+    });
+  };
+  static updateReadMoreDetails = (data) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "put",
+      url: ApiEndPoints.updateReadMoreDetails,
+      data: data,
+    });
+  };
+  static deleteReadMore = (id) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "delete",
+      url: ApiEndPoints.deleteReadMore + id,
+      data: { ...id },
     });
   };
 }

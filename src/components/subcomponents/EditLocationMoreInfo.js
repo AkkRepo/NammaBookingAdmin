@@ -1,66 +1,50 @@
 import React, { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  Container,
-  Form,
-  FloatingLabel,
-  Button,
-  Table,
-  Image,
-  Dropdown,
-  Modal,
-} from "react-bootstrap";
+import { Form, FloatingLabel, Button, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Capitalize } from "../../../core/utils";
-import { StaysService } from "../../../services/Stays";
-import { LoadingModal } from "../../pages/Others/Index";
+// import { Capitalize } from "../../../core/utils";
+import { LocationsService } from "../../services/Locations";
+import { LoadingModal } from "../pages/Others/Index";
 
-function EditChildrensPayment(props) {
+function EditLocationMoreInfo(props) {
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [loading, setLoading] = useState(false);
-
-  const [childrensPayment, setChildrensPayment] = useState({
+  const [readMoreInfo, setMoreInfo] = useState({
     id: 0,
     label: "",
     details: "",
   });
-
   const [error, setError] = useState({
     label: "",
     details: "",
   });
-
   const validation = () => {
     let tempError = {
       label: "",
       details: "",
     };
     let valid = true;
-    if (!childrensPayment.label) {
+    if (!readMoreInfo.label) {
       tempError.label = "Required Field";
       valid = false;
     }
-    if (!childrensPayment.details) {
+    if (!readMoreInfo.details) {
       tempError.details = "Required Field";
       valid = false;
     }
     setError(tempError);
     return valid;
   };
-
   const update = async () => {
     if (validation()) {
       setLoading(true);
       try {
-        const res = await StaysService.updateChildrensPayment({
-          id: childrensPayment.id,
-          label: childrensPayment.label,
-          details: childrensPayment.details,
+        const res = await LocationsService.updateReadMoreDetails({
+          id: readMoreInfo.id,
+          label: readMoreInfo.label,
+          details: readMoreInfo.details,
         });
         if (res.status === 200) {
           alert(res.message);
@@ -77,13 +61,13 @@ function EditChildrensPayment(props) {
     }
   };
   useEffect(() => {
-    setChildrensPayment({ ...props.childrensPayment });
-  }, [props.childrensPayment]);
+    setMoreInfo({ ...props.readMoreInfo });
+  }, [props.readMoreInfo]);
   return (
     <div>
       <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
-          <h5>Edit Children's Payment </h5>
+          <h5>Edit More Info Data </h5>
         </Modal.Header>
         <Modal.Body>
           <FloatingLabel controlId="Label" label="Label*" className="mb-3">
@@ -91,11 +75,11 @@ function EditChildrensPayment(props) {
               type="text"
               placeholder="Label"
               className="text-capitalize"
-              value={childrensPayment.label}
+              value={readMoreInfo.label}
               onChange={(e) =>
-                setChildrensPayment({
-                  ...childrensPayment,
-                  label: Capitalize(e.target.value),
+                setMoreInfo({
+                  ...readMoreInfo,
+                  label: e.target.value,
                 })
               }
               isInvalid={!!error.label}
@@ -106,10 +90,10 @@ function EditChildrensPayment(props) {
             <Form.Control
               type="text"
               placeholder="Details"
-              value={childrensPayment.details}
+              value={readMoreInfo.details}
               onChange={(e) =>
-                setChildrensPayment({
-                  ...childrensPayment,
+                setMoreInfo({
+                  ...readMoreInfo,
                   details: e.target.value,
                 })
               }
@@ -127,7 +111,6 @@ function EditChildrensPayment(props) {
           </Button>
         </Modal.Footer>
       </Modal>
-
       <FontAwesomeIcon
         icon={faPen}
         onClick={handleShow}
@@ -137,5 +120,4 @@ function EditChildrensPayment(props) {
     </div>
   );
 }
-
-export default EditChildrensPayment;
+export default EditLocationMoreInfo;

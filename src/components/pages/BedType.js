@@ -60,7 +60,6 @@ function BedType() {
       setLoading(false);
     } catch (error) {
       alert(error.message);
-      console.log(id);
       setLoading(false);
     }
   };

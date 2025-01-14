@@ -26,7 +26,6 @@ export class BedTypeServices {
   };
 
   static addBedType = (bedType) => {
-    console.log(bedType);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.addBedType,

@@ -70,7 +70,6 @@ function EditActivities(props) {
   };
   useEffect(() => {
     setActivities({ ...props.activity });
-    console.log(props.activity);
   }, [props.activity]);
   return (
     <div>

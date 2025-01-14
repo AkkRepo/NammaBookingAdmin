@@ -22,6 +22,7 @@ import LocationDetails from "./components/subcomponents/LocationDetails";
 import BedType from "./components/pages/BedType";
 import Testimonies from "./components/pages/Testimonies";
 import TestimoniesDetails from "./components/subcomponents/TestimoniesDetails";
+import AddLocations from "./components/subcomponents/AddLocations";
 const DashboardLayout = () => {
   if (AuthService.isLoggedin()) {
     return <Outlet />;
@@ -63,6 +64,8 @@ function App() {
           <Route path="/dashboard/Multiple" element={<Multiple />} />
           <Route path="/dashboard/EditUsersCopy" element={<EditUsersCopy />} />
           <Route path="/dashboard/TestingFile" element={<TestingFile />} />
+          <Route path="/dashboard/addLocations" element={<AddLocations />} />
+          {/* <Route path="/dashboard/addLocation" element={<AddMoreInfo />} /> */}
         </Route>
       </Routes>
     </div>

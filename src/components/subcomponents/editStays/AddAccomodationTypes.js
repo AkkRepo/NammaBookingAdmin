@@ -41,9 +41,7 @@ function AddAccomodationTypes(props) {
         bedDetails: list,
       });
       setRooms({ noOfBeds: "", bedTypeId: "" });
-      console.log(pricingInputData);
     } else {
-      console.log(newRoom);
       alert("No bed data provided. Please enter valid bed details.");
     }
   };
@@ -54,8 +52,6 @@ function AddAccomodationTypes(props) {
       ...pricingInputData,
       bedDetails: list,
     });
-
-    console.log(pricingInputData);
   };
   const [pricingInputData, setPricingInputData] = useState({
     roomName: "",
@@ -88,7 +84,6 @@ function AddAccomodationTypes(props) {
         props.onUpdate();
         handleClose();
       } else {
-        console.log(pricingInputData);
         alert("All fields are required");
       }
       setLoading(false);

@@ -71,7 +71,6 @@ function EditNearByePlaces(props) {
 
   useEffect(() => {
     setNearByPlaces({ ...props.placeName });
-    console.log(props.placeName);
   }, [props.placeName]);
   return (
     <div>

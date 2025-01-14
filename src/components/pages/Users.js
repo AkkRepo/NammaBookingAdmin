@@ -27,7 +27,6 @@ function Users(props) {
     setLoading(true);
     try {
       const res = await UsersService.getAllUsers(page);
-      console.log(res);
       if (res.data.records?.length > 0) {
         setUser(res.data.records);
         setPaginations({

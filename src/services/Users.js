@@ -10,7 +10,6 @@ export class UsersService {
   };
 
   static addUsers = (name, email, password, roleId) => {
-    console.log(name + " " + email + " " + password + " " + roleId);
     return NetworkManager.getInstance().appRequest({
       method: "post",
       url: ApiEndPoints.users,
@@ -19,7 +18,6 @@ export class UsersService {
   };
 
   static geUsersById = (id) => {
-    console.log("Im here");
     return NetworkManager.getInstance().appRequest({
       method: "get",
       url: ApiEndPoints.users + "/" + id,

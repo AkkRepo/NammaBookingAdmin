@@ -52,7 +52,7 @@ function Categories() {
       if (val) {
         const res = await CategoriesService.deleteCategory(id);
         if (res.status === 200) {
-          alert(res.message);
+          alert(res.message || "Category deleted successfully");
           getCategories(pagination.cur);
         } else {
           alert("Error while deleting");
@@ -65,6 +65,7 @@ function Categories() {
       setLoading(false);
     }
   };
+
   const navigateToCategory = (id) => {
     navigate("/stays/categoryDetails/" + id);
   };

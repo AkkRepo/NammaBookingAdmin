@@ -18,7 +18,6 @@ function CategoriesDetailsModal({ show, onHide, category }) {
     setLoading(true);
     try {
       const res = await CategoriesService.getCategoriesById(id);
-      console.log(res.data);
       if (res.status === 200) {
         setCategories(res.data);
         if (res.data?.images?.length > 0) {

@@ -53,12 +53,10 @@ function EditBasicDetails(props) {
       price: props.stays.priceStartsFrom.split(" ")[0],
       select: props.stays.priceStartsFrom.split(" ").slice(1).join(" "),
     });
-    console.log(stays);
     setRating(props.stays.rating);
     setSelectedOptions(
       props.stays.stayCategoriesDetails.map((x) => x.categoryDetails)
     );
-    console.log(selectedOptions);
   }, [props.stays]);
 
   //Categories start
