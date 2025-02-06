@@ -167,6 +167,7 @@ function AddAccomodationTypes(props) {
                   controlId="noOfRooms"
                   label="Total no. of Rooms*"
                   className="mb-3"
+                  style={{ width: "23.2rem" }}
                 >
                   <Form.Control
                     type="number"
@@ -188,6 +189,7 @@ function AddAccomodationTypes(props) {
                   controlId="noOfGuests"
                   label="Total no. of Guests*"
                   className="mb-3"
+                  style={{ width: "23.2rem", marginRight: "-3rem" }}
                 >
                   <Form.Control
                     type="number"
@@ -207,7 +209,11 @@ function AddAccomodationTypes(props) {
             </Row>
             <Row>
               <Col>
-                <FloatingLabel controlId="Bed Type" label="Bed Type*">
+                <FloatingLabel
+                  controlId="Bed Type"
+                  label="Bed Type*"
+                  style={{ width: "23.2rem" }}
+                >
                   <Form.Select
                     required
                     aria-label="Bed Type*"
@@ -228,7 +234,7 @@ function AddAccomodationTypes(props) {
                   </Form.Select>
                 </FloatingLabel>
               </Col>
-              <Col style={{ display: "flex" }}>
+              <Col style={{ display: "flex", marginRight: "-1rem" }}>
                 <FloatingLabel
                   controlId="noOfBeds"
                   label="Total no. of Beds*"

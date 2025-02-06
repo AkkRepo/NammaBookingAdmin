@@ -83,7 +83,8 @@ function Dashboard() {
             </Card>
           </Col>
           <Row>
-            <Col style={{ marginLeft: "-33px" }}>
+            <Col>
+              <br />
               <DashboardLocation />
             </Col>
           </Row>

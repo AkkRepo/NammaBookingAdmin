@@ -29,6 +29,7 @@ function EditPricing(props) {
     packageName: "",
     packageDetails: "",
     price: "",
+    offerPrice: "",
   });
 
   const [error, setError] = useState({
@@ -69,6 +70,7 @@ function EditPricing(props) {
           packageName: pricing.packageName,
           packageDetails: pricing.packageDetails,
           price: pricing.price,
+          offerPrice: pricing.offerPrice === "" ? "0" : pricing.offerPrice,
         });
         if (res.status === 200) {
           alert(res.message);
@@ -128,10 +130,14 @@ function EditPricing(props) {
             />
             <p className="required-field-meassage">{error.packageDetails}</p>
           </FloatingLabel>
-          <FloatingLabel controlId="price" label="Price*" className="mb-3">
+          <FloatingLabel
+            controlId="actualprice"
+            label="Actual Price*"
+            className="mb-3"
+          >
             <Form.Control
               type="text"
-              placeholder="Price"
+              placeholder="actualprice"
               className="text-capitalize"
               value={pricing.price}
               onChange={(e) =>
@@ -140,6 +146,21 @@ function EditPricing(props) {
               isInvalid={!!error.price}
             />
             <p className="required-field-meassage">{error.price}</p>
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="offerprice"
+            label="Offer Price*"
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              placeholder="Offer Price"
+              className="text-capitalize"
+              value={pricing.offerPrice}
+              onChange={(e) =>
+                setPricing({ ...pricing, offerPrice: e.target.value })
+              }
+            />
           </FloatingLabel>
         </Modal.Body>
         <Modal.Footer>

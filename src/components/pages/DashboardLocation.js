@@ -30,8 +30,8 @@ function DashboardLocation() {
   return (
     <Container>
       <Row>
-        <div style={{ display: "contents" }}>
-          {dashboardLocation.map((i, index) => (
+        {dashboardLocation.map((i, index) => (
+          <Col>
             <Card
               key={i.id}
               className="dashboard-location-card dashboard-location"
@@ -48,8 +48,8 @@ function DashboardLocation() {
               </Card.ImgOverlay>
               <p className="dashboard-location-stays">{i.count} Stays</p>
             </Card>
-          ))}
-        </div>
+          </Col>
+        ))}
       </Row>
 
       {loading && <Loading />}

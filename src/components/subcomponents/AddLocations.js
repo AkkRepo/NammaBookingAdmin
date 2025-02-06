@@ -18,6 +18,7 @@ import { LocationsService } from "../../services/Locations";
 import { useNavigate } from "react-router-dom";
 import { LoadingModal } from "../pages/Others/Index";
 import { Capitalize } from "../../core/utils";
+import "../../css/style.css";
 
 function AddLocations(props) {
   const navigate = useNavigate();
@@ -294,24 +295,19 @@ function AddLocations(props) {
                     value="FormSheet"
                     checked={selectedOption === "FormSheet"}
                     onChange={(e) => setSelectedOption(e.target.value)}
+                    style={{ marginLeft: "3rem" }}
                   />
                 </div>
 
                 {selectedOption === "ExcelSheet" && (
                   <>
                     <div style={{ display: "flex" }}>
-                      {" "}
                       <h6>Please refer Sample Excel Sheet:</h6>
                       <a
-                        href="../../img/RefSheet/RefSheet.xlsx"
-                        download="RefSheet.xlsx"
-                        style={{
-                          textDecoration: "none",
-                          color: "blue",
-                          cursor: "pointer",
-                        }}
+                        href="https://docs.google.com/spreadsheets/d/1C16sPzYuq48cEpYniOIzduyvfm4O2XLr/edit?gid=1317533996#gid=1317533996"
+                        target="_blank"
                       >
-                        Download PDF
+                        <p className="sample-pdf">Sample PDF</p>
                       </a>
                     </div>
                     <FloatingLabel

@@ -68,7 +68,7 @@ function EditBedTypeModal({ show, onHide, bedType }) {
       <Modal
         show={show}
         onHide={onHide}
-        size="lg"
+        size="sm"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >

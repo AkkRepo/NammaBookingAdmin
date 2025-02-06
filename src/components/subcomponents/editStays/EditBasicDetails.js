@@ -125,6 +125,7 @@ function EditBasicDetails(props) {
     },
     rating: 0,
     priceStartsFrom: "",
+    offerPrice: "",
     about: "",
     accommodationType: "",
     accommodation: "",
@@ -293,6 +294,7 @@ function EditBasicDetails(props) {
           locationId: Number(stays.locationDetails.id),
           rating: stays.rating,
           priceStartsFrom: stays.price + " " + stays.select,
+          offerPrice: stays.offerPrice,
           about: stays.about,
           accommodationType: stays.accommodationType,
           accommodation: stays.accommodation,
@@ -491,6 +493,23 @@ function EditBasicDetails(props) {
             />
           </FloatingLabel>
           <p className="required-field-meassage">{valError.price}</p>
+        </Col>
+        <Col>
+          <FloatingLabel
+            controlId="offerPrice"
+            label="Offer Price*"
+            className="mb-3"
+          >
+            <Form.Control
+              required
+              type="text"
+              placeholder="Please enter Price"
+              value={stays.offerPrice}
+              onChange={(e) =>
+                setStays({ ...stays, offerPrice: e.target.value })
+              }
+            />
+          </FloatingLabel>
         </Col>
         <Col>
           <FloatingLabel controlId="select" label="Select*">

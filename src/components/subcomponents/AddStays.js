@@ -407,12 +407,14 @@ function AddStays() {
   const [newPricingInputData, setNewPricingInputData] = useState({
     packageName: "",
     price: "",
+    offerPrice: "",
     packageDetails: "",
     selectacc: "",
   });
 
   const [newPricingInputArr, setNewPricingInputArr] = useState([]);
-  let { packageName, price, packageDetails, selectacc } = newPricingInputData;
+  let { packageName, price, packageDetails, selectacc, offerPrice } =
+    newPricingInputData;
   function addPricingData() {
     // Check if any of the fields are empty
     if (
@@ -432,6 +434,7 @@ function AddStays() {
       {
         packageName,
         price,
+        offerPrice,
         packageDetails,
         selectacc,
       },
@@ -441,6 +444,7 @@ function AddStays() {
     setNewPricingInputData({
       packageName: "",
       price: "",
+      offerPrice: "",
       packageDetails: "",
       selectacc: "",
     });
@@ -459,6 +463,7 @@ function AddStays() {
     locationId: undefined,
     rating: undefined,
     priceStartsFrom: "",
+    offerPrice: "",
     about: "",
     accommodationType: "",
     accommodation: "",
@@ -681,6 +686,8 @@ function AddStays() {
     }
   };
   const addStays = async () => {
+    console.log("Offer price" + stays.offerPrice);
+    console.log("pricing offer price:" + stays.stayPricingDetails.offerPrice);
     setLoading(true);
     try {
       const res = await StaysService.addStays({
@@ -700,6 +707,8 @@ function AddStays() {
         instagramLink: stays.instagramLink,
         facebookLink: stays.facebookLink,
         priceStartsFrom: stays.priceStartsFrom + " " + stays.select,
+        offerPrice:
+          stays.offerPrice === "" ? "0" : stays.offerPrice + " " + stays.select,
         stayCategoriesDetails: selectedOptions.map((x) => ({
           categoryId: x.id,
         })),
@@ -719,6 +728,8 @@ function AddStays() {
         stayPricingDetails: newPricingInputArr.map((x) => ({
           packageName: x.packageName,
           price: x.price + " " + x.selectacc,
+          offerPrice:
+            x.offerPrice === "" ? "0" : x.offerPrice + " " + x.selectacc,
           packageDetails: x.packageDetails,
         })),
         stayAmenitiesDetails: amenitiesArray.map((x) => ({
@@ -753,6 +764,7 @@ function AddStays() {
         //images: ["images"],
       });
       if (res.status === 200) {
+        console.log(stays.offerPrice);
         alert(res.message);
         navigate("/stays");
       } else {
@@ -929,6 +941,25 @@ function AddStays() {
                   <p className="required-field-meassage">
                     {addError.priceStartsFrom}
                   </p>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="offer price"
+                  label="Offer Price"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Please enter Price"
+                    value={stays.offerPrice}
+                    onChange={(e) =>
+                      setStays({
+                        ...stays,
+                        offerPrice: e.target.value,
+                      })
+                    }
+                  />
                 </FloatingLabel>
               </Col>
               <Col>
@@ -1395,6 +1426,26 @@ function AddStays() {
                   </FloatingLabel>
                 </Col>{" "}
                 <Col>
+                  <FloatingLabel
+                    controlId="price"
+                    label="Offer Price"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Price*"
+                      style={{ textTransform: "capitalize" }}
+                      value={newPricingInputData.offerPrice}
+                      onChange={(e) => {
+                        setNewPricingInputData({
+                          ...newPricingInputData,
+                          offerPrice: e.target.value,
+                        });
+                      }}
+                    />
+                  </FloatingLabel>
+                </Col>
+                <Col>
                   <FloatingLabel controlId="selectacc" label="Select*">
                     <Form.Select
                       aria-label="Select*"
@@ -1440,6 +1491,7 @@ function AddStays() {
                       <th>Package Name</th>
                       <th>Package Details</th>
                       <th>Price</th>
+                      <th>Offer Price</th>
                       <th>Remove</th>
                     </tr>
                   </thead>
@@ -1450,6 +1502,7 @@ function AddStays() {
                           <td>{info.packageName}</td>
                           <td>{info.packageDetails}</td>
                           <td>{info.price + " " + info.selectacc}</td>
+                          <td>{info.offerPrice + " " + info.selectacc}</td>
                           <td>
                             <FontAwesomeIcon
                               icon={faX}

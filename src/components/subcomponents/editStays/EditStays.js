@@ -101,6 +101,7 @@ function EditStays() {
     locationId: undefined,
     rating: undefined,
     priceStartsFrom: "",
+    offerPrice: "",
     about: "",
     accommodationType: "",
     accommodation: "",
@@ -594,7 +595,8 @@ function EditStays() {
                       <th>Sl no</th>
                       <th>Package Name</th>
                       <th>Package Details</th>
-                      <th>Price</th>
+                      <th>Actual Price</th>
+                      <th>Offer Price</th>
                       <th>Edit</th>
                       <th>Remove</th>
                     </tr>
@@ -607,6 +609,7 @@ function EditStays() {
                           <td>{item.packageName}</td>
                           <td>{item.packageDetails}</td>
                           <td>{item.price}</td>
+                          <td>{item.offerPrice}</td>
                           <td>
                             <EditPricing
                               price={item}

@@ -30,6 +30,7 @@ function AddPricing(props) {
   const [newPricingInputData, setNewPricingInputData] = useState({
     packageName: "",
     price: "",
+    offerPrice: "",
     packageDetails: "",
     selectacc: "",
   });
@@ -80,12 +81,19 @@ function AddPricing(props) {
           packageName: newPricingInputData.packageName,
           price:
             newPricingInputData.price + " " + newPricingInputData.selectacc,
+          offerPrice:
+            newPricingInputData.offerPrice === ""
+              ? "0"
+              : newPricingInputData.offerPrice +
+                " " +
+                newPricingInputData.selectacc,
           packageDetails: newPricingInputData.packageDetails,
         });
         if (res.status === 200) {
           setNewPricingInputData({
             packageName: "",
             price: "",
+            offerPrice: "",
             packageDetails: "",
             selectacc: "",
           });
@@ -135,10 +143,14 @@ function AddPricing(props) {
               </FloatingLabel>
             </Col>
             <Col>
-              <FloatingLabel controlId="price" label="Price" className="mb-3">
+              <FloatingLabel
+                controlId="actualprice"
+                label="Actual Price"
+                className="mb-3"
+              >
                 <Form.Control
                   type="number"
-                  placeholder="Price*"
+                  placeholder="actualprice*"
                   style={{ textTransform: "capitalize" }}
                   value={newPricingInputData.price}
                   onChange={(e) => {
@@ -152,6 +164,26 @@ function AddPricing(props) {
                 <p className="required-field-meassage">{addError.price}</p>
               </FloatingLabel>
             </Col>{" "}
+            <Col>
+              <FloatingLabel
+                controlId="offerprice"
+                label="Offer Price"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="number"
+                  placeholder="Price*"
+                  style={{ textTransform: "capitalize" }}
+                  value={newPricingInputData.offerPrice}
+                  onChange={(e) => {
+                    setNewPricingInputData({
+                      ...newPricingInputData,
+                      offerPrice: e.target.value,
+                    });
+                  }}
+                />
+              </FloatingLabel>
+            </Col>
             <Col>
               <FloatingLabel controlId="selectacc" label="Select*">
                 <Form.Select
@@ -183,6 +215,7 @@ function AddPricing(props) {
                   controlId="packageIncludes"
                   label="Package Details*"
                   className="mb-3"
+                  style={{ width: "48rem" }}
                 >
                   <Form.Control
                     type="text"

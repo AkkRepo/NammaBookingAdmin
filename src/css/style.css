@@ -321,14 +321,14 @@ html {
 
 .dashboard-location-card {
   transition: box-shadow 0.3s ease;
-  margin: 20px;
+  margin: 8px;
   width: 15rem;
-  height: 20rem;
+  height: 15rem;
 }
 
 .dashboard-location-image {
   width: 15rem;
-  height: 20rem;
+  height: 15rem;
 }
 
 .dashboard-location-card:hover {
@@ -397,4 +397,13 @@ html {
     align-items: center;
     justify-content: center;
   }
+}
+
+.sample-pdf {
+  text-decoration: underline;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-top: -1.5px;
 }

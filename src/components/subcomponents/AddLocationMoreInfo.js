@@ -167,6 +167,15 @@ function AddLocationMoreInfo(props) {
           <Modal.Title>Add More Info</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <div style={{ display: "flex" }}>
+            <h6>Please refer Sample Excel Sheet:</h6>
+            <a
+              href="https://docs.google.com/spreadsheets/d/1C16sPzYuq48cEpYniOIzduyvfm4O2XLr/edit?gid=1317533996#gid=1317533996"
+              target="_blank"
+            >
+              <p className="sample-pdf">Sample PDF</p>
+            </a>
+          </div>
           <Form>
             <Form.Check
               type="radio"
