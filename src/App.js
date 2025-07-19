@@ -2,6 +2,7 @@ import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 //pages
+import BlogManager from './components/pages/BlogManager';
 import Stays from "./components/pages/Stays";
 import Dashboard from "./components/pages/Dashboard";
 import AddStays from "./components/subcomponents/AddStays";
@@ -36,6 +37,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/blogs" element={<BlogManager />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/stays" element={<Stays />} />
         <Route path="/testimonies" element={<Testimonies />} />

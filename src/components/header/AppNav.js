@@ -54,6 +54,9 @@ const AppNav = () => {
             >
               Testimonies
             </NavLink>
+            <NavLink to="/blogs" className="nav-link" activeClassName="active">
+              Blogs
+            </NavLink>
             <NavDropdown
               title="Master data"
               activeClassName="active"
