@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import { 
-  Container, Form, Button, Card, Row, Col, 
-  Spinner, Modal, Toast, ToastContainer, Image 
+import {
+  Container, Form, Button, Card, Row, Col,
+  Spinner, Modal, Toast, ToastContainer, Image
 } from 'react-bootstrap';
 import { PencilSquare, Trash, XCircle } from 'react-bootstrap-icons';
-import { AuthService } from '../../services/Auth'; // Assuming this is the correct path
+import { AuthService } from '../../services/Auth';
+import AppNav from '../header/AppNav';
+import loginBg from "../../img/login/login.jpeg";
 
 const API_BASE = `${process.env.REACT_APP_API_BASE_URL}api/blogs`;
 
@@ -113,7 +115,7 @@ const BlogManager = () => {
       coverImage: blog.coverImage || ''
     });
   };
-  
+
   // Clear the form and reset to "create" mode
   const handleCancelEdit = () => {
     setFormData({ id: null, title: '', slug: '', content: '', coverImage: '' });
@@ -138,8 +140,15 @@ const BlogManager = () => {
   };
 
   return (
-    
-    <>
+    <div style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+      {/* Common Header */}
+      <header id="header">
+        <AppNav />
+      </header>
+
+      {/* Page Title (consistent with other pages) */}
+      <h1 className="brownbear stays-h1 heading-color">Blogs</h1>
+
       <Container className="my-4">
         <Row>
           {/* Existing Blogs Column */}
@@ -155,9 +164,14 @@ const BlogManager = () => {
               <div style={{ maxHeight: '80vh', overflowY: 'auto' }}>
                 {blogs.length > 0 ? blogs.map(blog => (
                   <Card key={blog.id} className="mb-3">
-                    <Row g={0}>
+                    <Row className="g-0">
                       <Col sm={4}>
-                        <Image src={blog.coverImage || 'https://via.placeholder.com/200x150'} fluid roundedStart style={{objectFit: 'cover', height: '100%'}}/>
+                        <Image
+                          src={blog.coverImage || loginBg}
+                          fluid
+                          rounded="start"
+                          style={{ objectFit: 'cover', height: '100%', minHeight: '150px' }}
+                        />
                       </Col>
                       <Col sm={8}>
                         <Card.Body>
@@ -199,14 +213,14 @@ const BlogManager = () => {
                   <Form.Group className="mb-3">
                     <Form.Label>Cover Image URL</Form.Label>
                     <Form.Control type="text" name="coverImage" value={formData.coverImage} onChange={handleChange} />
-                    {formData.coverImage && <Image src={formData.coverImage} thumbnail className="mt-2" style={{maxHeight: '100px'}}/>}
+                    {formData.coverImage && <Image src={formData.coverImage} thumbnail className="mt-2" style={{ maxHeight: '100px' }} />}
                   </Form.Group>
 
                   <Form.Group className="mb-3">
                     <Form.Label>Content</Form.Label>
                     <Form.Control as="textarea" rows={5} name="content" value={formData.content} onChange={handleChange} required />
                   </Form.Group>
-                  
+
                   <div className="d-flex justify-content-end">
                     {formData.id && (
                       <Button variant="secondary" type="button" className="me-2" onClick={handleCancelEdit}>
@@ -223,7 +237,7 @@ const BlogManager = () => {
           </Col>
         </Row>
       </Container>
-      
+
       {/* Delete Confirmation Modal */}
       <Modal show={showDeleteModal.show} onHide={() => setShowDeleteModal({ show: false, id: null })} centered>
         <Modal.Header closeButton>
@@ -249,7 +263,7 @@ const BlogManager = () => {
           <Toast.Body className={notification.type === 'success' ? 'text-white' : ''}>{notification.message}</Toast.Body>
         </Toast>
       </ToastContainer>
-    </>
+    </div>
   );
 };
 
