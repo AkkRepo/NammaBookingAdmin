@@ -7,7 +7,7 @@ import {
 import { PencilSquare, Trash, XCircle } from 'react-bootstrap-icons';
 import { AuthService } from '../../services/Auth'; // Assuming this is the correct path
 
-const API_BASE = `${process.env.REACT_APP_API_BASE_URL}/api/blogs`;
+const API_BASE = `${process.env.REACT_APP_API_BASE_URL}api/blogs`;
 
 // Helper function to generate a URL-friendly slug
 const generateSlug = (text) => {
