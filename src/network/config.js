@@ -51,6 +51,8 @@ export const ApiEndPoints = {
   addTestimonies: "/api/testimonials/admin/add",
   editTestimonies: "/api/testimonials/admin/update",
   deleteTestimony: "/api/testimonials/admin/delete/",
+  approveTestimony: "/api/testimonials/admin/approve/",
+  rejectTestimony:  "/api/testimonials/admin/reject/",
   updatePricing: "/api/stays/admin/updatePricingDetails",
   addChildrensPayment: "/api/stays/admin/addNewChildrenPaymentDetails",
   editChildrensPayment: "/api/stays/admin/updateChildrenPaymentDetails",
