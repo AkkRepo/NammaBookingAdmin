@@ -9,7 +9,12 @@ import { AuthService } from '../../services/Auth';
 import AppNav from '../header/AppNav';
 import loginBg from "../../img/login/login.jpeg";
 
+// ✅ Import React-Quill
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 const API_BASE = `${process.env.REACT_APP_API_BASE_URL}api/blogs`;
+const UPLOAD_URL = `${process.env.REACT_APP_API_BASE_URL}api/upload`;
 
 // Helper function to generate a URL-friendly slug
 const generateSlug = (text) => {
@@ -21,6 +26,39 @@ const generateSlug = (text) => {
     .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
     .replace(/\-\-+/g, '-');        // Replace multiple - with single -
 };
+
+// ✅ Custom image handler for Cloudinary upload
+function imageHandler() {
+  const input = document.createElement("input");
+  input.setAttribute("type", "file");
+  input.setAttribute("accept", "image/*");
+  input.click();
+
+  input.onchange = async () => {
+    const file = input.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await fetch(UPLOAD_URL, {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+
+        if (data.url) {
+          const range = this.quill.getSelection();
+          this.quill.insertEmbed(range.index, "image", data.url);
+        } else {
+          console.error("Upload failed: No URL returned");
+        }
+      } catch (err) {
+        console.error("Image upload failed", err);
+      }
+    }
+  };
+}
 
 const BlogManager = () => {
   // State variables
@@ -37,7 +75,7 @@ const BlogManager = () => {
   const [showDeleteModal, setShowDeleteModal] = useState({ show: false, id: null });
   const [notification, setNotification] = useState({ show: false, message: '', type: 'success' });
 
-  // Function to get headers with the auth token
+  // Auth headers
   const getAuthHeaders = () => {
     const token = AuthService.getToken();
     return {
@@ -48,12 +86,12 @@ const BlogManager = () => {
     };
   };
 
-  // Show toast notification
+  // Toast
   const showToast = (message, type = 'success') => {
     setNotification({ show: true, message, type });
   };
 
-  // Fetch all blogs from the API
+  // Fetch blogs
   const fetchBlogs = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -71,12 +109,11 @@ const BlogManager = () => {
     fetchBlogs();
   }, [fetchBlogs]);
 
-  // Handle form input changes, including auto-slug generation
+  // Handle form input
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => {
       const newFormData = { ...prev, [name]: value };
-      // Auto-generate slug from title only if slug hasn't been manually edited
       if (name === 'title' && (prev.slug === '' || prev.slug === generateSlug(prev.title))) {
         newFormData.slug = generateSlug(value);
       }
@@ -84,7 +121,7 @@ const BlogManager = () => {
     });
   };
 
-  // Handle form submission for both creating and updating
+  // Submit blog
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -95,8 +132,8 @@ const BlogManager = () => {
     try {
       await axios[method](url, formData, getAuthHeaders());
       showToast(`Blog ${isEditing ? 'updated' : 'created'} successfully!`);
-      handleCancelEdit(); // Reset form
-      fetchBlogs(); // Refresh the list
+      handleCancelEdit();
+      fetchBlogs();
     } catch (error) {
       console.error(`Failed to ${isEditing ? 'update' : 'create'} blog:`, error);
       showToast(`Error: Could not ${isEditing ? 'update' : 'create'} blog.`, 'danger');
@@ -105,7 +142,6 @@ const BlogManager = () => {
     }
   };
 
-  // Set the form up for editing a blog
   const handleEdit = (blog) => {
     setFormData({
       id: blog.id,
@@ -116,23 +152,20 @@ const BlogManager = () => {
     });
   };
 
-  // Clear the form and reset to "create" mode
   const handleCancelEdit = () => {
     setFormData({ id: null, title: '', slug: '', content: '', coverImage: '' });
   };
 
-  // Show the delete confirmation modal
   const handleDeleteClick = (id) => {
     setShowDeleteModal({ show: true, id: id });
   };
 
-  // Perform the actual deletion after confirmation
   const confirmDelete = async () => {
     try {
       await axios.delete(`${API_BASE}/${showDeleteModal.id}`, getAuthHeaders());
       showToast('Blog deleted successfully!');
       setShowDeleteModal({ show: false, id: null });
-      fetchBlogs(); // Refresh the list
+      fetchBlogs();
     } catch (error) {
       console.error("Failed to delete blog:", error);
       showToast('Error: Could not delete blog.', 'danger');
@@ -141,104 +174,101 @@ const BlogManager = () => {
 
   return (
     <div style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-      {/* Common Header */}
       <header id="header">
         <AppNav />
       </header>
 
-      {/* Page Title (consistent with other pages) */}
       <h1 className="brownbear stays-h1 heading-color">Blogs</h1>
 
       <Container className="my-4">
-        <Row>
-          {/* Existing Blogs Column */}
-          <Col md={7}>
-            <h3>Existing Blogs</h3>
-            {isLoading ? (
-              <div className="text-center p-5">
-                <Spinner animation="border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner>
+        {/* Blog Form */}
+        <Card className="mb-4">
+          <Card.Header as="h3">{formData.id ? 'Edit Blog' : 'Create New Blog'}</Card.Header>
+          <Card.Body>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label>Title</Form.Label>
+                <Form.Control type="text" name="title" value={formData.title} onChange={handleChange} required />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Slug</Form.Label>
+                <Form.Control type="text" name="slug" value={formData.slug} onChange={handleChange} required />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Cover Image URL</Form.Label>
+                <Form.Control type="text" name="coverImage" value={formData.coverImage} onChange={handleChange} />
+                {formData.coverImage && (
+                  <Image src={formData.coverImage} thumbnail className="mt-2" style={{ maxHeight: '100px' }} />
+                )}
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Content</Form.Label>
+                <ReactQuill
+                  theme="snow"
+                  value={formData.content}
+                  onChange={(value) => setFormData(prev => ({ ...prev, content: value }))}
+                  modules={BlogManager.modules}
+                  formats={BlogManager.formats}
+                />
+              </Form.Group>
+
+              <div className="d-flex justify-content-end">
+                {formData.id && (
+                  <Button variant="secondary" type="button" className="me-2" onClick={handleCancelEdit}>
+                    <XCircle /> Cancel
+                  </Button>
+                )}
+                <Button variant="primary" type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? <Spinner as="span" size="sm" animation="border" /> : (formData.id ? 'Update Blog' : 'Create Blog')}
+                </Button>
               </div>
-            ) : (
-              <div style={{ maxHeight: '80vh', overflowY: 'auto' }}>
-                {blogs.length > 0 ? blogs.map(blog => (
-                  <Card key={blog.id} className="mb-3">
-                    <Row className="g-0">
-                      <Col sm={4}>
-                        <Image
-                          src={blog.coverImage || loginBg}
-                          fluid
-                          rounded="start"
-                          style={{ objectFit: 'cover', height: '100%', minHeight: '150px' }}
-                        />
-                      </Col>
-                      <Col sm={8}>
-                        <Card.Body>
-                          <Card.Title>{blog.title}</Card.Title>
-                          <Card.Subtitle className="mb-2 text-muted">/{blog.slug}</Card.Subtitle>
-                          <div className="mt-3">
-                            <Button variant="outline-primary" size="sm" onClick={() => handleEdit(blog)}>
-                              <PencilSquare /> Edit
-                            </Button>
-                            <Button variant="outline-danger" size="sm" className="ms-2" onClick={() => handleDeleteClick(blog.id)}>
-                              <Trash /> Delete
-                            </Button>
-                          </div>
-                        </Card.Body>
-                      </Col>
-                    </Row>
-                  </Card>
-                )) : <Card><Card.Body>No blogs found. Create one to get started!</Card.Body></Card>}
-              </div>
-            )}
-          </Col>
+            </Form>
+          </Card.Body>
+        </Card>
 
-          {/* Manage Blogs Form Column */}
-          <Col md={5}>
-            <Card className="position-sticky" style={{ top: '2rem' }}>
-              <Card.Header as="h3">{formData.id ? 'Edit Blog' : 'Create New Blog'}</Card.Header>
-              <Card.Body>
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control type="text" name="title" value={formData.title} onChange={handleChange} required />
-                  </Form.Group>
-
-                  <Form.Group className="mb-3">
-                    <Form.Label>Slug</Form.Label>
-                    <Form.Control type="text" name="slug" value={formData.slug} onChange={handleChange} required />
-                  </Form.Group>
-
-                  <Form.Group className="mb-3">
-                    <Form.Label>Cover Image URL</Form.Label>
-                    <Form.Control type="text" name="coverImage" value={formData.coverImage} onChange={handleChange} />
-                    {formData.coverImage && <Image src={formData.coverImage} thumbnail className="mt-2" style={{ maxHeight: '100px' }} />}
-                  </Form.Group>
-
-                  <Form.Group className="mb-3">
-                    <Form.Label>Content</Form.Label>
-                    <Form.Control as="textarea" rows={5} name="content" value={formData.content} onChange={handleChange} required />
-                  </Form.Group>
-
-                  <div className="d-flex justify-content-end">
-                    {formData.id && (
-                      <Button variant="secondary" type="button" className="me-2" onClick={handleCancelEdit}>
-                        <XCircle /> Cancel
+        {/* Existing Blogs */}
+        <h3>Existing Blogs</h3>
+        {isLoading ? (
+          <div className="text-center p-5">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        ) : (
+          <Row>
+            {blogs.length > 0 ? blogs.map(blog => (
+              <Col key={blog.id} md={4} className="mb-4">
+                <Card className="h-100">
+                  <Image
+                    src={blog.coverImage || loginBg}
+                    fluid
+                    style={{ objectFit: 'cover', height: '200px' }}
+                  />
+                  <Card.Body>
+                    <Card.Title>{blog.title}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">/{blog.slug}</Card.Subtitle>
+                    <div className="mt-3 d-flex justify-content-between">
+                      <Button variant="outline-primary" size="sm" onClick={() => handleEdit(blog)}>
+                        <PencilSquare /> Edit
                       </Button>
-                    )}
-                    <Button variant="primary" type="submit" disabled={isSubmitting}>
-                      {isSubmitting ? <Spinner as="span" size="sm" animation="border" /> : (formData.id ? 'Update Blog' : 'Create Blog')}
-                    </Button>
-                  </div>
-                </Form>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+                      <Button variant="outline-danger" size="sm" onClick={() => handleDeleteClick(blog.id)}>
+                        <Trash /> Delete
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            )) : (
+              <Col><Card><Card.Body>No blogs found. Create one to get started!</Card.Body></Card></Col>
+            )}
+          </Row>
+        )}
       </Container>
 
-      {/* Delete Confirmation Modal */}
+      {/* Delete Modal */}
       <Modal show={showDeleteModal.show} onHide={() => setShowDeleteModal({ show: false, id: null })} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Deletion</Modal.Title>
@@ -254,7 +284,7 @@ const BlogManager = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* Toast Notification Container */}
+      {/* Toasts */}
       <ToastContainer position="top-end" className="p-3" style={{ zIndex: 1050 }}>
         <Toast onClose={() => setNotification({ ...notification, show: false })} show={notification.show} delay={3000} autohide bg={notification.type}>
           <Toast.Header>
@@ -266,5 +296,30 @@ const BlogManager = () => {
     </div>
   );
 };
+
+// ✅ Quill toolbar config with custom image handler
+BlogManager.modules = {
+  toolbar: {
+    container: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["blockquote", "code-block"],
+      ["link", "image"],
+      ["clean"],
+    ],
+    handlers: {
+      image: imageHandler,
+    },
+  },
+};
+
+BlogManager.formats = [
+  "header",
+  "bold", "italic", "underline", "strike",
+  "list", "bullet",
+  "blockquote", "code-block",
+  "link", "image"
+];
 
 export default BlogManager;
