@@ -201,26 +201,27 @@ function Testimonies() {
                     />
                   </td>
                   <td>
-                    {isPending ? (
-                      <>
-                        <Button
-                          size="sm"
-                          className="me-2"
-                          variant="success"
-                          onClick={() => openApproveConfirm(i.id)}
-                        >
-                          Approve
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline-danger"
-                          onClick={() => openRejectConfirm(i.id)}
-                        >
-                          Reject
-                        </Button>
-                      </>
-                    ) : (
-                      <span style={{ color: "#777" }}>—</span>
+                    {/* Show Approve if Pending or Rejected */}
+                    {["PENDING", "REJECTED"].includes((i.status || "").toUpperCase()) && (
+                      <Button
+                        size="sm"
+                        className="me-2"
+                        variant="success"
+                        onClick={() => openApproveConfirm(i.id)}
+                      >
+                        Approve
+                      </Button>
+                    )}
+
+                    {/* Show Reject if not already Rejected */}
+                    {(i.status || "").toUpperCase() !== "REJECTED" && (
+                      <Button
+                        size="sm"
+                        variant="outline-danger"
+                        onClick={() => openRejectConfirm(i.id)}
+                      >
+                        Reject
+                      </Button>
                     )}
                   </td>
                   <td>
