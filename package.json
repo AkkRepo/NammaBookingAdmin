@@ -1,6 +1,6 @@
 {
   "name": "nammabookingadmin",
-  "homepage": "./",
+  "homepage": "https://admin.nammabooking.com/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -26,6 +26,7 @@
     "react-dropdown": "^1.11.0",
     "react-leaflet": "^4.2.1",
     "react-query": "^3.39.3",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
     "reactstrap": "^9.2.2",

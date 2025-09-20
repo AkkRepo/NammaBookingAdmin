@@ -13,8 +13,8 @@ import loginBg from "../../img/login/login.jpeg";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const API_BASE = `${process.env.REACT_APP_API_BASE_URL}api/blogs`;
-const UPLOAD_URL = `${process.env.REACT_APP_API_BASE_URL}api/upload`;
+const API_BASE = `${process.env.REACT_APP_API_BASE_URL}/api/blogs`;
+const UPLOAD_URL = `${process.env.REACT_APP_API_BASE_URL}/api/upload`;
 
 // Helper function to generate a URL-friendly slug
 const generateSlug = (text) => {
