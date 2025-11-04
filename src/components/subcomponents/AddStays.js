@@ -820,9 +820,10 @@ function AddStays() {
                     placeholder="Please enter Stay name"
                     className="text-capitalize"
                     value={stays.name}
-                    onChange={(e) =>
-                      setStays({ ...stays, name: Capitalize(e.target.value) })
-                    }
+                    onChange={(e) => {
+                      const cleanValue = e.target.value.replace(/\s+/g, ' '); // collapse multiple spaces
+                      setStays({ ...stays, name: Capitalize(cleanValue.trimStart()) }); // trim front space
+                    }}
                     isInvalid={!!addError.name}
                   />
                   <p className="required-field-meassage">{addError.name}</p>
