@@ -61,4 +61,6 @@ export const ApiEndPoints = {
   addNewReadMoreDetails: "/api/locations/admin/addNewReadMoreDetails",
   updateReadMoreDetails: "/api/locations/admin/updateReadMoreDetails",
   deleteReadMore: "/api/locations/admin/deleteReadMore/",
+  featureStay: "/api/stays/admin/feature/",
+  unfeatureStay: "/api/stays/admin/unfeature/",
 };

@@ -232,4 +232,16 @@ export class StaysService {
       url: `${ApiEndPoints.setDefaultImage}/${stay}/${image}`,
     });
   };
+  static featureStay = (id) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "put",
+      url: ApiEndPoints.featureStay + id,
+    });
+  };
+  static unfeatureStay = (id) => {
+    return NetworkManager.getInstance().appRequest({
+      method: "put",
+      url: ApiEndPoints.unfeatureStay + id,
+    });
+  };
 }

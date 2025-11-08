@@ -121,6 +121,7 @@ function Stays(props) {
             <th style={{ color: "#051e3c" }}>Stay Name</th>
             <th style={{ color: "#051e3c" }}>Contact name</th>
             <th style={{ color: "#051e3c" }}>Contact number</th>
+            <th style={{ color: "#051e3c" }}>Display in Homepage</th>
             {/* <th style={{ color: "#051e3c" }}>View Details</th> */}
             <th style={{ color: "#051e3c" }}>View Details</th>
             <th style={{ color: "#051e3c" }}>Delete</th>
@@ -143,6 +144,27 @@ function Stays(props) {
                     onClick={() => navigateToStay(i.id)}
                   />
                 </td> */}
+                <td>
+                  <Form.Check
+                    type="switch"
+                    id={`featured-switch-${i.id}`}
+                    checked={i.featuredHomepage}
+                    onChange={async (e) => {
+                      try {
+                        if (e.target.checked) {
+                          await StaysService.featureStay(i.id);
+                          alert("Stay marked for homepage");
+                        } else {
+                          await StaysService.unfeatureStay(i.id);
+                          alert("Stay removed from homepage");
+                        }
+                        getStay(paginations.cur);
+                      } catch (error) {
+                        alert(error.message);
+                      }
+                    }}
+                  />
+                </td>
                 <td>
                   <FontAwesomeIcon
                     icon={faCircleInfo}
